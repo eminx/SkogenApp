@@ -14,7 +14,6 @@
     "babel-polyfill": "^6.26.0",
     "babel-runtime": "^6.26.0",
     "bcrypt": "^1.0.3",
-    "grommet": "^2.2.1",
     "history": "^4.7.2",
     "indexof": "0.0.1",
     "meteor-node-stubs": "^0.4.1",
@@ -34,9 +33,7 @@
     "react-spinners": "^0.4.7",
     "react-table": "^6.8.6",
     "react-to-print": "^2.0.0-alpha-6",
-    "react-visibility-sensor": "^5.0.2",
-    "semantic-ui-react": "^0.77.2",
-    "styled-components": "^4.1.3"
+    "react-visibility-sensor": "^5.0.2"
   },
   "devDependencies": {
     "@babel/helper-module-imports": "^7.0.0",
