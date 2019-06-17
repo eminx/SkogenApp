@@ -77,7 +77,7 @@ class CreateGroupForm extends React.Component {
                 }
               ],
               initialValue: groupData ? groupData.title : null
-            })(<Input placeholder="Group title" />)}
+            })(<Input placeholder="Stream title" />)}
           </FormItem>
 
           <FormItem>
@@ -115,7 +115,7 @@ class CreateGroupForm extends React.Component {
               rules: [
                 {
                   required: true,
-                  message: 'Please enter capacity for the group'
+                  message: 'Please enter capacity for the stream'
                 }
               ],
               min: 2,

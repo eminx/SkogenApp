@@ -147,7 +147,7 @@ class Group extends Component {
     if (isAdmin) {
       return (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Link to={`/edit-group/${group._id}`}>Edit</Link>
+          <Link to={`/edit-stream/${group._id}`}>Edit</Link>
         </div>
       );
     } else {
@@ -166,7 +166,7 @@ class Group extends Component {
         message.error(error.error);
       } else {
         message.destroy();
-        message.success('You are added to the group');
+        message.success('You are added to the stream');
       }
     });
   };
@@ -249,7 +249,7 @@ class Group extends Component {
         message.error(error.error);
       } else {
         message.destroy();
-        message.success('Your group meeting is added!');
+        message.success('Your stream meeting is added!');
       }
     });
   };
@@ -259,12 +259,12 @@ class Group extends Component {
 
     if (!currentUser) {
       message.destroy();
-      message.error('Please login and join the group to attend the meeting');
+      message.error('Please login and join the stream to attend the meeting');
       return;
     }
     if (!this.isMember()) {
       message.destroy();
-      message.error('Please join the group to attend the meeting');
+      message.error('Please join the stream to attend the meeting');
       return;
     }
 
@@ -578,7 +578,7 @@ class Group extends Component {
               onClick={this.openModal}
               block
             >
-              {isMember ? 'Leave group' : 'Join group'}
+              {isMember ? 'Leave stream' : 'Join stream'}
             </Button>
           </div>
         )}
@@ -694,9 +694,13 @@ class Group extends Component {
         }
       >
         <Meta
-          description={<div dangerouslySetInnerHTML={{
-            __html: group.description
-          }} />}
+          description={
+            <div
+              dangerouslySetInnerHTML={{
+                __html: group.description
+              }}
+            />
+          }
         />
       </Card>
     );
@@ -758,8 +762,8 @@ class Group extends Component {
     return (
       <div>
         <div style={{ padding: 12 }}>
-          <Link to="/groups">
-            <Button icon="arrow-left">Groups</Button>
+          <Link to="/streams">
+            <Button icon="arrow-left">Streams</Button>
           </Link>
         </div>
 

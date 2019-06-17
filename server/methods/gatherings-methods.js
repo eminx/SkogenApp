@@ -185,6 +185,7 @@ Meteor.methods({
   },
 
   addSpace(name) {
+    console.log(name, 'me');
     const user = Meteor.user();
     if (!user || !user.isSuperAdmin) {
       throw new Meteor.Error('Not allowed!');
@@ -194,11 +195,12 @@ Meteor.methods({
     Places.find().forEach(place => {
       placesCounter += 1;
     });
-
+    console.log(name, 'xe');
     if (Places.findOne({ name: name })) {
       throw new Meteor.Error('That place already exists!');
     } else {
       try {
+        console.log(name, 'ye');
         Places.insert({
           name: name,
           addedBy: Meteor.user().username,

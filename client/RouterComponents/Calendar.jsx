@@ -361,12 +361,12 @@ class Calendar extends React.PureComponent {
               {selectedBooking && selectedBooking.isPublicActivity && (
                 <Link
                   to={
-                    (selectedBooking.isGroup ? '/group/' : '/event/') +
+                    (selectedBooking.isGroup ? '/stream/' : '/activity/') +
                     selectedBooking._id
                   }
                 >
                   {' '}
-                  go to the {selectedBooking.isGroup ? 'group ' : 'event '}
+                  go to the {selectedBooking.isGroup ? 'stream ' : 'activity '}
                   page
                 </Link>
               )}

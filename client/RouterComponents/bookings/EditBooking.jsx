@@ -257,7 +257,7 @@ class EditBooking extends React.Component {
         return <Redirect to="/calendar" />;
       }
       if (isPublicActivity) {
-        return <Redirect to={`/event/${gatheringData._id}`} />;
+        return <Redirect to={`/activity/${gatheringData._id}`} />;
       } else {
         return <Redirect to="/calendar" />;
       }
@@ -267,7 +267,7 @@ class EditBooking extends React.Component {
       <div style={{ padding: 24 }}>
         {gatheringData && (
           <div style={{ marginBottom: 12 }}>
-            <Link to={`/event/${gatheringData._id}`}>
+            <Link to={`/activity/${gatheringData._id}`}>
               <Button icon="arrow-left">{gatheringData.title}</Button>
             </Link>
           </div>
@@ -293,7 +293,7 @@ class EditBooking extends React.Component {
 
             <Row style={{ marginBottom: 12 }}>
               <Col md={12}>
-                <h4>public event?</h4>
+                <h4>public activity?</h4>
                 <Switch
                   checked={isPublicActivity}
                   onChange={this.handlePublicActivitySwitch}

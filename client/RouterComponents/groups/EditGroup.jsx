@@ -7,12 +7,10 @@ import { Row, Col, message, Alert, Modal, Button, Affix } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
 
 const successCreation = () =>
-  message.success('Your group is successfully updated', 6);
+  message.success('Your stream is successfully updated', 6);
 
 const successDelete = () =>
-  message.success('The group is successfully deleted', 4);
-
-const sideNote = 'This page is dedicated to create groups at Skogen.';
+  message.success('The stream is successfully deleted', 4);
 
 class EditGroup extends React.Component {
   state = {
@@ -154,9 +152,9 @@ class EditGroup extends React.Component {
 
     if (isSuccess && newGroupId) {
       successCreation();
-      return <Redirect to={`/group/${newGroupId}`} />;
+      return <Redirect to={`/stream/${newGroupId}`} />;
     } else if (isSuccess) {
-      return <Redirect to="/groups" />;
+      return <Redirect to="/streams" />;
     }
 
     const { groupData, currentUser } = this.props;
@@ -165,7 +163,7 @@ class EditGroup extends React.Component {
       <div style={{ padding: 24 }}>
         {groupData && (
           <div style={{ marginBottom: 12 }}>
-            <Link to={`/group/${groupData._id}`}>
+            <Link to={`/stream/${groupData._id}`}>
               <Button icon="arrow-left">{groupData.title}</Button>
             </Link>
           </div>

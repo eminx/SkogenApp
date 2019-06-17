@@ -113,7 +113,7 @@ class NewGathering extends React.Component {
 
     if (isSuccess) {
       successCreation();
-      return <Redirect to={`/event/${newGatheringId}`} />;
+      return <Redirect to={`/activity/${newGatheringId}`} />;
     }
 
     return (

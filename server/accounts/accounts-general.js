@@ -16,12 +16,12 @@ Accounts.onCreateUser((options, user) => {
     user.username = user.services.google.name;
     user.emails = [{ address: user.services.google.email }];
   }
-  Meteor.call(
-    'sendEmail',
-    user.emails[0].address,
-    'Welcome to Skogen',
-    getWelcomeEmailText(user.username),
-    true // is new user
-  );
+  // Meteor.call(
+  //   'sendEmail',
+  //   user.emails[0].address,
+  //   'Welcome to Skogen',
+  //   getWelcomeEmailText(user.username),
+  //   true // is new user
+  // );
   return user;
 });

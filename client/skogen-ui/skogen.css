@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i');
 
 ::selection {
-  background-color: #ea3924 !important;
+  background-color: #ff4d83 !important;
 }
 
 ::-moz-selection {
-  background-color: #ea3924 !important;
+  background-color: #ff4d83 !important;
 }
 
 *,
@@ -20,11 +20,11 @@ body .ant-input,
 }
 
 body a {
-  color: #ea3924;
+  color: #ff4d83;
 }
 
 body a:hover {
-  color: #ad2539;
+  color: #e6054a;
 }
 
 .main-viewport .layout.ant-layout {
@@ -64,7 +64,7 @@ label.ant-radio-button-wrapper:last-child {
   text-transform: uppercase;
   font-style: italic;
   font-weight: 700;
-  border: 1px solid #fbd5d0;
+  border: 1px solid #ffe4ec;
 }
 label.ant-radio-button-wrapper:first-child {
   border-right: none;
@@ -77,21 +77,21 @@ button.ant-btn:hover,
 button.ant-btn:focus,
 a.ant-btn:hover,
 a.ant-btn:focus {
-  background-color: #ea3924;
-  color: #fbd5d0;
-  border: 1px solid #fbd5d0;
+  background-color: #ff4d83;
+  color: #ffe4ec;
+  border: 1px solid #ffe4ec;
 }
 
 button.ant-btn.ant-btn-primary,
 .ant-radio-button-wrapper-checked {
-  background-color: #fbd5d0;
+  background-color: #ffe4ec;
   border: none;
   text-shadow: 0.5px 0.5px 0 #fff;
 }
 button.ant-btn.ant-btn-primary:hover,
 button.ant-btn.ant-btn-primary:focus {
-  background-color: #ea3924;
-  color: #fbd5d0;
+  background-color: #ff4d83;
+  color: #ffe4ec;
   border: none;
 }
 
@@ -125,7 +125,7 @@ body .ant-select-selection:focus {
   background-color: #030303;
 }
 .ant-layout .ant-switch.ant-switch-checked {
-  background-color: #fbd5d0;
+  background-color: #ffe4ec;
 }
 
 .ant-form-item button.ant-btn {
@@ -227,14 +227,14 @@ body {
   flex-wrap: wrap;
   text-transform: uppercase;
   background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid #030303;
+  /* border: 1px solid #030303; */
   border-bottom: none;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .skogen-menu-layout > a > b {
-  color: #ea3924;
+  color: #ff4d83;
 }
 
 .skogen-menu-layout > a {
@@ -256,7 +256,7 @@ body {
 }
 
 .thumb-cover-container-event {
-  border: 5px solid #ea3924;
+  border: 5px solid #ff4d83;
 }
 
 .cover-highlight-title {
@@ -290,19 +290,19 @@ body {
 
 .main-viewport #login-buttons .login-button,
 .accounts-dialog .login-button {
-  background-color: #fbd5d0;
+  background-color: #ffe4ec;
   color: #030303;
   text-transform: uppercase;
   font-style: initial;
   font-family: roboto;
-  border: 1px solid #fbd5d0;
+  border: 1px solid #ffe4ec;
   font-weight: 600;
   border-radius: 0;
 }
 
 .main-viewport #login-buttons .login-button,
 .accounts-dialog .login-button:hover {
-  background-color: #ea3924;
+  background-color: #ff4d83;
   color: #fff;
 }
 
@@ -322,7 +322,7 @@ body {
 .main-viewport .accounts-dialog .additional-link {
   font-size: 100%;
   text-transform: uppercase;
-  color: #ea3924;
+  color: #ff4d83;
   font-weight: 700;
   font-family: 'Roboto', sans;
   float: none;

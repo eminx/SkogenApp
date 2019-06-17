@@ -20,7 +20,7 @@ class GroupsList extends React.PureComponent {
     return (
       <div>
         <h3 style={{ overflowWrap: 'anywhere' }}>
-          <Link to={`/group/${group._id}`}>{group.title}</Link>
+          <Link to={`/stream/${group._id}`}>{group.title}</Link>
         </h3>
         <h5>
           <b>{group.readingMaterial}</b>
@@ -61,16 +61,16 @@ class GroupsList extends React.PureComponent {
       <Row gutter={24}>
         <Col md={8}>
           <div style={centerStyle}>
-            <Link to="/new-group">
+            <Link to="/new-stream">
               <Button type="primary" component="span">
-                New Group
+                New Stream
               </Button>
             </Link>
           </div>
         </Col>
 
         <Col md={14} style={{ padding: 24 }}>
-          <h2 style={{ textAlign: 'center' }}>Groups</h2>
+          <h2 style={{ textAlign: 'center' }}>Streams</h2>
 
           {/* <div style={centerStyle}>
             <RadioGroup defaultValue="ongoing" size="large">

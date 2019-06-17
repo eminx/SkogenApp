@@ -119,7 +119,7 @@ class NewBookSpace extends React.Component {
     const { isPublicActivity, newBookingId } = this.state;
     successCreation();
     if (isPublicActivity) {
-      return <Redirect to={`/event/${newBookingId}`} />;
+      return <Redirect to={`/activity/${newBookingId}`} />;
     } else {
       return <Redirect to={`/calendar`} />;
     }
@@ -132,7 +132,7 @@ class NewBookSpace extends React.Component {
       return (
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Alert
-            message="You have to become a registered member to create a group."
+            message="You have to become a registered member to create a booking."
             type="error"
           />
         </div>

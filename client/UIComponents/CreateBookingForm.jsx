@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import ReactQuill from 'react-quill';
-import { editorFormats, editorModules } from '../themes/skogen';
+import React, { Component } from 'react'
+import ReactQuill from 'react-quill'
+import { editorFormats, editorModules } from '../themes/skogen'
 
 import {
   Row,
@@ -18,19 +18,19 @@ import {
   Divider,
   Modal,
   message
-} from 'antd/lib';
-const Option = Select.Option;
-const { TextArea } = Input;
-const FormItem = Form.Item;
-import moment from 'moment';
+} from 'antd/lib'
+import moment from 'moment'
+const Option = Select.Option
+const { TextArea } = Input
+const FormItem = Form.Item
 
 const compareForSort = (a, b) => {
-  const dateA = moment(a.startDate, 'YYYY-MM-DD');
-  const dateB = moment(b.startDate, 'YYYY-MM-DD');
-  return dateA.diff(dateB);
-};
+  const dateA = moment(a.startDate, 'YYYY-MM-DD')
+  const dateB = moment(b.startDate, 'YYYY-MM-DD')
+  return dateA.diff(dateB)
+}
 
-const defaultCapacity = 40;
+const defaultCapacity = 40
 
 let emptyDateAndTime = {
   startDate: null,
@@ -39,11 +39,9 @@ let emptyDateAndTime = {
   endTime: null,
   attendees: [],
   capacity: defaultCapacity
-};
+}
 
-const skogenAddress = 'Masthuggsterrassen 3, SE-413 18 Göteborg, Sverige';
-const defaultPracticalInfo = `MAT: Efter föreställning serveras en vegetarisk middag, välkommen att stanna och äta med oss. \n\n
-BILJETTPRIS: Skogen har inget fast biljettpris. Välkommen att donera för konst och mat när du går. Kontanter / Swish.`;
+const wertschafftAddress = 'Lenaustr. 20, 12047 Berlin'
 
 const iconStyle = {
   padding: 0,
@@ -51,31 +49,31 @@ const iconStyle = {
   justifyContent: 'center',
   marginBottom: 24,
   backgroundColor: '#f8f8f8'
-};
+}
 
 class CreateBookingForm extends Component {
   state = {
     addSpaceModal: false,
     datesAndTimes: [emptyDateAndTime]
-  };
-
-  componentDidMount() {
-    this.setDatesAndTimes();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidMount () {
+    this.setDatesAndTimes()
+  }
+
+  componentDidUpdate (prevProps) {
     if (!prevProps.bookingData && this.props.bookingData) {
-      this.setDatesAndTimes();
+      this.setDatesAndTimes()
     }
   }
 
   setDatesAndTimes = () => {
-    const { bookingData } = this.props;
+    const { bookingData } = this.props
     if (!bookingData) {
-      return;
+      return
     }
 
-    const datesAndTimesSorted = bookingData.datesAndTimes.sort(compareForSort);
+    const datesAndTimesSorted = bookingData.datesAndTimes.sort(compareForSort)
 
     const datesAndTimesWithMoment = datesAndTimesSorted.map(recurrence => ({
       ...recurrence,
@@ -85,57 +83,58 @@ class CreateBookingForm extends Component {
       endTimeMoment: moment(recurrence.endTime, 'HH:mm'),
       capacity: recurrence.capacity,
       attendees: recurrence.attendees || []
-    }));
+    }))
 
     this.setState({
       datesAndTimes: datesAndTimesWithMoment
-    });
-  };
+    })
+  }
 
   addRecurrence = () => {
     this.setState({
       datesAndTimes: [...this.state.datesAndTimes, { ...emptyDateAndTime }]
-    });
-  };
+    })
+  }
 
   removeRecurrence = index => {
-    const allOccurences = [...this.state.datesAndTimes];
-    allOccurences.splice(index, 1);
+    const allOccurences = [...this.state.datesAndTimes]
+    allOccurences.splice(index, 1)
 
     this.setState({
       datesAndTimes: allOccurences
-    });
-  };
+    })
+  }
 
   addSpace = name => {
+    console.log(name, 'ye')
     Meteor.call('addSpace', name, (err, res) => {
       if (err) {
-        message.error(err.reason);
-        console.log(err);
+        message.error(err.reason)
+        console.log(err)
       } else {
-        message.success('Your place succesfully added to the list :)');
-        this.setState({ addSpaceModal: false });
+        message.success('Your place is succesfully added to the list :)')
+        this.setState({ addSpaceModal: false })
       }
-    });
-  };
+    })
+  }
 
   handleSubmit = e => {
-    e.preventDefault();
-    const { datesAndTimes } = this.state;
-    const { form, isPublicActivity } = this.props;
+    e.preventDefault()
+    const { datesAndTimes } = this.state
+    const { form, isPublicActivity } = this.props
 
     form.validateFields((err, fieldsValue) => {
       if (err) {
-        console.log(err);
-        return;
+        console.log(err)
+        return
       }
 
       if (this.props.isPublicActivity && !this.props.uploadableImage) {
         Modal.error({
           title: 'Image is required',
           content: 'Please upload an image'
-        });
-        return;
+        })
+        return
       }
 
       const datesAndTimesWithoutMoment = datesAndTimes.map(recurrence => ({
@@ -145,33 +144,33 @@ class CreateBookingForm extends Component {
         endTime: recurrence.endTime,
         capacity: recurrence.capacity || defaultCapacity,
         attendees: recurrence.attendees || []
-      }));
+      }))
 
       const values = {
         title: fieldsValue['title'],
         subTitle: fieldsValue['subTitle'],
         longDescription: fieldsValue['longDescription'],
         datesAndTimes: datesAndTimesWithoutMoment
-      };
+      }
 
       if (isPublicActivity) {
-        values.room = fieldsValue['room'];
-        values.place = fieldsValue['place'];
-        values.address = fieldsValue['address'];
-        values.practicalInfo = fieldsValue['practicalInfo'];
-        values.internalInfo = fieldsValue['internalInfo'];
+        values.room = fieldsValue['room']
+        values.place = fieldsValue['place']
+        values.address = fieldsValue['address']
+        values.practicalInfo = fieldsValue['practicalInfo']
+        values.internalInfo = fieldsValue['internalInfo']
       } else {
-        values.room = fieldsValue['room'];
+        values.room = fieldsValue['room']
       }
 
       if (!err) {
-        this.props.registerGatheringLocally(values);
+        this.props.registerGatheringLocally(values)
       }
-    });
-  };
+    })
+  }
 
   renderDateTime = () => {
-    const { datesAndTimes } = this.state;
+    const { datesAndTimes } = this.state
 
     return (
       <div style={{ marginBottom: 12 }}>
@@ -201,43 +200,43 @@ class CreateBookingForm extends Component {
         <div style={{ ...iconStyle, padding: 24 }}>
           <Icon
             style={{ fontSize: 48, cursor: 'pointer' }}
-            type="plus-circle"
+            type='plus-circle'
             onClick={this.addRecurrence}
           />
         </div>
       </div>
-    );
-  };
+    )
+  }
 
   handleDateAndTimeChange = (date, dateString, index, entity) => {
-    const { datesAndTimes } = this.state;
+    const { datesAndTimes } = this.state
     const newDatesAndTimes = datesAndTimes.map((item, i) => {
       if (index === i) {
-        item[entity + 'Moment'] = date;
-        item[entity] = dateString;
+        item[entity + 'Moment'] = date
+        item[entity] = dateString
       }
-      return item;
-    });
+      return item
+    })
     this.setState({
       datesAndTimes: newDatesAndTimes
-    });
-  };
+    })
+  }
 
   handleCapacityChange = (value, index) => {
-    const { datesAndTimes } = this.state;
+    const { datesAndTimes } = this.state
     const newDatesAndTimes = datesAndTimes.map((item, i) => {
       if (index === i) {
-        item.capacity = value;
+        item.capacity = value
       }
-      return item;
-    });
+      return item
+    })
     this.setState({
       datesAndTimes: newDatesAndTimes
-    });
-  };
+    })
+  }
 
-  render() {
-    const { getFieldDecorator } = this.props.form;
+  render () {
+    const { getFieldDecorator } = this.props.form
     const {
       uploadableImage,
       setUploadableImage,
@@ -245,16 +244,16 @@ class CreateBookingForm extends Component {
       bookingData,
       currentUser,
       isPublicActivity
-    } = this.props;
-    const { addSpaceModal } = this.state;
+    } = this.props
+    const { addSpaceModal } = this.state
 
     const formItemLayout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 16 }
-    };
+    }
 
     return (
-      <div className="create-gathering-form">
+      <div className='create-gathering-form'>
         <h3>Please enter the details below</h3>
         <Divider />
         <Form onSubmit={this.handleSubmit}>
@@ -267,7 +266,7 @@ class CreateBookingForm extends Component {
                 }
               ],
               initialValue: bookingData ? bookingData.title : null
-            })(<Input placeholder="Title" />)}
+            })(<Input placeholder='Title' />)}
           </FormItem>
 
           {isPublicActivity && (
@@ -283,7 +282,7 @@ class CreateBookingForm extends Component {
                   bookingData && bookingData.subTitle
                     ? bookingData.subTitle
                     : ''
-              })(<Input placeholder="Subtitle (i.e. the artist)" />)}
+              })(<Input placeholder='Subtitle (i.e. the artist)' />)}
             </FormItem>
           )}
 
@@ -309,22 +308,22 @@ class CreateBookingForm extends Component {
 
           {isPublicActivity && (
             <FormItem
-              className="upload-image-col"
+              className='upload-image-col'
               extra={uploadableImage ? null : 'Pick an image from your device'}
             >
               <Upload
-                name="gathering"
-                action="/upload.do"
+                name='gathering'
+                action='/upload.do'
                 onChange={setUploadableImage}
               >
                 {uploadableImage ? (
                   <Button>
-                    <Icon type="check-circle" />
+                    <Icon type='check-circle' />
                     Image selected
                   </Button>
                 ) : (
                   <Button>
-                    <Icon type="upload" />
+                    <Icon type='upload' />
                     Pick an image
                   </Button>
                 )}
@@ -345,7 +344,7 @@ class CreateBookingForm extends Component {
                   bookingData && bookingData.place
                     ? bookingData.place
                     : 'Skogen'
-              })(<Input placeholder="Please enter the name of the place" />)}
+              })(<Input placeholder='Please enter the name of the place' />)}
             </FormItem>
           )}
 
@@ -361,8 +360,8 @@ class CreateBookingForm extends Component {
                 initialValue:
                   bookingData && bookingData.address
                     ? bookingData.address
-                    : skogenAddress
-              })(<Input placeholder="Please enter the address" />)}
+                    : wertschafftAddress
+              })(<Input placeholder='Please enter the address' />)}
             </FormItem>
           )}
 
@@ -380,7 +379,7 @@ class CreateBookingForm extends Component {
                     : ''
               })(
                 <TextArea
-                  placeholder="Practical info"
+                  placeholder='Practical info'
                   autosize={{ minRows: 3, maxRows: 6 }}
                 />
               )}
@@ -402,7 +401,7 @@ class CreateBookingForm extends Component {
                     : ''
               })(
                 <TextArea
-                  placeholder="Internal info"
+                  placeholder='Internal info'
                   autosize={{ minRows: 3, maxRows: 6 }}
                 />
               )}
@@ -436,13 +435,13 @@ class CreateBookingForm extends Component {
               ],
               initialValue: bookingData ? bookingData.room : 'Studio'
             })(
-              <Select placeholder="Select space/equipment">
+              <Select placeholder='Select space/equipment'>
                 {places
                   ? places.map((part, i) => (
-                      <Option key={part.name + i} value={part.name}>
-                        {part.name}
-                      </Option>
-                    ))
+                    <Option key={part.name + i} value={part.name}>
+                      {part.name}
+                    </Option>
+                  ))
                   : null}
               </Select>
             )}
@@ -454,15 +453,15 @@ class CreateBookingForm extends Component {
               sm: { span: 16, offset: 8 }
             }}
           >
-            <Button type="primary" htmlType="submit">
+            <Button type='primary' htmlType='submit'>
               Continue
             </Button>
           </FormItem>
         </Form>
 
         <Modal
-          className="addSpace-modal"
-          title="Add a space/equipment for booking"
+          className='addSpace-modal'
+          title='Add a space/equipment for booking'
           visible={addSpaceModal}
           onOk={() => this.setState({ addSpaceModal: false })}
           onCancel={() => this.setState({ addSpaceModal: false })}
@@ -472,22 +471,22 @@ class CreateBookingForm extends Component {
             list
           </h3>
           <Input.Search
-            placeholder="type and press enter"
-            enterButton="Add"
-            size="large"
+            placeholder='type and press enter'
+            enterButton='Add'
+            size='large'
             onSearch={value => this.addSpace(value)}
           />
         </Modal>
       </div>
-    );
+    )
   }
 }
 
-const WrappedAddContentForm = Form.create()(CreateBookingForm);
-export default WrappedAddContentForm;
+const WrappedAddContentForm = Form.create()(CreateBookingForm)
+export default WrappedAddContentForm
 
 class DatesAndTimes extends Component {
-  render() {
+  render () {
     const {
       recurrence,
       handleStartDateChange,
@@ -497,7 +496,7 @@ class DatesAndTimes extends Component {
       handleCapacityChange,
       removeRecurrence,
       isNotDeletable
-    } = this.props;
+    } = this.props
 
     return (
       <div
@@ -511,7 +510,7 @@ class DatesAndTimes extends Component {
           <div style={iconStyle}>
             <Icon
               style={{ fontSize: 18, cursor: 'pointer' }}
-              type="delete"
+              type='delete'
               onClick={removeRecurrence}
             />
           </div>
@@ -521,7 +520,7 @@ class DatesAndTimes extends Component {
           <DatePicker
             onChange={handleStartDateChange}
             value={recurrence.startDateMoment}
-            placeholder="Start date"
+            placeholder='Start date'
           />
         </FormItem>
 
@@ -529,15 +528,15 @@ class DatesAndTimes extends Component {
           <TimePicker
             onChange={handleStartTimeChange}
             value={recurrence.startTimeMoment}
-            format="HH:mm"
+            format='HH:mm'
             minuteStep={30}
-            placeholder="Start time"
+            placeholder='Start time'
           />
         </FormItem>
 
         <FormItem style={{ marginBottom: 6 }}>
           <DatePicker
-            placeholder="Finish date"
+            placeholder='Finish date'
             onChange={handleFinishDateChange}
             value={recurrence.endDateMoment}
           />
@@ -547,9 +546,9 @@ class DatesAndTimes extends Component {
           <TimePicker
             onChange={handleFinishTimeChange}
             value={recurrence.endTimeMoment}
-            format="HH:mm"
+            format='HH:mm'
             minuteStep={30}
-            placeholder="Finish time"
+            placeholder='Finish time'
           />
         </FormItem>
         <FormItem style={{ marginBottom: 12 }}>
@@ -562,6 +561,6 @@ class DatesAndTimes extends Component {
           />
         </FormItem>
       </div>
-    );
+    )
   }
 }

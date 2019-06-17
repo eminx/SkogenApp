@@ -6,10 +6,8 @@ import CreateGroupForm from '../../UIComponents/CreateGroupForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
 
 const successCreation = () => {
-  message.success('Your group is successfully created', 6);
+  message.success('Your stream is successfully created', 6);
 };
-
-const sideNote = 'This page is dedicated to create groups at Skogen.';
 
 class NewGroup extends React.Component {
   state = {
@@ -97,7 +95,7 @@ class NewGroup extends React.Component {
       return (
         <div style={{ maxWidth: 600, margin: '24px auto' }}>
           <Alert
-            message="You have to become a registered member to create a group."
+            message="You have to become a registered member to create a stream."
             type="error"
           />
         </div>
@@ -118,7 +116,7 @@ class NewGroup extends React.Component {
 
     return (
       <div style={{ padding: 24 }}>
-        <h1>Create a Group</h1>
+        <h1>Create a Stream</h1>
         <Row gutter={48}>
           <Col xs={24} sm={24} md={16}>
             <CreateGroupForm
@@ -144,7 +142,7 @@ class NewGroup extends React.Component {
           />
         ) : null}
 
-        {isSuccess ? <Redirect to={`/group/${newGroupId}`} /> : null}
+        {isSuccess ? <Redirect to={`/stream/${newGroupId}`} /> : null}
       </div>
     );
   }

@@ -126,7 +126,9 @@ class PublicActivityThumb extends React.Component {
       objectFit: 'cover'
     };
 
-    let clickLink = item.isGroup ? `/group/${item._id}` : `/event/${item._id}`;
+    let clickLink = item.isGroup
+      ? `/stream/${item._id}`
+      : `/activity/${item._id}`;
     const coverClass = 'thumb-cover';
     let coverContainerClass = 'thumb-cover-container ';
 
