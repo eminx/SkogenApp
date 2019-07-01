@@ -1,10 +1,12 @@
-import React from 'react'
-import { Divider } from 'antd/lib'
+import React from 'react';
+import { Divider } from 'antd/lib';
+import { Meteor } from 'meteor/meteor';
+const contextName = Meteor.settings.public.contextName;
 
-const WertschafftTerms = () => {
+const ContextTerms = () => {
   return (
     <div>
-      <h3>Wertschafft user agreement</h3>
+      <h3>{contextName} user agreement</h3>
       <p>
         With an account, you are a member and can join any one or all of our
         study group’s online forums free of charge. If you join a study group,
@@ -16,17 +18,17 @@ const WertschafftTerms = () => {
       </p>
       <p>
         As a member you will also receive running notifications about things
-        happening at Wertschafft, and can sign yourself up (RSVP) for events
+        happening at {contextName}, and can sign yourself up (RSVP) for events
         with a simple click. Your username will be visible for staff members in
         the list of attendees.
       </p>
       <p>
         The discussions for each study group are visible to all members of
-        Wertschafft. These discussions are kept for the duration of the group
+        {contextName}. These discussions are kept for the duration of the group
         and will be archived, but can be erased if the group wishes.
       </p>
       <p>
-        Wertschafft expects all members to keep respectful and supportive
+        {contextName} expects all members to keep respectful and supportive
         language when communicating. We want to ensure a friendly and welcoming
         environment, while encouraging critical thinking and constructive
         dialogue. Members who go against these simple rules run the risk of
@@ -41,7 +43,7 @@ const WertschafftTerms = () => {
         our GDPR policy.
       </p>
       <Divider />
-      <h3>Wertschafft's data policy, GDPR</h3>
+      <h3>{contextName}'s data policy, GDPR</h3>
       <p>
         GDPR (General Private Data Regulation) is an EU law that regulates how
         you as a user own your personal information and how you have the right
@@ -53,7 +55,7 @@ const WertschafftTerms = () => {
       </p>
       <h4>What data we collect, how we store it, and why</h4>
       <p>
-        Wertschafft collects only two pieces of information: a username and an
+        {contextName} collects only two pieces of information: a username and an
         e-mail address. Your e-mail address is considered personal information.
         The name you choose does not have to be your legal name, so if you
         choose to use your legal name you do so at your own discretion. This
@@ -63,7 +65,7 @@ const WertschafftTerms = () => {
         staff).
       </p>
       <p>
-        We use your e-mail address to send you notifications. Wertschafft
+        We use your e-mail address to send you notifications. {contextName}
         collects this information when you sign up for an account, as well as
         when you change your account information. To login you will be asked to
         provide a password for your account. It is your responsibility to ensure
@@ -72,9 +74,10 @@ const WertschafftTerms = () => {
       <Divider />
       <h3>Data storage</h3>
       <p>
-        Wertschafft uses cookies in your web browser for the sole purpose of
+        {contextName} uses cookies in your web browser for the sole purpose of
         storing your password. Your password is encrypted in our database, so
-        there is no way we can access or read it. Your connection to Wertschafft
+        there is no way we can access or read it. Your connection to{' '}
+        {contextName}
         is also encrypted using SSL (HTTPS).
       </p>
       <p>
@@ -109,7 +112,7 @@ const WertschafftTerms = () => {
 
       <h3>Requesting information about your personal information</h3>
       <p>
-        You can contact Wertschafft via e-mail to request anything about your
+        You can contact {contextName} via e-mail to request anything about your
         personal information—what we store, how it is used, and if you want to
         change or remove it.
       </p>
@@ -137,7 +140,7 @@ const WertschafftTerms = () => {
         www.datainspektionen.se or call +46(0)86576100.
       </p>
     </div>
-  )
-}
+  );
+};
 
-export default WertschafftTerms
+export default ContextTerms;
