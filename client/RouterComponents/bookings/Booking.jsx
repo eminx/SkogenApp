@@ -29,7 +29,15 @@ const FormItem = Form.Item;
 function registrationSuccess() {
   Modal.success({
     title: 'You are set!',
-    content: 'You have just successfully registered your attendance. Welcome!',
+    content: 'You have just successfully registered your attendance. Welcome!'
+  });
+}
+
+function registrationAlreadyMade() {
+  Modal.error({
+    title: 'You have already registered!',
+    content:
+      'You have already a registration with the same email address and last name. Please click "Change/Cancel Existing RSVP" and proceed to change your registration.'
   });
 }
 
@@ -77,6 +85,23 @@ class Booking extends React.Component {
     const { resetFields } = this.props.form;
     this.props.form.validateFields((error, values) => {
       if (!error) {
+        let isAlreadyRegistered = false;
+        bookingData.datesAndTimes[occurenceIndex].attendees.forEach(
+          (attendee, attendeeIndex) => {
+            if (
+              attendee.lastName === values.lastName &&
+              attendee.email === values.email
+            ) {
+              registrationAlreadyMade();
+              isAlreadyRegistered = true;
+              return;
+            }
+          }
+        );
+        if (isAlreadyRegistered) {
+          return;
+        }
+
         Meteor.call(
           'registerAttendance',
           bookingData._id,
@@ -323,10 +348,11 @@ class Booking extends React.Component {
                 {occurence.capacity &&
                 occurence.attendees &&
                 getTotalNumber(occurence) >= occurence.capacity ? (
-                    <p>
-                      {capacityGotFullByYou && 'Congrats! You just filled the last space!'}
-                      Capacity is full now.
-                    </p>
+                  <p>
+                    {capacityGotFullByYou &&
+                      'Congrats! You just filled the last space!'}
+                    Capacity is full now.
+                  </p>
                 ) : (
                   <RsvpForm
                     currentUser={currentUser}
