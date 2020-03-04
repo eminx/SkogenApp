@@ -37,7 +37,7 @@ function registrationAlreadyMade() {
   Modal.error({
     title: 'You have already registered!',
     content:
-      'You have already a registration with the same email address and last name. Please click "Change/Cancel Existing RSVP" and proceed to change your registration.'
+      'You have already made a registration with the same email address and last name. Please click "Change/Cancel Existing RSVP" and proceed to change your registration.'
   });
 }
 
