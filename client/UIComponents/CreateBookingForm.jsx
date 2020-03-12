@@ -143,7 +143,7 @@ class CreateBookingForm extends Component {
         startTime: recurrence.startTime,
         endDate: recurrence.endDate,
         endTime: recurrence.endTime,
-        capacity: recurrence.capacity || defaultCapacity,
+        capacity: isPublicActivity && (recurrence.capacity || defaultCapacity),
         attendees: recurrence.attendees || []
       }));
 
@@ -172,6 +172,7 @@ class CreateBookingForm extends Component {
 
   renderDateTime = () => {
     const { datesAndTimes } = this.state;
+    const { isPublicActivity } = this.props;
 
     return (
       <div style={{ marginBottom: 12 }}>
@@ -181,6 +182,7 @@ class CreateBookingForm extends Component {
             recurrence={recurrence}
             removeRecurrence={() => this.removeRecurrence(index)}
             isNotDeletable={index === 0}
+            isPublicActivity={isPublicActivity}
             handleStartDateChange={(date, dateString) =>
               this.handleDateAndTimeChange(date, dateString, index, 'startDate')
             }
@@ -496,7 +498,8 @@ class DatesAndTimes extends Component {
       handleFinishTimeChange,
       handleCapacityChange,
       removeRecurrence,
-      isNotDeletable
+      isNotDeletable,
+      isPublicActivity
     } = this.props;
 
     return (
@@ -516,7 +519,6 @@ class DatesAndTimes extends Component {
             />
           </div>
         )}
-
         <FormItem style={{ marginBottom: 6 }}>
           <DatePicker
             onChange={handleStartDateChange}
@@ -524,7 +526,6 @@ class DatesAndTimes extends Component {
             placeholder="Start date"
           />
         </FormItem>
-
         <FormItem style={{ marginBottom: 12 }}>
           <TimePicker
             onChange={handleStartTimeChange}
@@ -534,7 +535,6 @@ class DatesAndTimes extends Component {
             placeholder="Start time"
           />
         </FormItem>
-
         <FormItem style={{ marginBottom: 6 }}>
           <DatePicker
             placeholder="Finish date"
@@ -542,7 +542,6 @@ class DatesAndTimes extends Component {
             value={recurrence.endDateMoment}
           />
         </FormItem>
-
         <FormItem style={{ marginBottom: 12 }}>
           <TimePicker
             onChange={handleFinishTimeChange}
@@ -552,15 +551,17 @@ class DatesAndTimes extends Component {
             placeholder="Finish time"
           />
         </FormItem>
-        <FormItem style={{ marginBottom: 12 }}>
-          <InputNumber
-            min={1}
-            max={90}
-            placeholder={'Capacity'}
-            value={recurrence.capacity}
-            onChange={handleCapacityChange}
-          />
-        </FormItem>
+        {isPublicActivity && (
+          <FormItem style={{ marginBottom: 12 }}>
+            <InputNumber
+              min={1}
+              max={90}
+              placeholder={'Capacity'}
+              value={recurrence.capacity}
+              onChange={handleCapacityChange}
+            />
+          </FormItem>
+        )}
       </div>
     );
   }
