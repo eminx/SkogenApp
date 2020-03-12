@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Link } from 'react-router-dom';
 import React from 'react';
-import CreateBookingForm from '../../UIComponents/CreateBookingForm';
-import ModalArticle from '../../UIComponents/ModalArticle';
+import Resizer from 'react-image-file-resizer';
 import {
   Row,
   Col,
@@ -15,6 +14,10 @@ import {
   Divider
 } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
+import { dataURLtoFile } from '../../functions';
+
+import CreateBookingForm from '../../UIComponents/CreateBookingForm';
+import ModalArticle from '../../UIComponents/ModalArticle';
 
 const successEditMessage = isDeleted => {
   if (isDeleted) {
@@ -26,6 +29,8 @@ const successEditMessage = isDeleted => {
 
 const sideNote =
   "Please check if a corresponding time and space is not taken already. \n It is your responsibility to make sure that there's no overlapping bookings.";
+
+const resizedImageWidth = 900;
 
 class EditBooking extends React.Component {
   state = {
@@ -61,17 +66,21 @@ class EditBooking extends React.Component {
 
   setUploadableImage = e => {
     const theImageFile = e.file.originFileObj;
-    const reader = new FileReader();
-    reader.readAsDataURL(theImageFile);
-    reader.addEventListener(
-      'load',
-      () => {
+
+    Resizer.imageFileResizer(
+      theImageFile,
+      resizedImageWidth,
+      (resizedImageWidth * theImageFile.height) / theImageFile.width,
+      'JPEG',
+      95,
+      0,
+      uri => {
         this.setState({
-          uploadableImage: theImageFile,
-          uploadableImageLocal: reader.result
+          uploadableImage: dataURLtoFile(uri, theImageFile.name),
+          uploadableImageLocal: uri
         });
       },
-      false
+      'base64'
     );
   };
 

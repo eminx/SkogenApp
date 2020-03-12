@@ -29,6 +29,7 @@ class ModalArticle extends React.Component {
               </div>
             }
             bordered={false}
+            cover={imageSrc ? <img alt="image" src={imageSrc} /> : null}
           >
             <Meta
               avatar={<Avatar>{getInitials(item.authorName || 'ad')}</Avatar>}
@@ -40,7 +41,6 @@ class ModalArticle extends React.Component {
                   }}
                 />
               }
-              cover={imageSrc ? <img alt="image" src={imageSrc} /> : null}
             />
           </Card>
         )}
