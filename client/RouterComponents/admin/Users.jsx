@@ -2,6 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { Row, Radio, Col, Alert, Input, message, Divider } from 'antd/lib';
 import Loader from '../../UIComponents/Loader';
+import AdminMenu from '../../UIComponents/AdminMenu';
 
 const RadioGroup = Radio.Group;
 
@@ -55,7 +56,7 @@ class Users extends React.PureComponent {
   };
 
   render() {
-    const { isLoading, currentUser, users } = this.props;
+    const { isLoading, currentUser, users, history } = this.props;
     const { filter, filterWord, sortBy } = this.state;
 
     if (!currentUser || !currentUser.isSuperAdmin) {
@@ -146,9 +147,13 @@ class Users extends React.PureComponent {
         break;
     }
 
+    const currentPath = history && history.location.pathname;
+
     return (
       <Row gutter={24}>
-        <Col md={8} />
+        <Col md={8}>
+          <AdminMenu currentPath={currentPath} />
+        </Col>
 
         <Col md={8} style={{ padding: 24 }}>
           <h2 style={{ textAlign: 'center' }}>
