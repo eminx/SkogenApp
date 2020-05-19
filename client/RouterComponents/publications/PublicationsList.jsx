@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import { Row, Col, List, Card, Radio, Button, Divider } from 'antd/lib';
 import Loader from '../../UIComponents/Loader';
 
-import { compareForSort } from '../../functions';
-
 const ListItem = List.Item;
 const { Meta } = Card;
 const RadioGroup = Radio.Group;
@@ -18,7 +16,17 @@ function shortenDescription(str) {
     .join(' ');
 }
 
+const compareByPublishDate = (a, b) => {
+  const dateA = new Date(a.publishDate);
+  const dateB = new Date(b.publishDate);
+  return dateB - dateA;
+};
+
 class PublicationsList extends React.PureComponent {
+  state = {
+    filterType: 'all'
+  };
+
   getTitle = publication => {
     return (
       <div>
@@ -46,14 +54,21 @@ class PublicationsList extends React.PureComponent {
     );
   };
 
+  handleFilter = event => {
+    this.setState({
+      filterType: event.target.value
+    });
+  };
+
   render() {
     const { isLoading, currentUser, publicationsData } = this.props;
+    const { filterType } = this.state;
 
     if (isLoading) {
       return <Loader />;
     }
 
-    const publicationsSorted = publicationsData.sort(compareForSort);
+    const publicationsSorted = publicationsData.sort(compareByPublishDate);
 
     const centerStyle = {
       display: 'flex',
@@ -61,6 +76,14 @@ class PublicationsList extends React.PureComponent {
       padding: 24,
       paddingBottom: 0
     };
+
+    const publicationTypesRepeated = publicationsData.map(pub => pub.format);
+    const publicationTypes = ['all', ...new Set(publicationTypesRepeated)];
+
+    const publicationsFiltered =
+      filterType === 'all'
+        ? publicationsSorted
+        : publicationsSorted.filter(pub => pub.format === filterType);
 
     return (
       <Row gutter={24}>
@@ -79,16 +102,17 @@ class PublicationsList extends React.PureComponent {
         <Col md={14} style={{ padding: 24 }}>
           <h2 style={{ textAlign: 'center' }}>Publications</h2>
 
-          {/* <div style={centerStyle}>
-            <RadioGroup defaultValue="ongoing" size="large">
-              <RadioButton value="ongoing">Ongoing</RadioButton>
-              <RadioButton value="my-publications">My Publications</RadioButton>
-              <RadioButton value="archived">Archived</RadioButton>
-            </RadioGroup>
-          </div> */}
+          <div style={centerStyle}>
+            <RadioGroup
+              options={publicationTypes}
+              onChange={this.handleFilter}
+              value={filterType}
+              style={{ marginBottom: 12 }}
+            />
+          </div>
 
           <List
-            dataSource={publicationsSorted.reverse()}
+            dataSource={publicationsFiltered}
             renderItem={publication => (
               <ListItem style={{ paddingBottom: 0 }}>
                 <Card

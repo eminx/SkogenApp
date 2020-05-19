@@ -23,6 +23,14 @@ const compareForSort = (a, b) => {
   return dateA - dateB;
 };
 
+const covidInfo = [
+  `Due to Covid-19 our public program is cancelled until september. In the fall we hope to see you all at Skogen again for more conversions, dinners and upcoming presentations of Frédéric Gies, Patricia Vane, Josefina Björk, Lisen Ellard & Mattias Lech, Ichi, Erik Sjögren & Joel Nordström, Sarah Vanhee, Tova Gerge & Britta Kiessling…`,
+  `We are curious to see how this is changing us all, and what kind of community and world we are able to build from here! We will continue to use Skogen to come together, to share resources, work and learn together.`,
+  `Until the fall Skogen is still open for Study groups, artists are working in the studio, books and zines are being printed in the press and we are making up plans for the future.`,
+  `Since our staff are on furlough, response to emails etc might be slower than usual.`,
+  `We miss you all here, take care, and have a good summer!`
+];
+
 class Home extends React.Component {
   state = {
     isUploading: false
@@ -121,16 +129,35 @@ class Home extends React.Component {
               {isLoading ? (
                 <Loader />
               ) : (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center'
-                  }}
-                >
-                  {allSortedActivities.map(activity => (
-                    <PublicActivityThumb key={activity.title} item={activity} />
-                  ))}
+                <div>
+                  <div
+                    style={{
+                      margin: '0 auto',
+                      marginBottom: 24,
+                      padding: 12,
+                      maxWidth: 576,
+                      border: '1px solid #ea3924'
+                    }}
+                  >
+                    <h3 style={{ textAlign: 'center' }}>Notice</h3>
+                    {covidInfo.map(p => (
+                      <p>{p}</p>
+                    ))}
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    {allSortedActivities.map(activity => (
+                      <PublicActivityThumb
+                        key={activity.title}
+                        item={activity}
+                      />
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
