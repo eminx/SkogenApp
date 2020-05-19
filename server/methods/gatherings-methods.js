@@ -182,32 +182,5 @@ Meteor.methods({
       console.log(err);
       throw new Meteor.Error(err, "Couldn't toggle attendance");
     }
-  },
-
-  addSpace(name) {
-    const user = Meteor.user();
-    if (!user || !user.isSuperAdmin) {
-      throw new Meteor.Error('Not allowed!');
-    }
-
-    let placesCounter = 0;
-    Places.find().forEach(place => {
-      placesCounter += 1;
-    });
-
-    if (Places.findOne({ name: name })) {
-      throw new Meteor.Error('That place already exists!');
-    } else {
-      try {
-        Places.insert({
-          name: name,
-          addedBy: Meteor.user().username,
-          roomIndex: placesCounter
-        });
-        return true;
-      } catch (err) {
-        throw new Meteor.Error(err, "Couldn't add the place : /");
-      }
-    }
   }
 });

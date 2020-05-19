@@ -18,10 +18,6 @@ const adminMenu = [
   {
     label: 'Resources',
     value: '/admin/resources'
-  },
-  {
-    label: 'Widgets',
-    value: '/admin/widgets'
   }
 ];
 

@@ -3,8 +3,6 @@ import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../themes/skogen';
 
 import {
-  Row,
-  Col,
   Form,
   Input,
   DatePicker,
@@ -12,12 +10,10 @@ import {
   Button,
   Select,
   InputNumber,
-  Switch,
   Upload,
   Icon,
   Divider,
-  Modal,
-  message
+  Modal
 } from 'antd/lib';
 const Option = Select.Option;
 const { TextArea } = Input;
@@ -55,7 +51,6 @@ const iconStyle = {
 
 class CreateBookingForm extends Component {
   state = {
-    addSpaceModal: false,
     datesAndTimes: [emptyDateAndTime]
   };
 
@@ -104,18 +99,6 @@ class CreateBookingForm extends Component {
 
     this.setState({
       datesAndTimes: allOccurences
-    });
-  };
-
-  addSpace = name => {
-    Meteor.call('addSpace', name, (err, res) => {
-      if (err) {
-        message.error(err.reason);
-        console.log(err);
-      } else {
-        message.success('Your place succesfully added to the list :)');
-        this.setState({ addSpaceModal: false });
-      }
     });
   };
 
@@ -248,7 +231,6 @@ class CreateBookingForm extends Component {
       currentUser,
       isPublicActivity
     } = this.props;
-    const { addSpaceModal } = this.state;
 
     const formItemLayout = {
       labelCol: { span: 8 },
@@ -297,14 +279,7 @@ class CreateBookingForm extends Component {
                 }
               ],
               initialValue: bookingData ? bookingData.longDescription : null
-            })(
-              // <TextArea
-              //   placeholder="Description"
-              //   autosize={{ minRows: 3, maxRows: 6 }}
-              // />
-
-              <ReactQuill modules={editorModules} formats={editorFormats} />
-            )}
+            })(<ReactQuill modules={editorModules} formats={editorFormats} />)}
           </FormItem>
 
           {this.renderDateTime()}
@@ -411,23 +386,6 @@ class CreateBookingForm extends Component {
             </FormItem>
           )}
 
-          {currentUser && currentUser.isSuperAdmin && (
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}
-            >
-              <span style={{ marginRight: 10 }}>
-                Wanna add space/equipment to the list?
-              </span>
-              <Button onClick={() => this.setState({ addSpaceModal: true })}>
-                Add
-              </Button>
-            </div>
-          )}
-
           <FormItem>
             {getFieldDecorator('room', {
               rules: [
@@ -461,25 +419,6 @@ class CreateBookingForm extends Component {
             </Button>
           </FormItem>
         </Form>
-
-        <Modal
-          className="addSpace-modal"
-          title="Add a space/equipment for booking"
-          visible={addSpaceModal}
-          onOk={() => this.setState({ addSpaceModal: false })}
-          onCancel={() => this.setState({ addSpaceModal: false })}
-        >
-          <h3>
-            Please enter the name of the space or equipment to be added to the
-            list
-          </h3>
-          <Input.Search
-            placeholder="type and press enter"
-            enterButton="Add"
-            size="large"
-            onSearch={value => this.addSpace(value)}
-          />
-        </Modal>
       </div>
     );
   }

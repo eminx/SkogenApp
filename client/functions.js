@@ -47,6 +47,14 @@ function dataURLtoFile(dataurl, filename) {
   return new File([u8arr], filename, { type: mime });
 }
 
+const call = (method, ...parameters) =>
+  new Promise((resolve, reject) => {
+    Meteor.call(method, ...parameters, (error, respond) => {
+      if (error) reject(error);
+      resolve(respond);
+    });
+  });
+
 export {
   getInitials,
   removeSpace,
@@ -54,5 +62,6 @@ export {
   parseTitle,
   emailIsValid,
   includesSpecialCharacters,
-  dataURLtoFile
+  dataURLtoFile,
+  call
 };

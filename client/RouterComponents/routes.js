@@ -28,6 +28,7 @@ import ProfileContainer from './profile/ProfileContainer';
 import UserContainer from './users/UserContainer';
 
 import UsersContainer from './admin/UsersContainer';
+import Resources from './admin/Resources';
 
 import WorkContainer from './works/WorkContainer';
 
@@ -81,6 +82,8 @@ export const renderRoutes = () => (
           <Route path="/documents" component={DocumentsListContainer} />
 
           <Route path="/admin/users" component={UsersContainer} />
+          <Route path="/admin/resources" component={Resources} />
+
           <Route path="/user/:id" component={UserContainer} />
           <Route path="/work/:id" component={WorkContainer} />
 
