@@ -42,8 +42,8 @@ const menu = [
 
 const adminMenu = [
   {
-    label: 'Users',
-    route: '/users'
+    label: 'Admin',
+    route: '/admin/users'
   }
 ];
 
