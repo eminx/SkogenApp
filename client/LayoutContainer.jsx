@@ -286,7 +286,11 @@ const SkogenInfo = () => (
       <a href="mailto:info@skogen.pm">info@skogen.pm</a>
     </p>
     <p>
-      <a href="https://www.facebook.com/skogen.pm" target="_blank">
+      <a
+        href="https://www.facebook.com/skogen.pm"
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+      >
         www.facebook.com/skogen.pm
       </a>
       <br />
