@@ -4,6 +4,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { render } from 'react-dom';
 
 import { renderRoutes } from './RouterComponents/routes';
+import './serviceWorker.js';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'antd/dist/antd.min.css';
