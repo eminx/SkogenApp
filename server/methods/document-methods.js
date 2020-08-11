@@ -5,8 +5,6 @@ Meteor.methods({
       return;
     }
 
-    console.log(documentLabel, documentUrl, contextType);
-
     check(documentLabel, String);
     check(documentUrl, String);
     check(contextType, String);
