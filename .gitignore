@@ -1,5 +1,6 @@
 node_modules/
 settings.json
+**/settings.json
 settings-production.json
 settings-ub.json
 settings-skogen.json
