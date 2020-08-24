@@ -33,7 +33,8 @@ const compareForSort = (a, b) => {
 
 const covidInfo = [
   `Skogen continues to be open. We are planning our autumn events for limited audiences, so we can maintain physical distance. We ask for anyone with symptoms of coronavirus to stay home.`,
-  `Because we will only have a limited number of seats, please cancel your booking if you cannot attend. Take care of each other, and welcome!`
+  `Because we will only have a limited number of seats, please cancel your booking if you cannot attend.`,
+  `Take care of each other, and welcome!`
 ];
 
 class Home extends React.Component {
