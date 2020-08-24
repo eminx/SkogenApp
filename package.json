@@ -2,7 +2,7 @@
   "name": "skogen",
   "private": true,
   "scripts": {
-    "start": "meteor run --settings settings-skogen.json",
+    "start": "meteor run --settings settings.json",
     "deploy": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy --settings settings.json www.skogen.pm"
   },
   "theme": {
