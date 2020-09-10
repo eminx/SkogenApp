@@ -61,7 +61,7 @@ const Resources = ({ history }) => {
   }));
 
   return (
-    <div style={{ padding: 24 }}>
+    <div>
       <Row gutter={24}>
         <Col md={8}>
           <AdminMenu currentPath={currentPath} />
