@@ -99,7 +99,7 @@ Meteor.methods({
 
     const roomIndex = getRoomIndex(formValues.room);
     const theG = Gatherings.findOne(bookingId);
-    if (user._id !== theG.authorId) {
+    if (user._id !== theG.authorId && !user.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed!');
     }
 

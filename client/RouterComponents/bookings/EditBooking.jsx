@@ -160,7 +160,7 @@ class EditBooking extends React.Component {
       isBookingsDisabled,
       uploadedImage
     } = this.state;
-    const { gatheringData } = this.props;
+    const { gatheringData, currentUser } = this.props;
 
     values.isPublicActivity = isPublicActivity;
     values.isBookingsDisabled = isBookingsDisabled;
@@ -235,13 +235,18 @@ class EditBooking extends React.Component {
   };
 
   render() {
-    if (!this.props.currentUser) {
+    const { gatheringData, currentUser } = this.props;
+
+    if (
+      !currentUser ||
+      !gatheringData ||
+      (currentUser._id !== gatheringData.authorId && !currentUser.isSuperAdmin)
+    ) {
       return (
-        <div style={{ maxWidth: 600, margin: '0 auto' }}>
-          <Alert
-            message="You have to signin to create a booking."
-            type="error"
-          />
+        <div
+          style={{ maxWidth: 600, margin: '50px auto', textAlign: 'center' }}
+        >
+          <Alert message="You are not allowed" type="error" />
         </div>
       );
     }
@@ -257,8 +262,6 @@ class EditBooking extends React.Component {
       isBookingsDisabled,
       numberOfRecurrence
     } = this.state;
-
-    const { gatheringData, currentUser } = this.props;
 
     if (isSuccess) {
       successEditMessage(isDeleteModalOn);

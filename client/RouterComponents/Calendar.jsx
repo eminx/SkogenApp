@@ -69,7 +69,7 @@ class Calendar extends React.PureComponent {
     );
   };
 
-  isCreator = () => {
+  isCreatorOrAdmin = () => {
     const { currentUser } = this.props;
     const { selectedBooking } = this.state;
 
@@ -80,7 +80,8 @@ class Calendar extends React.PureComponent {
     if (
       selectedBooking &&
       currentUser &&
-      currentUser.username === selectedBooking.authorName
+      (currentUser.username === selectedBooking.authorName ||
+        currentUser.isSuperAdmin)
     ) {
       return true;
     }
@@ -326,7 +327,7 @@ class Calendar extends React.PureComponent {
           okText="Edit"
           cancelText="Close"
           okButtonProps={
-            (!this.isCreator() || selectedBooking.isGroup) && {
+            (!this.isCreatorOrAdmin() || selectedBooking.isGroup) && {
               style: { display: 'none' }
             }
           }
