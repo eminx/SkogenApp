@@ -4,8 +4,6 @@ import { Row, List } from 'antd/lib';
 import Loader from '../UIComponents/Loader';
 import PublicActivityThumb from '../UIComponents/PublicActivityThumb';
 
-const ListItem = List.Item;
-
 const yesterday = moment(new Date()).add(-1, 'days');
 
 const getFirstFutureOccurence = occurence =>
@@ -147,7 +145,7 @@ class Home extends React.Component {
                   >
                     <h3 style={{ textAlign: 'center' }}>Notice</h3>
                     {covidInfo.map(p => (
-                      <p>{p}</p>
+                      <p key={p}>{p}</p>
                     ))}
                   </div>
                   <div
