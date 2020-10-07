@@ -456,7 +456,9 @@ class Booking extends React.Component {
     const isRegisteredMember = this.isRegisteredMember();
 
     const EditButton =
-      currentUser && bookingData && currentUser._id === bookingData.authorId ? (
+      currentUser &&
+      bookingData &&
+      (currentUser._id === bookingData.authorId || currentUser.isSuperAdmin) ? (
         <div
           style={{
             display: 'flex',
