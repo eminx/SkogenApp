@@ -119,13 +119,6 @@ class LayoutPage extends React.Component {
       });
     }
 
-    const menuIconStyle = {
-      fontSize: 24,
-      padding: '18px 12px',
-      cursor: 'pointer',
-      marginLeft: 18
-    };
-
     return (
       <div className="main-viewport">
         <div className="header-container">
