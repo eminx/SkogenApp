@@ -131,15 +131,23 @@ Meteor.methods({
       }
 
       notifications[notificationIndex].count -= 1;
-      const newNotifications = notifications[
-        notificationIndex
-      ].unSeenIndexes.filter(unSeenIndex => unSeenIndex !== messageIndex);
+
+      let newNotifications;
+      if (notifications[notificationIndex].count === 0) {
+        newNotifications = notifications.filter(
+          (notification, index) => index !== notificationIndex
+        );
+      } else {
+        const newUnSeenIndexes = notifications[
+          notificationIndex
+        ].unSeenIndexes.filter(unSeenIndex => unSeenIndex !== messageIndex);
+        notifications[notificationIndex].unSeenIndexes = newUnSeenIndexes;
+        newNotifications = notifications;
+      }
 
       Meteor.users.update(user._id, {
         $set: {
-          notifications: newNotifications.filter(
-            notification => notification.count > 0
-          )
+          notifications: newNotifications
         }
       });
     } catch (error) {
