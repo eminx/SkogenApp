@@ -29,10 +29,15 @@ const compareForSort = (a, b) => {
 //   `We miss you all here, take care, and have a good summer!`
 // ];
 
+// const covidInfo = [
+//   `Skogen continues to be open. We are planning our autumn events for limited audiences, so we can maintain physical distance. We ask for anyone with symptoms of coronavirus to stay home.`,
+//   `Because we will only have a limited number of seats, please cancel your booking if you cannot attend.`,
+//   `Take care of each other, and welcome!`
+// ];
+
 const covidInfo = [
-  `Skogen continues to be open. We are planning our autumn events for limited audiences, so we can maintain physical distance. We ask for anyone with symptoms of coronavirus to stay home.`,
-  `Because we will only have a limited number of seats, please cancel your booking if you cannot attend.`,
-  `Take care of each other, and welcome!`
+  `Skogen håller stängt till den 19e nov.`,
+  `Skogen is closed until nov 19th.`
 ];
 
 class Home extends React.Component {
@@ -143,9 +148,9 @@ class Home extends React.Component {
                       border: '1px solid #ea3924'
                     }}
                   >
-                    <h3 style={{ textAlign: 'center' }}>Notice</h3>
+                    <h3 style={{ textAlign: 'center', marginBottom: 12 }}>Notice</h3>
                     {covidInfo.map(p => (
-                      <p key={p}>{p}</p>
+                      <p style={{ textAlign: 'center' }} key={p}>{p}</p>
                     ))}
                   </div>
                   <div
