@@ -41,9 +41,12 @@ Meteor.publish('gatherings', function() {
 Meteor.publish('groups', function() {
   // const user = Meteor.user();
   // if (user) {
-  return Groups.find({
-    isPublished: true
-  });
+  return Groups.find(
+    {
+      isPublished: true
+    },
+    { sort: { creationDate: 1 } }
+  );
   // }
 });
 
@@ -54,9 +57,12 @@ Meteor.publish('manuals', function() {
 });
 
 Meteor.publish('publications', function() {
-  return Publications.find({
-    isPublished: true
-  });
+  return Publications.find(
+    {
+      isPublished: true
+    },
+    { sort: { creationDate: 1 } }
+  );
   // }
 });
 
@@ -105,7 +111,7 @@ Meteor.publish('publication', function(id) {
 });
 
 Meteor.publish('pages', function() {
-  return Pages.find();
+  return Pages.find({}, { sort: { creationDate: 1 } });
 });
 
 Meteor.publish('page', function(title) {
@@ -120,9 +126,12 @@ Meteor.publish('work', function(id) {
 
 Meteor.publish('myworks', function() {
   const currentUserId = Meteor.userId();
-  return Works.find({
-    authorId: currentUserId
-  });
+  return Works.find(
+    {
+      authorId: currentUserId
+    },
+    { sort: { creationDate: 1 } }
+  );
 });
 
 Meteor.publish('chat', function(contextId) {
@@ -135,7 +144,7 @@ Meteor.publish('chat', function(contextId) {
 });
 
 Meteor.publish('places', function() {
-  return Places.find();
+  return Places.find({}, { sort: { creationDate: 1 } });
 });
 
 Meteor.publish('documents', function() {
