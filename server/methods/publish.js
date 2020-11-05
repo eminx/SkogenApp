@@ -144,7 +144,7 @@ Meteor.publish('chat', function(contextId) {
 });
 
 Meteor.publish('places', function() {
-  return Places.find({}, { sort: { creationDate: 1 } });
+  return Places.find({}, { sort: { _id: 1 } });
 });
 
 Meteor.publish('documents', function() {

@@ -87,7 +87,8 @@ Meteor.methods({
         Places.insert({
           name: name,
           addedBy: Meteor.user().username,
-          roomIndex: placesCounter
+          roomIndex: placesCounter,
+          creationDate: new Date()
         });
         return true;
       } catch (err) {
