@@ -75,10 +75,7 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    let placesCounter = 0;
-    Places.find().forEach(place => {
-      placesCounter += 1;
-    });
+    const placesCounter = Places.find().count();
 
     if (Places.findOne({ name: name })) {
       throw new Meteor.Error('That place already exists!');
