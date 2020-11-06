@@ -1,10 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
-import { Row, Col, Button } from 'antd/lib';
-import PagesList from '../../UIComponents/PagesList';
+import { Row, Col } from 'antd/lib';
 import Loader from '../../UIComponents/Loader';
-
-import { parseTitle } from '../../functions';
 
 class Work extends PureComponent {
   render() {
