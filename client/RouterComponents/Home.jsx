@@ -112,11 +112,11 @@ class Home extends React.Component {
   };
 
   getAllSorted = () => {
-    const allActitivities = [
+    const allActivities = [
       ...this.getPublicActivities(),
       ...this.getGroupMeetings()
     ];
-    return allActitivities.sort(compareForSort);
+    return allActivities.sort(compareForSort);
   };
 
   render() {
@@ -148,9 +148,13 @@ class Home extends React.Component {
                       border: '1px solid #ea3924'
                     }}
                   >
-                    <h3 style={{ textAlign: 'center', marginBottom: 12 }}>Notice</h3>
+                    <h3 style={{ textAlign: 'center', marginBottom: 12 }}>
+                      Notice
+                    </h3>
                     {covidInfo.map(p => (
-                      <p style={{ textAlign: 'center' }} key={p}>{p}</p>
+                      <p style={{ textAlign: 'center' }} key={p}>
+                        {p}
+                      </p>
                     ))}
                   </div>
                   <div
