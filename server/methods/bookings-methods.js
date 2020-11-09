@@ -134,7 +134,7 @@ Meteor.methods({
       throw new Meteor.Error('You are not allowed!');
     }
     const bookingToDelete = Gatherings.findOne(bookingId);
-    if (bookingToDelete.authorId !== user._id) {
+    if (bookingToDelete.authorId !== user._id && !user.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed!');
     }
 

@@ -142,14 +142,15 @@ class EditBooking extends React.Component {
     upload.send(uploadableImage, (error, downloadUrl) => {
       if (error) {
         console.error('Error uploading:', error);
-      } else {
-        this.setState(
-          {
-            uploadedImage: downloadUrl
-          },
-          () => this.updateBooking()
-        );
+        message.error(error.reason);
+        return;
       }
+      this.setState(
+        {
+          uploadedImage: downloadUrl
+        },
+        () => this.updateBooking()
+      );
     });
   };
 
@@ -204,6 +205,7 @@ class EditBooking extends React.Component {
   deleteBooking = () => {
     const { gatheringData, history } = this.props;
     const bookingId = gatheringData._id;
+    this.setState({ isLoading: true });
 
     Meteor.call('deleteBooking', bookingId, (error, respond) => {
       if (error) {
@@ -211,6 +213,7 @@ class EditBooking extends React.Component {
           isLoading: false,
           isError: true
         });
+        message.error(error.reason);
         return;
       }
       this.setState({
