@@ -160,7 +160,7 @@ class EditBooking extends React.Component {
       isBookingsDisabled,
       uploadedImage
     } = this.state;
-    const { gatheringData, currentUser } = this.props;
+    const { gatheringData, history } = this.props;
 
     values.isPublicActivity = isPublicActivity;
     values.isBookingsDisabled = isBookingsDisabled;
@@ -178,13 +178,19 @@ class EditBooking extends React.Component {
             isLoading: false,
             isError: true
           });
-        } else {
-          this.setState({
-            isLoading: false,
-            newBookingId: respond,
-            isSuccess: true
-          });
+          message.error(error.reason);
+          return;
         }
+        this.setState({
+          isLoading: false,
+          newBookingId: respond,
+          isSuccess: true
+        });
+        const redirectUrl = gatheringData.isPublicActivity
+          ? `/event/${gatheringData._id}`
+          : '/calendar';
+        message.success('Booking is successfully updated');
+        history.push(redirectUrl);
       }
     );
   };
@@ -196,7 +202,8 @@ class EditBooking extends React.Component {
   showDeleteModal = () => this.setState({ isDeleteModalOn: true });
 
   deleteBooking = () => {
-    const bookingId = this.props.gatheringData._id;
+    const { gatheringData, history } = this.props;
+    const bookingId = gatheringData._id;
 
     Meteor.call('deleteBooking', bookingId, (error, respond) => {
       if (error) {
@@ -204,12 +211,14 @@ class EditBooking extends React.Component {
           isLoading: false,
           isError: true
         });
-      } else {
-        this.setState({
-          isLoading: false,
-          isSuccess: true
-        });
+        return;
       }
+      this.setState({
+        isLoading: false,
+        isSuccess: true
+      });
+      message.success('Booking is successfully deleted');
+      history.push('/calendar');
     });
   };
 
@@ -246,7 +255,10 @@ class EditBooking extends React.Component {
         <div
           style={{ maxWidth: 600, margin: '50px auto', textAlign: 'center' }}
         >
-          <Alert message="You are not allowed" type="error" />
+          <Alert
+            message="You are not allowed to view this content"
+            type="error"
+          />
         </div>
       );
     }
@@ -256,24 +268,11 @@ class EditBooking extends React.Component {
       isDeleteModalOn,
       values,
       isLoading,
-      isSuccess,
       uploadableImage,
       isPublicActivity,
       isBookingsDisabled,
       numberOfRecurrence
     } = this.state;
-
-    if (isSuccess) {
-      successEditMessage(isDeleteModalOn);
-      if (isDeleteModalOn) {
-        return <Redirect to="/calendar" />;
-      }
-      if (isPublicActivity) {
-        return <Redirect to={`/event/${gatheringData._id}`} />;
-      } else {
-        return <Redirect to="/calendar" />;
-      }
-    }
 
     return (
       <div style={{ padding: 24 }}>
@@ -291,7 +290,8 @@ class EditBooking extends React.Component {
           <Col xs={24} sm={24} md={16}>
             {gatheringData &&
               currentUser &&
-              gatheringData.authorId === currentUser._id && (
+              (gatheringData.authorId === currentUser._id ||
+                currentUser.isSuperAdmin) && (
                 <div
                   style={{
                     display: 'flex',
