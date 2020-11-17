@@ -37,7 +37,7 @@ const compareForSort = (a, b) => {
 
 const covidInfo = [
   `Skogen håller stängt till den 15e jan.`,
-  `Skogen is closed until jan 15.`
+  `Skogen is closed until jan 15th.`
 ];
 
 class Home extends React.Component {
