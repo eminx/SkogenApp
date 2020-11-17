@@ -36,8 +36,8 @@ const compareForSort = (a, b) => {
 // ];
 
 const covidInfo = [
-  `Skogen håller stängt till den 19e nov.`,
-  `Skogen is closed until nov 19th.`
+  `Skogen håller stängt till den 15e jan.`,
+  `Skogen is closed until jan 15.`
 ];
 
 class Home extends React.Component {
