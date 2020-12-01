@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Row, List } from 'antd/lib';
+import { Row } from 'antd/lib';
 import Loader from '../UIComponents/Loader';
 import PublicActivityThumb from '../UIComponents/PublicActivityThumb';
 
