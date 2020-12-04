@@ -1,18 +1,7 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../themes/skogen';
-import {
-  Form,
-  Input,
-  Button,
-  Select,
-  Upload,
-  Icon,
-  Divider,
-  Modal
-} from 'antd/lib';
-const Option = Select.Option;
-const { TextArea } = Input;
+import { Form, Input, Button, Divider } from 'antd/lib';
 const FormItem = Form.Item;
 
 class CreatePageForm extends React.Component {
@@ -24,14 +13,6 @@ class CreatePageForm extends React.Component {
         console.log(err);
         return;
       }
-
-      // if (!this.props.uploadableImage) {
-      //   Modal.error({
-      //     title: 'Image is required',
-      //     content: 'Please upload an image'
-      //   });
-      //   return;
-      // }
 
       const values = {
         title: fieldsValue['title'],
@@ -68,7 +49,7 @@ class CreatePageForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { uploadableImage, setUploadableImage, pageData } = this.props;
+    const { pageData } = this.props;
 
     const formItemLayout = {
       labelCol: { span: 6 },
@@ -105,41 +86,8 @@ class CreatePageForm extends React.Component {
                 }
               ],
               initialValue: pageData ? pageData.longDescription : null
-            })(
-              // <TextArea
-              //   placeholder="Enter a description"
-              //   autosize={{ minRows: 6, maxRows: 12 }}
-              // />
-
-              <ReactQuill modules={editorModules} formats={editorFormats} />
-            )}
+            })(<ReactQuill modules={editorModules} formats={editorFormats} />)}
           </FormItem>
-
-          {/* <FormItem
-            {...formItemLayout}
-            label={<span className="ant-form-item-required">Cover image</span>}
-            className="upload-image-col"
-            extra={uploadableImage ? null : 'Pick an image from your device'}
-          >
-            <Upload
-              name="gathering"
-              action="/upload.do"
-              onChange={setUploadableImage}
-              required
-            >
-              {uploadableImage ? (
-                <Button>
-                  <Icon type="check-circle" />
-                  Image selected
-                </Button>
-              ) : (
-                <Button>
-                  <Icon type="upload" />
-                  Pick an image
-                </Button>
-              )}
-            </Upload>
-          </FormItem> */}
 
           <FormItem
             wrapperCol={{

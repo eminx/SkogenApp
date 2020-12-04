@@ -30,7 +30,8 @@ import UserContainer from './users/UserContainer';
 import UsersContainer from './admin/UsersContainer';
 import Resources from './admin/Resources';
 
-import WorkContainer from './works/WorkContainer';
+// import WorkContainer from './works/WorkContainer';
+import NewWork from './works/NewWork';
 
 import DocumentsListContainer from './documents/DocumentsListContainer';
 
@@ -85,7 +86,9 @@ export const renderRoutes = () => (
           <Route path="/admin/resources" component={Resources} />
 
           <Route path="/user/:id" component={UserContainer} />
-          <Route path="/work/:id" component={WorkContainer} />
+
+          {/* <Route path="/work/:id" component={WorkContainer} /> */}
+          <Route path="/new-work" component={NewWork} />
 
           {/*<Route path="*" component={NotFoundPage}/>*/}
           {/* </Switch> */}

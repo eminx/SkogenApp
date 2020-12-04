@@ -1,3 +1,6 @@
+import { Meteor } from 'meteor/meteor';
+import Resizer from 'react-image-file-resizer';
+
 const getInitials = string => {
   var names = string.split(' '),
     initials = names[0].substring(0, 1).toUpperCase();
@@ -55,6 +58,39 @@ const call = (method, ...parameters) =>
     });
   });
 
+const resizeImage = (image, desiredImageWidth) =>
+  new Promise((resolve, reject) => {
+    Resizer.imageFileResizer(
+      image,
+      desiredImageWidth,
+      400,
+      'JPEG',
+      95,
+      0,
+      uri => {
+        if (!uri) {
+          reject({ reason: 'image cannot be resized' });
+        }
+        const uploadableImage = dataURLtoFile(uri, image.name);
+        resolve(uploadableImage);
+      },
+      'base64'
+    );
+  });
+
+const uploadImage = (image, directory) =>
+  new Promise((resolve, reject) => {
+    const upload = slingshotUpload(directory);
+    upload.send(image, (error, downloadUrl) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(downloadUrl);
+    });
+  });
+
+const slingshotUpload = directory => new Slingshot.Upload(directory);
+
 export {
   getInitials,
   removeSpace,
@@ -63,5 +99,8 @@ export {
   emailIsValid,
   includesSpecialCharacters,
   dataURLtoFile,
-  call
+  call,
+  resizeImage,
+  uploadImage,
+  slingshotUpload
 };
