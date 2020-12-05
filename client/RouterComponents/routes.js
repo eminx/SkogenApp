@@ -30,7 +30,7 @@ import UserContainer from './users/UserContainer';
 import UsersContainer from './admin/UsersContainer';
 import Resources from './admin/Resources';
 
-// import WorkContainer from './works/WorkContainer';
+import Works from './works/Works';
 import NewWork from './works/NewWork';
 
 import DocumentsListContainer from './documents/DocumentsListContainer';
@@ -87,6 +87,7 @@ export const renderRoutes = () => (
 
           <Route path="/user/:id" component={UserContainer} />
 
+          <Route path="/works" component={Works} />
           {/* <Route path="/work/:id" component={WorkContainer} /> */}
           <Route path="/new-work" component={NewWork} />
 

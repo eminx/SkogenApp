@@ -1,17 +1,9 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Card,
-  Carousel,
-  Form,
-  Icon,
-  Input,
-  Modal,
-  Upload
-} from 'antd/lib';
+import { Button, Card, Carousel, Col, Form, Icon, Input, Row } from 'antd/lib';
 const FormItem = Form.Item;
 import ReactQuill from 'react-quill';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
+import Slider from 'react-slick';
 
 import FileDropper from '../UIComponents/FileDropper';
 import { editorFormats, editorModules } from '../constants/quill-config';
@@ -24,6 +16,8 @@ function getBase64(file) {
     reader.onerror = error => reject(error);
   });
 }
+
+const sliderSettings = { dots: true };
 
 function WorkForm({
   form,
@@ -40,28 +34,7 @@ function WorkForm({
   onRemoveImage,
   categories
 }) {
-  const [previewImage, setPreviewImage] = useState(null);
-
   const { getFieldDecorator } = form;
-
-  const handlePreview = async file => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-
-    setPreviewImage({
-      previewImage: file.url || file.preview
-    });
-  };
-
-  const handleChange = ({ fileList }) => this.setState({ fileList });
-
-  const uploadButton = (
-    <div>
-      <Icon type="plus" />
-      <div className="ant-upload-text">Upload</div>
-    </div>
-  );
 
   const formItemLayout = {
     labelCol: { span: 6 },
@@ -69,101 +42,109 @@ function WorkForm({
   };
 
   return (
-    <div>
-      <Form onSubmit={onSubmit}>
-        <div className="clearfix">
-          <Upload
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            listType="picture-card"
-            fileList={fileList}
-            onPreview={handlePreview}
-            onChange={handleChange}
+    <Row style={{ padding: 24 }}>
+      <Col lg={6} />
+      <Col lg={12}>
+        <Form onSubmit={onSubmit}>
+          <FormItem {...formItemLayout} label="Title">
+            {getFieldDecorator('title', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please enter the Title'
+                }
+              ],
+              initialValue: formValues ? formValues.title : null
+            })(<Input placeholder="Page title" />)}
+          </FormItem>
+          <FormItem {...formItemLayout} label="Subtitle">
+            {getFieldDecorator('shortDescription', {
+              rules: [
+                {
+                  required: false,
+                  message: 'Please enter subtitle (optional)'
+                }
+              ],
+              initialValue: formValues ? formValues.shortDescription : null
+            })(<Input placeholder="Page title" />)}
+          </FormItem>
+          <FormItem {...formItemLayout} label="Description">
+            {getFieldDecorator('longDescription', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please enter a detailed description'
+                }
+              ],
+              initialValue: formValues ? formValues.longDescription : null
+            })(
+              <ReactQuill
+                onChange={onQuillChange}
+                modules={editorModules}
+                formats={editorFormats}
+              />
+            )}
+          </FormItem>
+          <FormItem {...formItemLayout} label="Additional Info">
+            {getFieldDecorator('additionalInfo', {
+              rules: [
+                {
+                  required: false,
+                  message: 'Please enter additional info (optional)'
+                }
+              ],
+              initialValue: formValues ? formValues.additionalInfo : null
+            })(<Input placeholder="Only limited amount..." />)}
+          </FormItem>
+
+          <FormItem {...formItemLayout}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              {images && images.length > 0 && (
+                <Slider settings={sliderSettings}>
+                  {images.map(image => (
+                    <img key={image} alt={formValues.title} src={image} />
+                  ))}
+                </Slider>
+              )}
+            </div>
+          </FormItem>
+
+          <FormItem {...formItemLayout} label={`Images (${images.length})`}>
+            {images && images.length > 0 ? (
+              <SortableContainer
+                onSortEnd={onSortImages}
+                axis="xy"
+                helperClass="sortableHelper"
+              >
+                {images.map((image, index) => (
+                  <SortableItem
+                    key={image}
+                    index={index}
+                    image={image}
+                    onRemoveImage={() => onRemoveImage(index)}
+                  />
+                ))}
+
+                <FileDropper setUploadableImage={setUploadableImages} />
+              </SortableContainer>
+            ) : (
+              <FileDropper setUploadableImage={setUploadableImages} />
+            )}
+          </FormItem>
+
+          <FormItem
+            wrapperCol={{
+              xs: { span: 24, offset: 0 },
+              sm: { span: 16, offset: 8 }
+            }}
           >
-            {fileList.length >= 8 ? null : uploadButton}
-          </Upload>
-          <Modal
-            visible={previewVisible}
-            footer={null}
-            onCancel={this.handleCancel}
-          >
-            <img alt="example" style={{ width: '100%' }} src={previewImage} />
-          </Modal>
-        </div>
-
-        <FormItem {...formItemLayout} label="Title">
-          {getFieldDecorator('title', {
-            rules: [
-              {
-                required: true,
-                message: 'Please enter the Title'
-              }
-            ],
-            initialValue: formValues ? formValues.title : null
-          })(<Input placeholder="Page title" />)}
-        </FormItem>
-
-        <FormItem {...formItemLayout} label="Subtitle">
-          {getFieldDecorator('shortDescription', {
-            rules: [
-              {
-                required: false,
-                message: 'Please enter subtitle (optional)'
-              }
-            ],
-            initialValue: formValues ? formValues.shortDescription : null
-          })(<Input placeholder="Page title" />)}
-        </FormItem>
-
-        <FormItem {...formItemLayout} label="Description">
-          {getFieldDecorator('longDescription', {
-            rules: [
-              {
-                required: true,
-                message: 'Please enter a detailed description'
-              }
-            ],
-            initialValue: formValues ? formValues.longDescription : null
-          })(<ReactQuill modules={editorModules} formats={editorFormats} />)}
-        </FormItem>
-
-        <FormItem {...formItemLayout} label="Additional Info">
-          {getFieldDecorator('additionalInfo', {
-            rules: [
-              {
-                required: false,
-                message: 'Please enter additional info (optional)'
-              }
-            ],
-            initialValue: formValues ? formValues.additionalInfo : null
-          })(<Input placeholder="Only limited amount..." />)}
-        </FormItem>
-
-        {images && images.length > 0 && (
-          <div style={{ width: 180, height: 120 }}>
-            <h3>Images {images.length}</h3>
-            <Carousel>
-              {images.map(image => (
-                <Card
-                  key={image}
-                  cover={<img alt={formValues.title} src={image} />}
-                />
-              ))}
-            </Carousel>
-          </div>
-        )}
-
-        <FormItem
-          wrapperCol={{
-            xs: { span: 24, offset: 0 },
-            sm: { span: 16, offset: 8 }
-          }}
-        >
-          <Button type="primary" htmlType="submit">
-            Confirm
-          </Button>
-        </FormItem>
-      </Form>
-    </div>
+            <Button type="primary" htmlType="submit">
+              Confirm
+            </Button>
+          </FormItem>
+        </Form>
+      </Col>
+    </Row>
   );
 }
 

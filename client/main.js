@@ -10,6 +10,8 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'antd/dist/antd.min.css';
 import './skogen-ui/skogen.css';
 import 'react-quill/dist/quill.snow.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 Meteor.startup(() => {
   Accounts.ui.config({

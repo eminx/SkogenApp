@@ -1,5 +1,6 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
+import { Button } from 'antd/lib';
 
 const FileDropper = ({
   setUploadableImage,
@@ -10,33 +11,41 @@ const FileDropper = ({
 }) => {
   return (
     <Dropzone onDrop={setUploadableImage}>
-      {({ getRootProps, getInputProps, isDragActive }) => (
-        <div
-          {...getRootProps()}
-          background={isDragActive ? 'dark-3' : 'white'}
-          width="medium"
-          height="small"
-          border={{ style: 'dashed', size: 'medium' }}
-          {...otherProps}
-        >
-          {uploadableImageLocal || imageUrl ? (
-            <img
-              src={uploadableImageLocal || imageUrl}
-              style={{ cursor: 'pointer' }}
-            />
-          ) : (
-            <button
-              plain
-              hoverIndicator="light-1"
-              label={
-                label ||
-                'Drop an image or images; or alternatively click to open the file picker'
-              }
-            />
-          )}
-          <input {...getInputProps()} />
-        </div>
-      )}
+      {({ getRootProps, getInputProps, isDragActive }) => {
+        console.log(getInputProps());
+        return (
+          <div
+            {...otherProps}
+            {...getRootProps()}
+            style={{
+              width: 120,
+              height: 80,
+              margin: 8,
+              backgroundColor: isDragActive ? '#ea3924' : '#eee',
+              borderStyle: 'dashed',
+              cursor: 'hover'
+            }}
+          >
+            {uploadableImageLocal || imageUrl ? (
+              <img
+                src={uploadableImageLocal || imageUrl}
+                style={{ cursor: 'pointer' }}
+              />
+            ) : (
+              <Button
+                style={{
+                  backgroundColor: 'rgba(0,0,0,0)',
+                  margin: '24px auto',
+                  border: 'none'
+                }}
+              >
+                Choose
+              </Button>
+            )}
+            <input {...getInputProps()} htmlType="file" />
+          </div>
+        );
+      }}
     </Dropzone>
   );
 };

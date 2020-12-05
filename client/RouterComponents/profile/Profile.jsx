@@ -70,93 +70,11 @@ class Profile extends React.Component {
     }, 400);
   };
 
-  handleWorkTitleChange = event => {
-    this.setState({ workTitle: event.target.value });
-  };
-
-  handleWorkShortDescriptionChange = event => {
-    this.setState({ workShortDescription: event.target.value });
-  };
-
-  handleWorkDescriptionChange = value => {
-    this.setState({ workDescription: value });
-  };
-
-  createWork = () => {
-    const { workTitle, workDescription, imageUrl } = this.state;
-    const newWork = {
-      title: workTitle,
-      description: workDescription,
-      imageUrl
-    };
-    Meteor.call('createWork', newWork, (error, response) => {
-      if (error) {
-        message.error('Could not create work due to ', error.error);
-      }
-      console.log(response);
-      message.success('You work is successfully created');
-      this.setState({
-        isAddWorkModalOn: false
-      });
-    });
-  };
-
-  removeWork = workId => {
-    console.log(workId);
-  };
-
-  handleFileDrop = files => {
-    if (files.length !== 1) {
-      message.error('Please drop only one file at a time.');
-      return;
-    }
-
-    this.setState({ isUploading: true });
-    const closeLoader = () => this.setState({ isUploading: false });
-
-    const upload = new Slingshot.Upload('groupImageUpload');
-    files.forEach(file => {
-      const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
-      const uploadableFile = new File([file], parsedName, {
-        type: file.type
-      });
-      upload.send(uploadableFile, (error, downloadUrl) => {
-        if (error) {
-          console.error('Error uploading:', error);
-          message.error(error.reason);
-          closeLoader();
-          return;
-        } else {
-          this.setState({
-            imageUrl: downloadUrl
-          });
-          closeLoader();
-        }
-      });
-    });
-  };
-
   render() {
     const { isUploading, imageUrl } = this.state;
     const { currentUser } = this.props;
     const { getFieldDecorator } = this.props.form;
-    const {
-      isDeleteModalOn,
-      isAddWorkModalOn,
-      workTitle,
-      workShortDescription,
-      workDescription
-    } = this.state;
-
-    // const myWorksWithActions = myWorks.map(work => ({
-    //   ...work,
-    //   actions: [
-    //     {
-    //       content: 'Remove',
-    //       handleClick: () => this.removeWork(work._id)
-    //     }
-    //   ]
-    // }));
+    const { isDeleteModalOn } = this.state;
 
     const formItemStyle = {
       marginBottom: 24
@@ -212,43 +130,6 @@ class Profile extends React.Component {
               </Form>
             )}
             <Divider />
-          </Col>
-
-          <Col md={2} />
-
-          <Col md={10}>
-            {/* <h2 style={{ marginBottom: 24 }}>Works</h2>
-
-            {currentUser && (
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <Button
-                    onClick={() => this.setState({ isAddWorkModalOn: true })}
-                  >
-                    Add work
-                  </Button>
-                </div>
-
-                {myWorksWithActions && (
-                  <NiceList list={myWorksWithActions}>
-                    {work => (
-                      <div key={work.title}>
-                        <h3>
-                          <Link to={`/work/${work._id}`}>{work.title}</Link>
-                        </h3>
-                        <em
-                          dangerouslySetInnerHTML={{
-                            __html: work.shortDescription
-                          }}
-                        />
-                      </div>
-                    )}
-                  </NiceList>
-                )}
-              </div>
-            )}
-
-            <Divider /> */}
 
             {currentUser && (
               <div>
@@ -286,78 +167,6 @@ class Profile extends React.Component {
             an irreversible action.
           </p>
         </Modal>
-
-        {/* <Modal
-          title="Create New Work"
-          okText="Create"
-          onOk={this.createWork}
-          onCancel={() => this.setState({ isAddWorkModalOn: false })}
-          visible={isAddWorkModalOn}
-        >
-          {imageUrl && (
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                marginBottom: 24
-              }}
-            >
-              <img src={imageUrl} height="100px" />}
-            </div>
-          )}
-
-          <Input
-            placeholder="Title"
-            value={workTitle}
-            onChange={this.handleWorkTitleChange}
-            style={formItemStyle}
-          />
-
-          <TextArea
-            placeholder="Short description"
-            value={workShortDescription}
-            onChange={this.handleWorkShortDescriptionChange}
-            style={formItemStyle}
-          />
-
-          <ReactDropzone onDrop={this.handleFileDrop} multiple={false}>
-            {({ getRootProps, getInputProps, isDragActive }) => (
-              <div
-                {...getRootProps()}
-                style={{
-                  width: '100%',
-                  height: 100,
-                  background: isDragActive ? '#ea3924' : '#fff5f4cc',
-                  padding: 24,
-                  marginBottom: 24,
-                  border: '1px dashed #ea3924',
-                  textAlign: 'center'
-                }}
-              >
-                {isUploading ? (
-                  <div>
-                    <Loader />
-                    uploading
-                  </div>
-                ) : (
-                  <div>
-                    <b>Drop image to upload</b>
-                  </div>
-                )}
-                <input {...getInputProps()} />
-              </div>
-            )}
-          </ReactDropzone>
-
-          <ReactQuill
-            modules={editorModules}
-            formats={editorFormats}
-            value={workDescription}
-            onChange={this.handleWorkDescriptionChange}
-            placeholder="description"
-            style={{ minHeight: 120 }}
-          />
-        </Modal> */}
       </div>
     );
   }

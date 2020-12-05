@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
+import { message } from 'antd/lib';
 import arrayMove from 'array-move';
 
 import WorkForm from '../../UIComponents/WorkForm';
@@ -88,11 +89,14 @@ class NewWork extends PureComponent {
     });
   };
 
-  uploadImages = async () => {
+  uploadImages = async event => {
+    event.preventDefault();
     const { uploadableImages } = this.state;
     this.setState({
       isCreating: true
     });
+
+    console.log('upload basladi');
 
     try {
       const imagesReadyToSave = await Promise.all(
@@ -105,6 +109,7 @@ class NewWork extends PureComponent {
           return uploadedImage;
         })
       );
+      console.log('upload oldu, gonderiliyor');
       this.createWork(imagesReadyToSave);
     } catch (error) {
       console.error('Error uploading:', error);
@@ -113,36 +118,6 @@ class NewWork extends PureComponent {
         isCreating: false,
         isError: true
       });
-    }
-  };
-
-  createWork = async imagesReadyToSave => {
-    const { formValues, categories } = this.state;
-
-    const selectedCategory = categories.find(
-      category => category.label === formValues.category.toLowerCase()
-    );
-
-    const newWork = {
-      ...formValues,
-      category: {
-        label: selectedCategory.label,
-        color: selectedCategory.color,
-        categoryId: selectedCategory._id
-      }
-    };
-
-    try {
-      const respond = await call('createWork', newWork, imagesReadyToSave);
-      this.setState({
-        newWorkId: respond,
-        isCreating: false,
-        isSuccess: true
-      });
-      message.success('Your work is successfully created');
-    } catch (error) {
-      message.error(error.reason);
-      this.setState({ isCreating: false });
     }
   };
 
@@ -172,6 +147,39 @@ class NewWork extends PureComponent {
       )
       // unSavedImageChange: true,
     }));
+  };
+
+  createWork = async imagesReadyToSave => {
+    console.log('upload oldu, create basladi');
+    const { formValues, categories } = this.state;
+
+    // const selectedCategory = categories.find(
+    //   category => category.label === formValues.category.toLowerCase()
+    // );
+
+    const newWork = {
+      ...formValues
+      // category: {
+      //   label: selectedCategory.label,
+      //   color: selectedCategory.color,
+      //   categoryId: selectedCategory._id
+      // }
+    };
+
+    try {
+      const respond = await call('createWork', newWork, imagesReadyToSave);
+      console.log('upload oldu, create bitti');
+      this.setState({
+        newWorkId: respond,
+        isCreating: false,
+        isSuccess: true
+      });
+      console.log('upload oldu, create bittin');
+      message.success('Your work is successfully created');
+    } catch (error) {
+      message.error(error.reason);
+      this.setState({ isCreating: false });
+    }
   };
 
   render() {

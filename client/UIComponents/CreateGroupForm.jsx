@@ -2,23 +2,16 @@ import React from 'react';
 import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../themes/skogen';
 import {
-  Col,
   Form,
   Input,
-  DatePicker,
-  TimePicker,
   Button,
   Select,
   InputNumber,
-  Switch,
   Upload,
   Icon,
   Divider,
-  Modal,
-  message
+  Modal
 } from 'antd/lib';
-const Option = Select.Option;
-const { TextArea } = Input;
 const FormItem = Form.Item;
 
 class CreateGroupForm extends React.Component {
