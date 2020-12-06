@@ -1,6 +1,7 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import WorkThumb from '../../UIComponents/WorkThumb';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -42,7 +43,15 @@ function WorksList({ history, works }) {
   // const categoriesAssignedToWorks = getCategories(works);
 
   return (
-    <div>{works && works.map(work => <h2 key={work._id}>{work._id}</h2>)}</div>
+    <div
+      style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+    >
+      {works.map(work => (
+        <div key={work.title} style={{ width: 280, margin: 12 }}>
+          <WorkThumb work={work} />
+        </div>
+      ))}
+    </div>
   );
 }
 
