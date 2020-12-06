@@ -36,5 +36,14 @@ Meteor.methods({
       console.log(error);
       throw new Meteor.Error(error);
     }
+  },
+
+  getCategories(type) {
+    const user = Meteor.user();
+    if (!user) {
+      throw new Meteor.Error('You are not allowed');
+    }
+
+    return Categories.find({ type }).fetch();
   }
 });

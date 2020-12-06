@@ -12,7 +12,6 @@ const FileDropper = ({
   return (
     <Dropzone onDrop={setUploadableImage}>
       {({ getRootProps, getInputProps, isDragActive }) => {
-        console.log(getInputProps());
         return (
           <div
             {...otherProps}

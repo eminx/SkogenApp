@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, Card, Carousel, Col, Form, Icon, Input, Row } from 'antd/lib';
+import React from 'react';
+import { Button, Col, Form, Icon, Input, message, Row } from 'antd/lib';
 const FormItem = Form.Item;
 import ReactQuill from 'react-quill';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
@@ -23,16 +23,15 @@ function WorkForm({
   form,
   formValues,
   onQuillChange,
-  onSubmit,
   setUploadableImages,
   images,
   imageUrl,
   buttonLabel,
-  isFormValid,
   isButtonDisabled,
   onSortImages,
   onRemoveImage,
-  categories
+  categories,
+  registerGroupLocally
 }) {
   const { getFieldDecorator } = form;
 
@@ -41,11 +40,25 @@ function WorkForm({
     wrapperCol: { span: 14 }
   };
 
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    form.validateFields((err, fieldsValue) => {
+      if (err) {
+        message.error(err);
+        console.log(err);
+        return;
+      }
+
+      registerGroupLocally(fieldsValue);
+    });
+  };
+
   return (
     <Row style={{ padding: 24 }}>
       <Col lg={6} />
       <Col lg={12}>
-        <Form onSubmit={onSubmit}>
+        <Form onSubmit={handleSubmit}>
           <FormItem {...formItemLayout} label="Title">
             {getFieldDecorator('title', {
               rules: [
@@ -55,35 +68,29 @@ function WorkForm({
                 }
               ],
               initialValue: formValues ? formValues.title : null
-            })(<Input placeholder="Page title" />)}
+            })(<Input placeholder="Title" />)}
           </FormItem>
           <FormItem {...formItemLayout} label="Subtitle">
-            {getFieldDecorator('shortDescription', {
+            {getFieldDecorator('subtitle', {
               rules: [
                 {
                   required: false,
                   message: 'Please enter subtitle (optional)'
                 }
               ],
-              initialValue: formValues ? formValues.shortDescription : null
-            })(<Input placeholder="Page title" />)}
+              initialValue: formValues ? formValues.subtitle : null
+            })(<Input placeholder="Subtitle" />)}
           </FormItem>
           <FormItem {...formItemLayout} label="Description">
-            {getFieldDecorator('longDescription', {
+            {getFieldDecorator('description', {
               rules: [
                 {
-                  required: true,
+                  required: false,
                   message: 'Please enter a detailed description'
                 }
               ],
-              initialValue: formValues ? formValues.longDescription : null
-            })(
-              <ReactQuill
-                onChange={onQuillChange}
-                modules={editorModules}
-                formats={editorFormats}
-              />
-            )}
+              initialValue: formValues ? formValues.description : null
+            })(<ReactQuill modules={editorModules} formats={editorFormats} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="Additional Info">
             {getFieldDecorator('additionalInfo', {
@@ -138,8 +145,12 @@ function WorkForm({
               sm: { span: 16, offset: 8 }
             }}
           >
-            <Button type="primary" htmlType="submit">
-              Confirm
+            <Button
+              type="primary"
+              htmlType="submit"
+              disabled={isButtonDisabled}
+            >
+              {buttonLabel}
             </Button>
           </FormItem>
         </Form>

@@ -125,7 +125,7 @@ Meteor.publish('work', function(id) {
 });
 
 Meteor.publish('works', function() {
-  return Works.find({ sort: { creationDate: 1 } });
+  return Works.find({}, { sort: { creationDate: 1 } });
 });
 
 Meteor.publish('myworks', function() {

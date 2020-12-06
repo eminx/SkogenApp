@@ -12,7 +12,7 @@ function getHSL(length, index, opacity = 1) {
   return `hsla(${(360 / (length + 1)) * (index + 1)}, 62%, 56%, ${opacity})`;
 }
 
-const WorksList = ({ history, works }) => {
+function WorksList({ history, works }) {
   // const [loading, setLoading] = useState(true);
   // const [categoryFilter, setCategoryFilter] = useState(null);
 
@@ -41,8 +41,10 @@ const WorksList = ({ history, works }) => {
 
   // const categoriesAssignedToWorks = getCategories(works);
 
-  return <div>{works && works.map(work => work.title)}</div>;
-};
+  return (
+    <div>{works && works.map(work => <h2 key={work._id}>{work._id}</h2>)}</div>
+  );
+}
 
 getCategories = works => {
   const labels = Array.from(
@@ -66,7 +68,6 @@ export default withTracker(({ history }) => {
   const works = Works ? Works.find().fetch() : null;
   const isLoading = !worksSubscription.ready();
   const currentUser = Meteor.user();
-
   return {
     isLoading,
     currentUser,

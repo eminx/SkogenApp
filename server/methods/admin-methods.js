@@ -2,6 +2,19 @@ const getVerifiedEmailText = username => {
   return `Hi ${username},\n\nWe're very happy to inform you that you are now a verified member at Skogen.\n\nThis means that from now on you're welcome to create your own study groups and book spaces & tools either for your own projects or to make a public event. We would like to encourage you to use this tool and wish you to keep a good collaboration with your team.\n\nKind regards,\nSkogen Team`;
 };
 
+const catColors = [
+  'hsla(10, 62%, 80%, 0.7)',
+  'hsla(46, 62%, 80%, 0.7)',
+  'hsla(82, 62%, 80%, 0.7)',
+  'hsla(118, 62%, 80%, 0.7)',
+  'hsla(154, 62%, 80%, 0.7)',
+  'hsla(190, 62%, 80%, 0.7)',
+  'hsla(226, 62%, 80%, 0.7)',
+  'hsla(262, 62%, 80%, 0.7)',
+  'hsla(298, 62%, 80%, 0.7)',
+  'hsla(334, 62%, 80%, 0.7)'
+];
+
 Meteor.methods({
   verifyMember(memberId) {
     const user = Meteor.user();
@@ -102,6 +115,48 @@ Meteor.methods({
 
     try {
       Places.remove(placeId);
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
+  addNewCategory(category, type) {
+    console.log(category, type);
+    const user = Meteor.user();
+
+    if (!user.isSuperAdmin) {
+      throw new Meteor.Error('You are not allowed');
+    }
+
+    if (Categories.findOne({ label: category.toLowerCase() })) {
+      throw new Meteor.Error('Category already exists!');
+    }
+
+    const catLength = Categories.find({ type }).count();
+
+    try {
+      return Categories.insert({
+        type,
+        label: category.toLowerCase(),
+        color: catColors[catLength],
+        addedBy: user._id,
+        addedUsername: user.username,
+        addedDate: new Date()
+      });
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
+  removeCategory(categoryId) {
+    const user = Meteor.user();
+
+    if (!user.isSuperAdmin) {
+      throw new Meteor.Error('You are not allowed');
+    }
+
+    try {
+      Categories.remove(categoryId);
     } catch (error) {
       throw new Meteor.Error(error);
     }

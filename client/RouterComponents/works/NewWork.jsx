@@ -11,8 +11,8 @@ class NewWork extends PureComponent {
   state = {
     formValues: {
       title: '',
-      shortDescription: '',
-      longDescription: '',
+      subtitle: '',
+      description: '',
       additionalInfo: '',
       category: ''
     },
@@ -33,34 +33,48 @@ class NewWork extends PureComponent {
   }
 
   getCategories = async () => {
-    const categories = await call('getCategories');
+    const categories = await call('getCategories', 'work');
     this.setState({
       categories
     });
   };
 
-  handleFormChange = value => {
+  handleQuillChange = description => {
     const { formValues } = this.state;
-    const newFormValues = {
-      ...value,
-      longDescription: formValues.longDescription
+    const newValues = {
+      ...formValues,
+      description
     };
 
     this.setState({
-      formValues: newFormValues
+      formValues: newValues
     });
   };
 
-  handleQuillChange = longDescription => {
-    const { formValues } = this.state;
-    const newFormValues = {
-      ...formValues,
-      longDescription
-    };
+  handleRemoveImage = imageIndex => {
+    this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
+      uploadableImages: uploadableImages.filter(
+        (image, index) => imageIndex !== index
+      ),
+      uploadableImagesLocal: uploadableImagesLocal.filter(
+        (image, index) => imageIndex !== index
+      )
+    }));
+  };
 
-    this.setState({
-      formValues: newFormValues
-    });
+  handleSortImages = ({ oldIndex, newIndex }) => {
+    if (oldIndex === newIndex) {
+      return;
+    }
+
+    this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
+      uploadableImages: arrayMove(uploadableImages, oldIndex, newIndex),
+      uploadableImagesLocal: arrayMove(
+        uploadableImagesLocal,
+        oldIndex,
+        newIndex
+      )
+    }));
   };
 
   setUploadableImages = files => {
@@ -89,14 +103,18 @@ class NewWork extends PureComponent {
     });
   };
 
-  uploadImages = async event => {
-    event.preventDefault();
-    const { uploadableImages } = this.state;
-    this.setState({
-      isCreating: true
-    });
+  registerGroupLocally = formValues => {
+    this.setState(
+      {
+        formValues,
+        isCreating: true
+      },
+      () => this.uploadImages()
+    );
+  };
 
-    console.log('upload basladi');
+  uploadImages = async () => {
+    const { uploadableImages } = this.state;
 
     try {
       const imagesReadyToSave = await Promise.all(
@@ -109,72 +127,38 @@ class NewWork extends PureComponent {
           return uploadedImage;
         })
       );
-      console.log('upload oldu, gonderiliyor');
       this.createWork(imagesReadyToSave);
     } catch (error) {
-      console.error('Error uploading:', error);
       message.error(error.reason);
       this.setState({
-        isCreating: false,
         isError: true
       });
     }
   };
 
-  handleRemoveImage = imageIndex => {
-    this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
-      uploadableImages: uploadableImages.filter(
-        (image, index) => imageIndex !== index
-      ),
-      uploadableImagesLocal: uploadableImagesLocal.filter(
-        (image, index) => imageIndex !== index
-      )
-      // unSavedImageChange: true,
-    }));
-  };
-
-  handleSortImages = ({ oldIndex, newIndex }) => {
-    if (oldIndex === newIndex) {
-      return;
-    }
-
-    this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
-      uploadableImages: arrayMove(uploadableImages, oldIndex, newIndex),
-      uploadableImagesLocal: arrayMove(
-        uploadableImagesLocal,
-        oldIndex,
-        newIndex
-      )
-      // unSavedImageChange: true,
-    }));
-  };
-
   createWork = async imagesReadyToSave => {
-    console.log('upload oldu, create basladi');
     const { formValues, categories } = this.state;
 
-    // const selectedCategory = categories.find(
-    //   category => category.label === formValues.category.toLowerCase()
-    // );
+    const selectedCategory = categories.find(
+      category => category.label === formValues.category.toLowerCase()
+    );
 
     const newWork = {
-      ...formValues
-      // category: {
-      //   label: selectedCategory.label,
-      //   color: selectedCategory.color,
-      //   categoryId: selectedCategory._id
-      // }
+      ...formValues,
+      category: {
+        label: selectedCategory.label,
+        color: selectedCategory.color,
+        categoryId: selectedCategory._id
+      }
     };
 
     try {
       const respond = await call('createWork', newWork, imagesReadyToSave);
-      console.log('upload oldu, create bitti');
       this.setState({
         newWorkId: respond,
         isCreating: false,
         isSuccess: true
       });
-      console.log('upload oldu, create bittin');
       message.success('Your work is successfully created');
     } catch (error) {
       message.error(error.reason);
@@ -210,23 +194,19 @@ class NewWork extends PureComponent {
     const buttonLabel = isCreating
       ? 'Creating your work...'
       : 'Confirm and Create Work';
-    const { title } = formValues;
-    const isFormValid = formValues && title.length > 3 && uploadableImagesLocal;
 
     return (
       <WorkForm
         formValues={formValues}
         categories={categories}
-        onFormChange={this.handleFormChange}
-        onQuillChange={this.handleQuillChange}
         onSubmit={this.uploadImages}
         setUploadableImages={this.setUploadableImages}
         images={uploadableImagesLocal}
         buttonLabel={buttonLabel}
-        isFormValid={isFormValid}
-        isButtonDisabled={!isFormValid || isCreating}
+        isButtonDisabled={isCreating}
         onSortImages={this.handleSortImages}
         onRemoveImage={this.handleRemoveImage}
+        registerGroupLocally={this.registerGroupLocally}
       />
     );
   }
