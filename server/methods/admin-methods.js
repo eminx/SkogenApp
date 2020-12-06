@@ -3,16 +3,16 @@ const getVerifiedEmailText = username => {
 };
 
 const catColors = [
-  'hsla(10, 62%, 80%, 0.7)',
-  'hsla(46, 62%, 80%, 0.7)',
-  'hsla(82, 62%, 80%, 0.7)',
-  'hsla(118, 62%, 80%, 0.7)',
-  'hsla(154, 62%, 80%, 0.7)',
-  'hsla(190, 62%, 80%, 0.7)',
-  'hsla(226, 62%, 80%, 0.7)',
-  'hsla(262, 62%, 80%, 0.7)',
-  'hsla(298, 62%, 80%, 0.7)',
-  'hsla(334, 62%, 80%, 0.7)'
+  'hsla(10, 62%, 40%, 0.9)',
+  'hsla(46, 62%, 40%, 0.9)',
+  'hsla(82, 62%, 40%, 0.9)',
+  'hsla(118, 62%, 40%, 0.9)',
+  'hsla(154, 62%, 40%, 0.9)',
+  'hsla(190, 62%, 40%, 0.9)',
+  'hsla(226, 62%, 40%, 0.9)',
+  'hsla(262, 62%, 40%, 0.9)',
+  'hsla(298, 62%, 40%, 0.9)',
+  'hsla(334, 62%, 40%, 0.9)'
 ];
 
 Meteor.methods({
@@ -121,7 +121,6 @@ Meteor.methods({
   },
 
   addNewCategory(category, type) {
-    console.log(category, type);
     const user = Meteor.user();
 
     if (!user.isSuperAdmin) {

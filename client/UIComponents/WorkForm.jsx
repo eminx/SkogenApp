@@ -1,9 +1,11 @@
 import React from 'react';
-import { Button, Col, Form, Icon, Input, message, Row } from 'antd/lib';
+import { Button, Col, Form, Icon, Input, message, Row, Select } from 'antd/lib';
 const FormItem = Form.Item;
 import ReactQuill from 'react-quill';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import Slider from 'react-slick';
+
+const { Option } = Select;
 
 import FileDropper from '../UIComponents/FileDropper';
 import { editorFormats, editorModules } from '../constants/quill-config';
@@ -81,6 +83,28 @@ function WorkForm({
               initialValue: formValues ? formValues.subtitle : null
             })(<Input placeholder="Subtitle" />)}
           </FormItem>
+
+          <FormItem {...formItemLayout} label="Category">
+            {getFieldDecorator('category', {
+              rules: [
+                {
+                  required: true,
+                  message: 'Please select category'
+                }
+              ],
+              initialValue: formValues ? formValues.category.label : null
+            })(
+              <Select>
+                {categories &&
+                  categories.map(category => (
+                    <Option key={category._id} value={category.label}>
+                      {category.label}
+                    </Option>
+                  ))}
+              </Select>
+            )}
+          </FormItem>
+
           <FormItem {...formItemLayout} label="Description">
             {getFieldDecorator('description', {
               rules: [

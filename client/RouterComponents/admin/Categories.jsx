@@ -68,24 +68,26 @@ const Categories = ({ history, currentUser }) => {
           <AdminMenu currentPath={currentPath} />
         </Col>
 
-        <Col md={8} style={{ padding: 24 }}>
+        <Col md={8} style={{ marginBottom: 48, paddingTop: 24 }}>
           <h2 style={{ textAlign: 'center' }}>Categories</h2>
           <h4>Work Categories</h4>
           <p>You can set categories for work entries here</p>
 
-          <div style={{ display: 'flex', wrap: 'wrap', marginBottom: 24 }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', marginBottom: 24 }}>
             {categories.map(category => (
               <Tag
                 key={category._id}
                 closable
                 onClose={() => removeCategory(category)}
+                color={category.color}
+                style={{ marginBottom: 8 }}
               >
                 {category.label.toUpperCase()}
               </Tag>
             ))}
           </div>
 
-          <div style={{ width: 280 }}>
+          <div>
             <Input.Search
               placeholder="type and press enter"
               enterButton="Add"
