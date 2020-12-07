@@ -1,8 +1,6 @@
 import React from 'react';
-import { Avatar, Card, Icon, Tag } from 'antd/lib';
+import { Avatar, Tag } from 'antd/lib';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-
-const { Meta } = Card;
 
 const commonStyle = {
   color: '#fff',
@@ -10,8 +8,8 @@ const commonStyle = {
   lineHeight: 1
 };
 const imageStyle = {
-  width: 288,
-  height: 288,
+  width: 320,
+  height: 320,
   objectFit: 'cover'
 };
 
@@ -23,7 +21,7 @@ const ellipsisStyle = {
 
 function WorkThumb({ work, history }) {
   return (
-    <div className="thumb-cover-container">
+    <div className="thumb-cover-container work-thumb">
       <div className="thumb-cover">
         <LazyLoadImage
           alt={work.title}
@@ -53,7 +51,14 @@ function WorkThumb({ work, history }) {
         <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
       </div>
 
-      <div style={{ position: 'relative', padding: '24px 16px' }}>
+      <div
+        style={{
+          position: 'relative',
+          paddingTop: 96,
+          paddingLeft: 16,
+          paddingRight: 16
+        }}
+      >
         <h4
           style={{
             ...commonStyle,

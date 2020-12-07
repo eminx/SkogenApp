@@ -1,6 +1,8 @@
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Row, Tag } from 'antd/lib';
+
 import WorkThumb from '../../UIComponents/WorkThumb';
 
 const compareByDate = (a, b) => {
@@ -14,44 +16,63 @@ function getHSL(length, index, opacity = 1) {
 }
 
 function WorksList({ history, works }) {
-  // const [loading, setLoading] = useState(true);
-  // const [categoryFilter, setCategoryFilter] = useState(null);
-
-  // const getAllWorks = async () => {
-  //   try {
-  //     const response = await call('getAllWorks');
-  //     setWorks(response);
-  //     setLoading(false);
-  //   } catch (error) {
-  //     message.error(error.reason);
-  //     setLoading(false);
-  //   }
-  // };
+  const [categoryFilter, setCategoryFilter] = useState(null);
 
   // if (loading || !works) {
   //   return <Loader />;
   // }
 
-  // const sortedWorks = works.sort(compareByDate);
+  const sortedWorks = works.sort(compareByDate);
 
-  // const filteredWorks = categoryFilter
-  //   ? sortedWorks.filter(
-  //       work => work.category && work.category.label === categoryFilter
-  //     )
-  //   : sortedWorks;
+  const filteredWorks = categoryFilter
+    ? sortedWorks.filter(
+        work => work.category && work.category.label === categoryFilter
+      )
+    : sortedWorks;
 
-  // const categoriesAssignedToWorks = getCategories(works);
+  const categoriesAssignedToWorks = getCategories(works);
 
   return (
-    <div
-      style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-    >
-      {works.map(work => (
-        <div key={work.title} style={{ width: 280, margin: 12 }}>
-          <WorkThumb work={work} />
-        </div>
-      ))}
-    </div>
+    <Row gutter={24}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          padding: 12
+        }}
+      >
+        <Tag
+          value="ALL"
+          onClick={() => setCategoryFilter(null)}
+          style={{ borderRadius: 0 }}
+        >
+          <b>ALL</b>
+        </Tag>
+        {categoriesAssignedToWorks.map(cat => (
+          <Tag
+            key={cat.label}
+            value={cat.label}
+            onClick={() => setCategoryFilter(cat.label)}
+            color={cat.color}
+            style={{ marginBottom: 'small', zIndex: 2, borderRadius: 0 }}
+          >
+            <b>{cat.label && cat.label.toUpperCase()}</b>
+          </Tag>
+        ))}
+      </div>
+      <div
+        style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+      >
+        {works.map(work => (
+          <div key={work._id} style={{ margin: 12 }}>
+            <Link to={`/${work.authorUsername}/work/${work._id}`}>
+              <WorkThumb work={work} />
+            </Link>
+          </div>
+        ))}
+      </div>
+    </Row>
   );
 }
 

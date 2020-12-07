@@ -256,6 +256,13 @@ body {
   background-color: #ea3924;
 }
 
+.thumb-cover-container.work-thumb {
+  flex: 320px 0 0;
+  height: 320px;
+  width: 320px;
+  max-width: 320px;
+}
+
 .thumb-cover-container-event {
   border: 5px solid #ea3924;
 }

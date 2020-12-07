@@ -1,146 +1,125 @@
-// import React, { Fragment, useState, useEffect, useContext } from 'react';
-// import { Link } from 'react-router-dom';
-// import { Anchor, Box, Avatar, Heading, Text } from 'grommet';
-// import { Visible, Hidden } from 'react-grid-system';
-// import renderHTML from 'react-render-html';
+import { withTracker } from 'meteor/react-meteor-data';
+import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
+import renderHTML from 'react-render-html';
+import { Col, Row, Tag } from 'antd/lib';
+import Slider from 'react-slick';
 
-// import { StateContext } from '../../LayoutContainer';
-// import Loader from '../../UIComponents/Loader';
-// import Template from '../../UIComponents/Template';
-// import NiceSlider from '../../UIComponents/NiceSlider';
-// import Tag from '../../UIComponents/Tag';
-// import { message } from '../../UIComponents/message';
-// import { call } from '../../functions';
+import Loader from '../../UIComponents/Loader';
 
-// const Work = ({ history, match }) => {
-//   const [work, setWork] = useState(null);
-//   const [loading, setLoading] = useState(true);
-//   const { currentUser } = useContext(StateContext);
+const sliderSettings = { dots: true };
 
-//   useEffect(() => {
-//     getWork();
-//   }, []);
+const noCapitalsHeader = {
+  textTransform: 'none'
+};
 
-//   const getWork = async () => {
-//     const workId = match.params.workId;
-//     const username = match.params.username;
+const Work = ({ history, match, work, isLoading, currentUser }) => {
+  if (!work || isLoading) {
+    return <Loader />;
+  }
 
-//     try {
-//       const response = await call('getWork', workId, username);
-//       setWork(response);
-//       setLoading(false);
-//     } catch (error) {
-//       message.error(error.reason);
-//       setLoading(false);
-//     }
-//   };
+  const author =
+    work.authorFirstName && work.authorLastName
+      ? work.authorFirstName + ' ' + work.authorLastName
+      : work.authorUsername;
 
-//   if (!work || loading) {
-//     return <Loader />;
-//   }
+  const isOwner = currentUser && currentUser.username === match.params.username;
 
-//   const author =
-//     work.authorFirstName && work.authorLastName
-//       ? work.authorFirstName + ' ' + work.authorLastName
-//       : work.authorUsername;
+  // const AvatarHolder = props => (
+  //   <Link to={`/@${work.authorUsername}`}>
+  //     <Box alignSelf="end" align="center" {...props}>
+  //       <Box>
+  //         <Avatar
+  //           elevation="medium"
+  //           src={work.authorAvatar && work.authorAvatar.src}
+  //         />
+  //       </Box>
+  //       <Anchor href={`/@${work.authorUsername}`}>
+  //         <Text size="small">{work.authorUsername}</Text>
+  //       </Anchor>
+  //     </Box>
+  //   </Link>
+  // );
 
-//   const isOwner = currentUser && currentUser.username === match.params.username;
+  return (
+    <Row gutter={12}>
+      <Col lg={6}>
+        <div style={{ padding: 12 }}>
+          {work.category && (
+            <Tag
+              style={{ borderRadius: 0, marginBottom: 12 }}
+              value={work.category.label}
+              color={work.category.color}
+            >
+              <b>{work.category.label.toUpperCase()}</b>
+            </Tag>
+          )}
+          <h2 style={{ marginBottom: 0 }}>{work.title}</h2>
+          <p style={{ ...noCapitalsHeader }}>{work.subtitle}</p>
+        </div>
+      </Col>
+      <Col lg={12}>
+        <Slider settings={sliderSettings}>
+          {work &&
+            work.images &&
+            work.images.map(image => (
+              <img key={image} alt={work.title} src={image} />
+            ))}
+        </Slider>
 
-//   const AvatarHolder = (props) => (
-//     <Link to={`/@${work.authorUsername}`}>
-//       <Box alignSelf="end" align="center" {...props}>
-//         <Box>
-//           <Avatar
-//             elevation="medium"
-//             src={work.authorAvatar && work.authorAvatar.src}
-//           />
-//         </Box>
-//         <Anchor href={`/@${work.authorUsername}`}>
-//           <Text size="small">{work.authorUsername}</Text>
-//         </Anchor>
-//       </Box>
-//     </Link>
-//   );
+        <div style={{ padding: 12, marginBottom: 24 }}>
+          <div>{work.description && renderHTML(work.description)} </div>
+        </div>
 
-//   return (
-//     <Fragment>
-//       <Template
-//         leftContent={
-//           <Box pad="medium">
-//             <Heading level={3} size="small" margin={{ bottom: 'small' }}>
-//               {work.title}
-//             </Heading>
-//             <Box direction="row" align="start" justify="between">
-//               <Box pad={{ right: 'small' }} width="220px">
-//                 {work.category && (
-//                   <Tag
-//                     label={work.category.label}
-//                     background={work.category.color}
-//                   />
-//                 )}
-//                 <Text margin={{ top: 'medium' }}>{work.shortDescription}</Text>
-//               </Box>
-//               <Box flex={{ shrink: 0 }}>
-//                 <Visible xs sm md lg>
-//                   <AvatarHolder />
-//                 </Visible>
-//               </Box>
-//             </Box>
-//           </Box>
-//         }
-//         rightContent={
-//           <Box
-//             direction="row"
-//             pad="medium"
-//             justify="between"
-//             style={{ overflow: 'hidden' }}
-//             align="start"
-//           >
-//             <Box width="100%">
-//               <Hidden lg xl>
-//                 <Heading level={4} textAlign="center" style={{ marginTop: 0 }}>
-//                   {work.additionalInfo}
-//                 </Heading>
-//               </Hidden>
-//               <Visible lg xl>
-//                 <Heading level={4}>{work.additionalInfo}</Heading>
-//               </Visible>
-//             </Box>
-//             <Box flex={{ shrink: 0 }}>
-//               <Hidden xs sm md lg>
-//                 <AvatarHolder />
-//               </Hidden>
-//             </Box>
-//           </Box>
-//         }
-//       >
-//         <Box margin={{ top: 'medium' }} background="white">
-//           <NiceSlider images={work.images} />
-//           <Box margin={{ top: 'medium' }} pad="medium">
-//             <div>{renderHTML(work.longDescription)} </div>
-//           </Box>
-//         </Box>
-//       </Template>
-//       <Box
-//         margin={{ top: 'medium', bottom: 'large' }}
-//         direction="row"
-//         justify="center"
-//       >
-//         {isOwner && (
-//           <Link
-//             to={`/${currentUser.username}/edit-work/${match.params.workId}`}
-//           >
-//             <Anchor
-//               as="span"
-//               alignSelf="center"
-//               size="small"
-//               label="Edit this Work"
-//             />
-//           </Link>
-//         )}
-//       </Box>
-//     </Fragment>
-//   );
-// };
+        <div style={{ display: 'flex', justifyContent: 'center', padding: 12 }}>
+          {isOwner && (
+            <Link
+              to={`/${currentUser.username}/edit-work/${match.params.workId}`}
+            >
+              Edit this Work
+            </Link>
+          )}
+        </div>
+      </Col>
 
-// export default Work;
+      <Col
+        lg={6}
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          padding: 12
+        }}
+      >
+        <h4 style={{ flexGrow: 1, marginLeft: 12, ...noCapitalsHeader }}>
+          {work.additionalInfo}
+        </h4>
+        <div
+          style={{
+            flexGrow: 0,
+            marginRight: 12,
+            color: 'rgba(0,0,0,.85)',
+            ...noCapitalsHeader
+          }}
+        >
+          <b>{work.authorUsername}</b>
+        </div>
+      </Col>
+    </Row>
+  );
+};
+
+export default withTracker(({ history, match }) => {
+  const { id, username } = match.params;
+  const workSubscription = Meteor.subscribe('work', id, username);
+  const work = Works ? Works.findOne(id) : null;
+  const isLoading = !workSubscription.ready();
+  const currentUser = Meteor.user();
+
+  return {
+    isLoading,
+    currentUser,
+    work,
+    history,
+    match
+  };
+})(Work);
