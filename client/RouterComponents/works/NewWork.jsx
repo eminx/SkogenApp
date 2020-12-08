@@ -11,8 +11,8 @@ class NewWork extends PureComponent {
   state = {
     formValues: {
       title: '',
-      subtitle: '',
-      description: '',
+      shortDescription: '',
+      longDescription: '',
       additionalInfo: '',
       category: ''
     },

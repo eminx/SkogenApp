@@ -1,7 +1,7 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Tag } from 'antd/lib';
+import { Button, Row, Tag } from 'antd/lib';
 
 import WorkThumb from '../../UIComponents/WorkThumb';
 
@@ -34,6 +34,13 @@ function WorksList({ history, works }) {
 
   return (
     <Row gutter={24}>
+      <div style={{ display: 'flex', justifyContent: 'center', padding: 12 }}>
+        <Link to="/new-work">
+          <Button type="primary" component="span">
+            New Work
+          </Button>
+        </Link>
+      </div>
       <div
         style={{
           display: 'flex',
