@@ -13,6 +13,39 @@ Meteor.methods({
     }
   },
 
+  getAllWorks() {
+    try {
+      const works = Works.find().fetch();
+
+      const worksWithAvatars = works.map(work => {
+        const user = Meteor.users.findOne(work.authorId);
+        return {
+          ...work,
+          authorAvatar: user.avatar
+        };
+      });
+      return worksWithAvatars;
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
+  getWork(workId, username) {
+    try {
+      const work = Works.findOne(workId);
+      if (work.authorUsername !== username) {
+        throw new Meteor.Error('Not allowed!');
+      }
+      const author = Meteor.users.findOne(work.authorId);
+      return {
+        ...work,
+        authorAvatar: author.avatar
+      };
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
   createWork(values, images) {
     const user = Meteor.user();
     if (!user || !user.isRegisteredMember) {
@@ -24,7 +57,6 @@ Meteor.methods({
         ...values,
         images,
         authorId: user._id,
-        // authorAvatar: user.avatar,
         authorUsername: user.username,
         authorFirstName: user.firstName || '',
         authorLastName: user.lastName || '',

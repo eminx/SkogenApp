@@ -51,6 +51,7 @@ function WorkThumb({ work, history }) {
         <Avatar
           src={work.authorAvatar && work.authorAvatar.src}
           style={{ backgroundColor: '#ea3924' }}
+          size="large"
         >
           {work.authorUsername.substring(0, 1).toUpperCase()}
         </Avatar>

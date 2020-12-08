@@ -1,11 +1,12 @@
-import { withTracker } from 'meteor/react-meteor-data';
-import React, { Fragment } from 'react';
+import { Meteor } from 'meteor/meteor';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
-import { Col, Row, Tag } from 'antd/lib';
+import { Avatar, Col, Row, Tag, message } from 'antd/lib';
 import Slider from 'react-slick';
 
 import Loader from '../../UIComponents/Loader';
+import { call } from '../../functions';
 
 const sliderSettings = {
   fade: true,
@@ -20,8 +21,30 @@ const noCapitalsHeader = {
   textTransform: 'none'
 };
 
-const Work = ({ history, match, work, isLoading, currentUser }) => {
-  if (!work || isLoading) {
+function Work({ history, match }) {
+  const [work, setWork] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const currentUser = Meteor.user();
+
+  useEffect(() => {
+    getWork();
+  }, []);
+
+  const getWork = async () => {
+    const { id, username } = match.params;
+
+    try {
+      const response = await call('getWork', id, username);
+      setWork(response);
+      setLoading(false);
+    } catch (error) {
+      message.error(error.reason);
+      setLoading(false);
+    }
+  };
+
+  if (!work || loading) {
     return <Loader />;
   }
 
@@ -31,22 +54,6 @@ const Work = ({ history, match, work, isLoading, currentUser }) => {
       : work.authorUsername;
 
   const isOwner = currentUser && currentUser.username === match.params.username;
-
-  // const AvatarHolder = props => (
-  //   <Link to={`/@${work.authorUsername}`}>
-  //     <Box alignSelf="end" align="center" {...props}>
-  //       <Box>
-  //         <Avatar
-  //           elevation="medium"
-  //           src={work.authorAvatar && work.authorAvatar.src}
-  //         />
-  //       </Box>
-  //       <Anchor href={`/@${work.authorUsername}`}>
-  //         <Text size="small">{work.authorUsername}</Text>
-  //       </Anchor>
-  //     </Box>
-  //   </Link>
-  // );
 
   return (
     <Row gutter={12}>
@@ -113,34 +120,32 @@ const Work = ({ history, match, work, isLoading, currentUser }) => {
           padding: 12
         }}
       >
-        <h4 style={{ flexGrow: 1, marginLeft: 12 }}>{work.additionalInfo}</h4>
+        <h4 style={{ flexGrow: 1, marginLeft: 12, marginTop: 24 }}>
+          {work.additionalInfo}
+        </h4>
         <div
           style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
             flexGrow: 0,
             marginRight: 12,
             color: 'rgba(0,0,0,.85)',
             ...noCapitalsHeader
           }}
         >
+          <Avatar
+            size={60}
+            src={work.authorAvatar && work.authorAvatar.src}
+            style={{ backgroundColor: '#ea3924' }}
+          >
+            {work.authorUsername.substring(0, 1).toUpperCase()}
+          </Avatar>
           <b>{work.authorUsername}</b>
         </div>
       </Col>
     </Row>
   );
-};
+}
 
-export default withTracker(({ history, match }) => {
-  const { id, username } = match.params;
-  const workSubscription = Meteor.subscribe('work', id, username);
-  const work = Works ? Works.findOne(id) : null;
-  const isLoading = !workSubscription.ready();
-  const currentUser = Meteor.user();
-
-  return {
-    isLoading,
-    currentUser,
-    work,
-    history,
-    match
-  };
-})(Work);
+export default Work;

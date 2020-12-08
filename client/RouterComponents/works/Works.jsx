@@ -1,9 +1,10 @@
-import { withTracker } from 'meteor/react-meteor-data';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Row, Tag } from 'antd/lib';
+import { Button, Row, Tag, message } from 'antd/lib';
 
 import WorkThumb from '../../UIComponents/WorkThumb';
+import Loader from '../../UIComponents/Loader';
+import { call } from '../../functions';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -15,12 +16,30 @@ function getHSL(length, index, opacity = 1) {
   return `hsla(${(360 / (length + 1)) * (index + 1)}, 62%, 56%, ${opacity})`;
 }
 
-function WorksList({ history, works }) {
+function Works({ history }) {
+  const [works, setWorks] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState(null);
 
-  // if (loading || !works) {
-  //   return <Loader />;
-  // }
+  useEffect(() => {
+    getAllWorks();
+  }, []);
+
+  const getAllWorks = async () => {
+    try {
+      const response = await call('getAllWorks');
+      setWorks(response);
+      setLoading(false);
+    } catch (error) {
+      message.error(error.reason);
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  if (loading || !works) {
+    return <Loader />;
+  }
 
   const sortedWorks = works.sort(compareByDate);
 
@@ -71,7 +90,7 @@ function WorksList({ history, works }) {
       <div
         style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
       >
-        {works.map(work => (
+        {filteredWorks.map(work => (
           <div key={work._id} style={{ margin: 12 }}>
             <Link to={`/${work.authorUsername}/work/${work._id}`}>
               <WorkThumb work={work} />
@@ -100,15 +119,4 @@ getOpacHSL = color => {
   return color ? color.substr(0, color.length - 4) + '1)' : null;
 };
 
-export default withTracker(({ history }) => {
-  const worksSubscription = Meteor.subscribe('works');
-  const works = Works ? Works.find().fetch() : null;
-  const isLoading = !worksSubscription.ready();
-  const currentUser = Meteor.user();
-  return {
-    isLoading,
-    currentUser,
-    works,
-    history
-  };
-})(WorksList);
+export default Works;
