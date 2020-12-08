@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Avatar, Button } from 'antd/lib';
+import { Avatar, Button, message } from 'antd/lib';
 
 import FileDropper from './FileDropper';
 import Loader from './Loader';
@@ -10,12 +10,12 @@ class UploadAvatar extends PureComponent {
   state = {
     uploadableAvatarLocal: null,
     uploadableAvatar: null,
-    isLocalising: false
+    isLocalising: false,
   };
 
-  setUploadableAvatar = files => {
+  setUploadableAvatar = (files) => {
     this.setState({
-      isLocalising: true
+      isLocalising: true,
     });
 
     const uploadableAvatar = files[0];
@@ -27,7 +27,7 @@ class UploadAvatar extends PureComponent {
         this.setState({
           uploadableAvatar,
           uploadableAvatarLocal: reader.result,
-          isLocalising: false
+          isLocalising: false,
         });
       },
       false
@@ -37,7 +37,7 @@ class UploadAvatar extends PureComponent {
   uploadAvatar = async () => {
     const { uploadableAvatar } = this.state;
     this.setState({
-      isUploading: true
+      isUploading: true,
     });
 
     try {
@@ -48,7 +48,7 @@ class UploadAvatar extends PureComponent {
       );
       await call('setAvatar', uploadedAvatar);
       this.setState({
-        isUploading: false
+        isUploading: false,
       });
       message.success('Your avatar is successfully set');
     } catch (error) {
@@ -57,7 +57,7 @@ class UploadAvatar extends PureComponent {
       this.setState({
         isCreating: false,
         isUploading: false,
-        isError: true
+        isError: true,
       });
     }
   };
@@ -65,7 +65,7 @@ class UploadAvatar extends PureComponent {
   removeLocalAvatar = () => {
     this.setState({
       uploadableAvatar: null,
-      uploadableAvatarLocal: null
+      uploadableAvatarLocal: null,
     });
   };
 
@@ -83,7 +83,7 @@ class UploadAvatar extends PureComponent {
       uploadAvatar: this.uploadAvatar,
       uploadableAvatarLocal,
       avatar: currentUser.avatar || null,
-      isUploading
+      isUploading,
     };
 
     return <AvatarUI {...props} />;
@@ -91,7 +91,7 @@ class UploadAvatar extends PureComponent {
 }
 
 const marginStyle = {
-  marginBottom: 24
+  marginBottom: 24,
 };
 
 function AvatarUI({
@@ -100,7 +100,7 @@ function AvatarUI({
   uploadAvatar,
   uploadableAvatarLocal,
   avatar,
-  isUploading
+  isUploading,
 }) {
   const avatarImageIfAny = uploadableAvatarLocal || (avatar && avatar.src);
 
@@ -110,7 +110,7 @@ function AvatarUI({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        ...marginStyle
+        ...marginStyle,
       }}
     >
       <div style={marginStyle}>

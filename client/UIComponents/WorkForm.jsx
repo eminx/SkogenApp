@@ -15,7 +15,7 @@ function getBase64(file) {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
+    reader.onerror = (error) => reject(error);
   });
 }
 
@@ -31,16 +31,16 @@ function WorkForm({
   onSortImages,
   onRemoveImage,
   categories,
-  registerWorkLocally
+  registerWorkLocally,
 }) {
   const { getFieldDecorator } = form;
 
   const formItemLayout = {
     labelCol: { span: 6 },
-    wrapperCol: { span: 14 }
+    wrapperCol: { span: 14 },
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     form.validateFields((err, fieldsValue) => {
@@ -64,10 +64,10 @@ function WorkForm({
               rules: [
                 {
                   required: true,
-                  message: 'Please enter the Title'
-                }
+                  message: 'Please enter the Title',
+                },
               ],
-              initialValue: formValues ? formValues.title : null
+              initialValue: formValues ? formValues.title : null,
             })(<Input placeholder="" />)}
           </FormItem>
 
@@ -76,16 +76,19 @@ function WorkForm({
               rules: [
                 {
                   required: true,
-                  message: 'Please select category'
-                }
+                  message: 'Please select category',
+                },
               ],
-              initialValue: formValues ? formValues.category : null
+              initialValue: formValues ? formValues.category : null,
             })(
               <Select>
                 {categories &&
-                  categories.map(category => (
-                    <Option key={category._id} value={category.label}>
-                      {category.label}
+                  categories.map((category) => (
+                    <Option
+                      key={category._id}
+                      value={category.label.toUpperCase()}
+                    >
+                      {category.label.toUpperCase()}
                     </Option>
                   ))}
               </Select>
@@ -97,10 +100,10 @@ function WorkForm({
               rules: [
                 {
                   required: false,
-                  message: 'Please enter short info (optional)'
-                }
+                  message: 'Please enter short info (optional)',
+                },
               ],
-              initialValue: formValues ? formValues.shortDescription : null
+              initialValue: formValues ? formValues.shortDescription : null,
             })(<Input placeholder="" />)}
           </FormItem>
 
@@ -109,10 +112,10 @@ function WorkForm({
               rules: [
                 {
                   required: false,
-                  message: 'Please enter a detailed description'
-                }
+                  message: 'Please enter a detailed description',
+                },
               ],
-              initialValue: formValues ? formValues.longDescription : ''
+              initialValue: formValues ? formValues.longDescription : '',
             })(<ReactQuill modules={editorModules} formats={editorFormats} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="Additional Info">
@@ -120,10 +123,10 @@ function WorkForm({
               rules: [
                 {
                   required: false,
-                  message: 'Please enter additional info (optional)'
-                }
+                  message: 'Please enter additional info (optional)',
+                },
               ],
-              initialValue: formValues ? formValues.additionalInfo : null
+              initialValue: formValues ? formValues.additionalInfo : null,
             })(<Input placeholder="Only limited amount..." />)}
           </FormItem>
 
@@ -131,12 +134,12 @@ function WorkForm({
             <Slider settings={sliderSettings}>
               {images &&
                 images.length > 0 &&
-                images.map(image => (
+                images.map((image) => (
                   <div
                     key={image}
                     style={{
                       height: 180,
-                      margin: '0 auto'
+                      margin: '0 auto',
                     }}
                   >
                     <img
@@ -174,7 +177,7 @@ function WorkForm({
             {...formItemLayout}
             style={{
               display: 'flex',
-              justifyContent: 'flex-end'
+              justifyContent: 'flex-end',
             }}
           >
             <Button
@@ -192,7 +195,7 @@ function WorkForm({
   );
 }
 
-const thumbStyle = backgroundImage => ({
+const thumbStyle = (backgroundImage) => ({
   flexBasis: 120,
   height: 80,
   margin: 8,
@@ -200,7 +203,7 @@ const thumbStyle = backgroundImage => ({
   backgroundPosition: 'center',
   backgroundSize: 'cover',
   borderRadius: 4,
-  border: '1px solid #fff'
+  border: '1px solid #fff',
 });
 
 const thumbIconStyle = {
@@ -209,11 +212,11 @@ const thumbIconStyle = {
   padding: 4,
   borderRadius: 4,
   backgroundColor: 'rgba(255, 255, 255, .8)',
-  cursor: 'pointer'
+  cursor: 'pointer',
 };
 
 const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
-  const onRemoveClick = event => {
+  const onRemoveClick = (event) => {
     event.stopPropagation();
     event.preventDefault();
     onRemoveImage();

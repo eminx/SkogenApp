@@ -12,7 +12,7 @@ import {
   Button,
   message,
   Divider,
-  Modal
+  Modal,
 } from 'antd/lib';
 
 import SkogenTerms from '../../UIComponents/SkogenTerms';
@@ -23,10 +23,10 @@ import Loader from '../../UIComponents/Loader';
 
 class Profile extends React.Component {
   state = {
-    isDeleteModalOn: false
+    isDeleteModalOn: false,
   };
 
-  handleSubmit = event => {
+  handleSubmit = (event) => {
     event.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (err) {
@@ -84,10 +84,10 @@ class Profile extends React.Component {
                     rules: [
                       {
                         required: true,
-                        message: 'Please enter your first name'
-                      }
+                        message: 'Please enter your first name',
+                      },
                     ],
-                    initialValue: currentUser ? currentUser.firstName : null
+                    initialValue: currentUser ? currentUser.firstName : null,
                   })(<Input placeholder="first name" />)}
                 </FormItem>
 
@@ -96,10 +96,10 @@ class Profile extends React.Component {
                     rules: [
                       {
                         required: true,
-                        message: 'Please enter your last name'
-                      }
+                        message: 'Please enter your last name',
+                      },
                     ],
-                    initialValue: currentUser ? currentUser.lastName : null
+                    initialValue: currentUser ? currentUser.lastName : null,
                   })(<Input placeholder="last name" />)}
                 </FormItem>
 
@@ -108,10 +108,10 @@ class Profile extends React.Component {
                     rules: [
                       {
                         required: true,
-                        message: 'Enter your bio'
-                      }
+                        message: 'Enter your bio',
+                      },
                     ],
-                    initialValue: currentUser ? currentUser.bio : ''
+                    initialValue: (currentUser && currentUser.bio) || '',
                   })(
                     <ReactQuill
                       modules={editorModules}
@@ -123,7 +123,7 @@ class Profile extends React.Component {
                 <FormItem
                   wrapperCol={{
                     xs: { span: 24, offset: 0 },
-                    sm: { span: 16, offset: 0 }
+                    sm: { span: 16, offset: 0 },
                   }}
                 >
                   <Button type="primary" htmlType="submit">

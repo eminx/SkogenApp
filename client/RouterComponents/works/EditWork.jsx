@@ -13,7 +13,7 @@ class EditWork extends PureComponent {
       shortDescription: '',
       longDescription: '',
       additionalInfo: '',
-      category: ''
+      category: '',
     },
     categories: [],
     images: [],
@@ -22,7 +22,7 @@ class EditWork extends PureComponent {
     isLoading: false,
     isSuccess: false,
     isError: false,
-    isDeleteModalOn: false
+    isDeleteModalOn: false,
   };
 
   componentDidMount() {
@@ -33,7 +33,7 @@ class EditWork extends PureComponent {
   getCategories = async () => {
     const categories = await call('getCategories');
     this.setState({
-      categories
+      categories,
     });
   };
 
@@ -51,34 +51,35 @@ class EditWork extends PureComponent {
       this.setState({
         formValues: {
           ...response,
-          category: catLabel
+          category: catLabel,
         },
-        images: response.images.map(image => ({
+        images: response.images.map((image) => ({
           src: image,
-          type: 'uploaded'
-        }))
+          type: 'uploaded',
+        })),
       });
     } catch (error) {
       console.log(error);
       message.error(error.reason);
       this.setState({
-        isLoading: false
+        isLoading: false,
       });
     }
   };
 
-  handleQuillChange = longDescription => {
-    const { formValues } = this.state;
-
-    this.setState({
-      ...formValues,
-      longDescription
-    });
+  registerWorkLocally = (formValues) => {
+    this.setState(
+      {
+        isCreating: true,
+        formValues,
+      },
+      () => this.uploadImages()
+    );
   };
 
-  setUploadableImages = files => {
+  setUploadableImages = (files) => {
     this.setState({
-      isLocalising: true
+      isLocalising: true,
     });
 
     files.forEach((uploadableImage, index) => {
@@ -93,16 +94,16 @@ class EditWork extends PureComponent {
               {
                 resizableData: uploadableImage,
                 type: 'not-uploaded',
-                src: reader.result
-              }
-            ]
+                src: reader.result,
+              },
+            ],
           }));
         },
         false
       );
       if (files.length === index + 1) {
         this.setState({
-          isLocalising: false
+          isLocalising: false,
         });
       }
     });
@@ -111,14 +112,14 @@ class EditWork extends PureComponent {
   uploadImages = async () => {
     const { images } = this.state;
     this.setState({
-      isCreating: true
+      isCreating: true,
     });
 
     const isThereUploadable = images.some(
-      image => image.type === 'not-uploaded'
+      (image) => image.type === 'not-uploaded'
     );
     if (!isThereUploadable) {
-      const imagesReadyToSave = images.map(image => image.src);
+      const imagesReadyToSave = images.map((image) => image.src);
       this.updateWork(imagesReadyToSave);
       return;
     }
@@ -131,7 +132,7 @@ class EditWork extends PureComponent {
           } else {
             const resizedImage = await resizeImage(
               uploadableImage.resizableData,
-              500
+              1200
             );
             const uploadedImage = await uploadImage(
               resizedImage,
@@ -147,23 +148,25 @@ class EditWork extends PureComponent {
       message.error(error.reason);
       this.setState({
         isCreating: false,
-        isError: true
+        isError: true,
       });
     }
   };
 
-  updateWork = async imagesReadyToSave => {
+  updateWork = async (imagesReadyToSave) => {
+    console.log(imagesReadyToSave);
     const { match } = this.props;
-    const { id } = match.params;
+    const { id, username } = match.params;
     const { formValues, categories } = this.state;
     const currentUser = Meteor.user();
-
-    if (formValues.authorId !== currentUser._id) {
+    console.log(id, username);
+    if (username !== currentUser.username) {
+      message.error('You are not allowed');
       return;
     }
 
     const selectedCategory = categories.find(
-      category => category.label === formValues.category.toLowerCase()
+      (category) => category.label === formValues.category.toLowerCase()
     );
 
     const updatedValues = {
@@ -171,15 +174,15 @@ class EditWork extends PureComponent {
       category: {
         label: selectedCategory.label,
         color: selectedCategory.color,
-        categoryId: selectedCategory._id
-      }
+        categoryId: selectedCategory._id,
+      },
     };
 
     try {
       await call('updateWork', id, updatedValues, imagesReadyToSave);
       this.setState({
         isCreating: false,
-        isSuccess: true
+        isSuccess: true,
       });
       message.success('Your work is successfully updated');
     } catch (error) {
@@ -188,9 +191,9 @@ class EditWork extends PureComponent {
     }
   };
 
-  handleRemoveImage = imageIndex => {
+  handleRemoveImage = (imageIndex) => {
     this.setState(({ images }) => ({
-      images: images.filter((image, index) => imageIndex !== index)
+      images: images.filter((image, index) => imageIndex !== index),
       // unSavedImageChange: true,
     }));
   };
@@ -201,7 +204,7 @@ class EditWork extends PureComponent {
     }
 
     this.setState(({ images }) => ({
-      images: arrayMove(images, oldIndex, newIndex)
+      images: arrayMove(images, oldIndex, newIndex),
       // unSavedImageChange: true,
     }));
   };
@@ -221,7 +224,7 @@ class EditWork extends PureComponent {
     try {
       await call('deleteWork', id);
       this.setState({
-        isLoading: false
+        isLoading: false,
       });
       history.push('/my-works');
       message.success('Your work is successfully deleted');
@@ -253,7 +256,7 @@ class EditWork extends PureComponent {
       isSuccess,
       isCreating,
       categories,
-      isDeleteModalOn
+      isDeleteModalOn,
     } = this.state;
 
     if (isSuccess) {
@@ -269,12 +272,12 @@ class EditWork extends PureComponent {
         <WorkForm
           formValues={formValues}
           categories={categories}
-          images={images.map(image => image.src)}
+          images={images.map((image) => image.src)}
           buttonLabel={buttonLabel}
           isButtonDisabled={isCreating}
           isFormValid={isFormValid}
           setUploadableImages={this.setUploadableImages}
-          registerWorkLocally={this.uploadImages}
+          registerWorkLocally={this.registerWorkLocally}
           onSortImages={this.handleSortImages}
           onRemoveImage={this.handleRemoveImage}
         />

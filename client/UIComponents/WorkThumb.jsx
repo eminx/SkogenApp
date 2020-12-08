@@ -5,18 +5,18 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 const commonStyle = {
   color: '#fff',
   fontWeight: 300,
-  lineHeight: 1
+  lineHeight: 1,
 };
 const imageStyle = {
   width: 320,
   height: 320,
-  objectFit: 'cover'
+  objectFit: 'cover',
 };
 
 const ellipsisStyle = {
   whiteSpace: 'nowrap',
   overflow: 'hidden',
-  textOverflow: 'ellipsis'
+  textOverflow: 'ellipsis',
 };
 
 function WorkThumb({ work, history }) {
@@ -35,7 +35,8 @@ function WorkThumb({ work, history }) {
         style={{
           display: 'flex',
           justifyContent: 'space-between',
-          padding: 16
+          alignItems: 'flex-start',
+          padding: 16,
         }}
       >
         {work.category ? (
@@ -62,7 +63,7 @@ function WorkThumb({ work, history }) {
           position: 'relative',
           paddingTop: 120,
           paddingLeft: 16,
-          paddingRight: 16
+          paddingRight: 16,
         }}
       >
         <h4
@@ -71,7 +72,7 @@ function WorkThumb({ work, history }) {
             fontSize: 18,
             marginBottom: 6,
             lineHeight: '24px',
-            overflowWrap: 'anywhere'
+            overflowWrap: 'anywhere',
           }}
         >
           <b>{work.title}</b>
@@ -81,7 +82,7 @@ function WorkThumb({ work, history }) {
             ...commonStyle,
             fontSize: 16,
             lineHeight: '18px',
-            fontStyle: 'italic'
+            fontStyle: 'italic',
           }}
         >
           {work.shortDescription}

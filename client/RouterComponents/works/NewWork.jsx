@@ -14,7 +14,7 @@ class NewWork extends PureComponent {
       shortDescription: '',
       longDescription: '',
       additionalInfo: '',
-      category: ''
+      category: '',
     },
     categories: [],
     uploadableImages: [],
@@ -25,7 +25,7 @@ class NewWork extends PureComponent {
     isSuccess: false,
     isError: false,
     newWorkId: null,
-    currentUser: null
+    currentUser: null,
   };
 
   componentDidMount() {
@@ -35,30 +35,30 @@ class NewWork extends PureComponent {
   getCategories = async () => {
     const categories = await call('getCategories', 'work');
     this.setState({
-      categories
+      categories,
     });
   };
 
-  handleQuillChange = description => {
+  handleQuillChange = (description) => {
     const { formValues } = this.state;
     const newValues = {
       ...formValues,
-      description
+      description,
     };
 
     this.setState({
-      formValues: newValues
+      formValues: newValues,
     });
   };
 
-  handleRemoveImage = imageIndex => {
+  handleRemoveImage = (imageIndex) => {
     this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
       uploadableImages: uploadableImages.filter(
         (image, index) => imageIndex !== index
       ),
       uploadableImagesLocal: uploadableImagesLocal.filter(
         (image, index) => imageIndex !== index
-      )
+      ),
     }));
   };
 
@@ -73,13 +73,13 @@ class NewWork extends PureComponent {
         uploadableImagesLocal,
         oldIndex,
         newIndex
-      )
+      ),
     }));
   };
 
-  setUploadableImages = files => {
+  setUploadableImages = (files) => {
     this.setState({
-      isLocalising: true
+      isLocalising: true,
     });
 
     files.forEach((uploadableImage, index) => {
@@ -90,24 +90,24 @@ class NewWork extends PureComponent {
         () => {
           this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
             uploadableImages: [...uploadableImages, uploadableImage],
-            uploadableImagesLocal: [...uploadableImagesLocal, reader.result]
+            uploadableImagesLocal: [...uploadableImagesLocal, reader.result],
           }));
         },
         false
       );
       if (files.length === index + 1) {
         this.setState({
-          isLocalising: false
+          isLocalising: false,
         });
       }
     });
   };
 
-  registerWorkLocally = formValues => {
+  registerWorkLocally = (formValues) => {
     this.setState(
       {
         formValues,
-        isCreating: true
+        isCreating: true,
       },
       () => this.uploadImages()
     );
@@ -119,7 +119,7 @@ class NewWork extends PureComponent {
     try {
       const imagesReadyToSave = await Promise.all(
         uploadableImages.map(async (uploadableImage, index) => {
-          const resizedImage = await resizeImage(uploadableImage, 800);
+          const resizedImage = await resizeImage(uploadableImage, 1200);
           const uploadedImage = await uploadImage(
             resizedImage,
             'workImageUpload'
@@ -131,15 +131,15 @@ class NewWork extends PureComponent {
     } catch (error) {
       message.error(error.reason);
       this.setState({
-        isError: true
+        isError: true,
       });
     }
   };
 
-  createWork = async imagesReadyToSave => {
+  createWork = async (imagesReadyToSave) => {
     const { formValues, categories } = this.state;
     const selectedCategory = categories.find(
-      category => category.label === formValues.category.toLowerCase()
+      (category) => category.label === formValues.category.toLowerCase()
     );
 
     const newWork = {
@@ -147,8 +147,8 @@ class NewWork extends PureComponent {
       category: {
         label: selectedCategory.label,
         color: selectedCategory.color,
-        categoryId: selectedCategory._id
-      }
+        categoryId: selectedCategory._id,
+      },
     };
 
     try {
@@ -156,7 +156,7 @@ class NewWork extends PureComponent {
       this.setState({
         newWorkId: respond,
         isCreating: false,
-        isSuccess: true
+        isSuccess: true,
       });
       message.success('Your work is successfully created');
     } catch (error) {
@@ -183,7 +183,7 @@ class NewWork extends PureComponent {
       isSuccess,
       newWorkId,
       isCreating,
-      categories
+      categories,
     } = this.state;
 
     if (isSuccess && newWorkId) {
