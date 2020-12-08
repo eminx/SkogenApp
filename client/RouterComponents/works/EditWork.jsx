@@ -1,321 +1,300 @@
-// import React, { PureComponent } from 'react';
-// import { Redirect } from 'react-router-dom';
-// import arrayMove from 'array-move';
-// // import { Box, Button } from 'grommet';
-// import { StateContext } from '../../LayoutContainer';
-// import WorkForm from '../../UIComponents/WorkForm';
-// import Template from '../../UIComponents/Template';
-// import { message, Alert } from '../../UIComponents/message';
-// import ConfirmModal from '../../UIComponents/ConfirmModal';
-// import { call, resizeImage, uploadImage } from '../../functions';
+import React, { PureComponent } from 'react';
+import { Redirect } from 'react-router-dom';
+import arrayMove from 'array-move';
+import { Alert, Button, Modal, message } from 'antd/lib';
 
-// class EditWork extends PureComponent {
-//   state = {
-//     formValues: {
-//       title: '',
-//       shortDescription: '',
-//       longDescription: '',
-//       additionalInfo: '',
-//       category: ''
-//     },
-//     categories: [],
-//     images: [],
-//     isLocalising: false,
-//     isCreating: false,
-//     isLoading: false,
-//     isSuccess: false,
-//     isError: false,
-//     isDeleteModalOn: false
-//   };
+import WorkForm from '../../UIComponents/WorkForm';
+import { call, resizeImage, uploadImage } from '../../functions';
 
-//   componentDidMount() {
-//     this.getWork();
-//     this.getCategories();
-//   }
+class EditWork extends PureComponent {
+  state = {
+    formValues: {
+      title: '',
+      shortDescription: '',
+      longDescription: '',
+      additionalInfo: '',
+      category: ''
+    },
+    categories: [],
+    images: [],
+    isLocalising: false,
+    isCreating: false,
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    isDeleteModalOn: false
+  };
 
-//   getCategories = async () => {
-//     const categories = await call('getCategories');
-//     this.setState({
-//       categories
-//     });
-//   };
+  componentDidMount() {
+    this.getWork();
+    this.getCategories();
+  }
 
-//   getWork = async () => {
-//     this.setState({ isLoading: true });
-//     const { match } = this.props;
-//     const workId = match.params.workId;
-//     const username = match.params.username;
+  getCategories = async () => {
+    const categories = await call('getCategories');
+    this.setState({
+      categories
+    });
+  };
 
-//     try {
-//       const response = await call('getWork', workId, username);
-//       const catLabel =
-//         response.category &&
-//         response.category.label &&
-//         response.category.label.toUpperCase();
-//       this.setState({
-//         formValues: {
-//           ...response,
-//           category: catLabel
-//         },
-//         images: response.images.map(image => ({
-//           src: image,
-//           type: 'uploaded'
-//         }))
-//       });
-//     } catch (error) {
-//       console.log(error);
-//       message.error(error.reason);
-//       this.setState({
-//         isLoading: false
-//       });
-//     }
-//   };
+  getWork = async () => {
+    this.setState({ isLoading: true });
+    const { match } = this.props;
+    const { id, username } = match.params;
 
-//   handleFormChange = value => {
-//     this.setState({
-//       formValues: value
-//     });
-//   };
+    try {
+      const response = await call('getWork', id, username);
+      const catLabel =
+        response.category &&
+        response.category.label &&
+        response.category.label.toUpperCase();
+      this.setState({
+        formValues: {
+          ...response,
+          category: catLabel
+        },
+        images: response.images.map(image => ({
+          src: image,
+          type: 'uploaded'
+        }))
+      });
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+      this.setState({
+        isLoading: false
+      });
+    }
+  };
 
-//   handleQuillChange = longDescription => {
-//     const { formValues } = this.state;
-//     const newFormValues = {
-//       ...formValues,
-//       longDescription
-//     };
+  handleQuillChange = longDescription => {
+    const { formValues } = this.state;
 
-//     this.setState({
-//       formValues: newFormValues
-//     });
-//   };
+    this.setState({
+      ...formValues,
+      longDescription
+    });
+  };
 
-//   setUploadableImages = files => {
-//     this.setState({
-//       isLocalising: true
-//     });
+  setUploadableImages = files => {
+    this.setState({
+      isLocalising: true
+    });
 
-//     files.forEach((uploadableImage, index) => {
-//       const reader = new FileReader();
-//       reader.readAsDataURL(uploadableImage);
-//       reader.addEventListener(
-//         'load',
-//         () => {
-//           this.setState(({ images }) => ({
-//             images: [
-//               ...images,
-//               {
-//                 resizableData: uploadableImage,
-//                 type: 'not-uploaded',
-//                 src: reader.result
-//               }
-//             ]
-//           }));
-//         },
-//         false
-//       );
-//       if (files.length === index + 1) {
-//         this.setState({
-//           isLocalising: false
-//         });
-//       }
-//     });
-//   };
+    files.forEach((uploadableImage, index) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(uploadableImage);
+      reader.addEventListener(
+        'load',
+        () => {
+          this.setState(({ images }) => ({
+            images: [
+              ...images,
+              {
+                resizableData: uploadableImage,
+                type: 'not-uploaded',
+                src: reader.result
+              }
+            ]
+          }));
+        },
+        false
+      );
+      if (files.length === index + 1) {
+        this.setState({
+          isLocalising: false
+        });
+      }
+    });
+  };
 
-//   uploadImages = async () => {
-//     const { images } = this.state;
-//     this.setState({
-//       isCreating: true
-//     });
+  uploadImages = async () => {
+    const { images } = this.state;
+    this.setState({
+      isCreating: true
+    });
 
-//     const isThereUploadable = images.some(
-//       image => image.type === 'not-uploaded'
-//     );
-//     if (!isThereUploadable) {
-//       const imagesReadyToSave = images.map(image => image.src);
-//       this.updateWork(imagesReadyToSave);
-//       return;
-//     }
+    const isThereUploadable = images.some(
+      image => image.type === 'not-uploaded'
+    );
+    if (!isThereUploadable) {
+      const imagesReadyToSave = images.map(image => image.src);
+      this.updateWork(imagesReadyToSave);
+      return;
+    }
 
-//     try {
-//       const imagesReadyToSave = await Promise.all(
-//         images.map(async (uploadableImage, index) => {
-//           if (uploadableImage.type === 'uploaded') {
-//             return uploadableImage.src;
-//           } else {
-//             const resizedImage = await resizeImage(
-//               uploadableImage.resizableData,
-//               500
-//             );
-//             const uploadedImage = await uploadImage(
-//               resizedImage,
-//               'workImageUpload'
-//             );
-//             return uploadedImage;
-//           }
-//         })
-//       );
-//       this.updateWork(imagesReadyToSave);
-//     } catch (error) {
-//       console.error('Error uploading:', error);
-//       message.error(error.reason);
-//       this.setState({
-//         isCreating: false,
-//         isError: true
-//       });
-//     }
-//   };
+    try {
+      const imagesReadyToSave = await Promise.all(
+        images.map(async (uploadableImage, index) => {
+          if (uploadableImage.type === 'uploaded') {
+            return uploadableImage.src;
+          } else {
+            const resizedImage = await resizeImage(
+              uploadableImage.resizableData,
+              500
+            );
+            const uploadedImage = await uploadImage(
+              resizedImage,
+              'workImageUpload'
+            );
+            return uploadedImage;
+          }
+        })
+      );
+      this.updateWork(imagesReadyToSave);
+    } catch (error) {
+      console.error('Error uploading:', error);
+      message.error(error.reason);
+      this.setState({
+        isCreating: false,
+        isError: true
+      });
+    }
+  };
 
-//   updateWork = async imagesReadyToSave => {
-//     const { match } = this.props;
-//     const workId = match.params.workId;
-//     const { formValues, categories } = this.state;
-//     const { currentUser } = this.context;
+  updateWork = async imagesReadyToSave => {
+    const { match } = this.props;
+    const { id } = match.params;
+    const { formValues, categories } = this.state;
+    const currentUser = Meteor.user();
 
-//     if (formValues.authorId !== currentUser._id) {
-//       return;
-//     }
+    if (formValues.authorId !== currentUser._id) {
+      return;
+    }
 
-//     const selectedCategory = categories.find(
-//       category => category.label === formValues.category.toLowerCase()
-//     );
+    const selectedCategory = categories.find(
+      category => category.label === formValues.category.toLowerCase()
+    );
 
-//     const updatedWork = {
-//       ...formValues,
-//       category: {
-//         label: selectedCategory.label,
-//         color: selectedCategory.color,
-//         categoryId: selectedCategory._id
-//       }
-//     };
+    const updatedValues = {
+      ...formValues,
+      category: {
+        label: selectedCategory.label,
+        color: selectedCategory.color,
+        categoryId: selectedCategory._id
+      }
+    };
 
-//     try {
-//       await call('updateWork', workId, updatedWork, imagesReadyToSave);
-//       this.setState({
-//         isCreating: false,
-//         isSuccess: true
-//       });
-//       message.success('Your work is successfully updated');
-//     } catch (error) {
-//       message.error(error.reason);
-//       this.setState({ isCreating: false });
-//     }
-//   };
+    try {
+      await call('updateWork', id, updatedValues, imagesReadyToSave);
+      this.setState({
+        isCreating: false,
+        isSuccess: true
+      });
+      message.success('Your work is successfully updated');
+    } catch (error) {
+      message.error(error.reason);
+      this.setState({ isCreating: false });
+    }
+  };
 
-//   handleRemoveImage = imageIndex => {
-//     this.setState(({ images }) => ({
-//       images: images.filter((image, index) => imageIndex !== index)
-//       // unSavedImageChange: true,
-//     }));
-//   };
+  handleRemoveImage = imageIndex => {
+    this.setState(({ images }) => ({
+      images: images.filter((image, index) => imageIndex !== index)
+      // unSavedImageChange: true,
+    }));
+  };
 
-//   handleSortImages = ({ oldIndex, newIndex }) => {
-//     if (oldIndex === newIndex) {
-//       return;
-//     }
+  handleSortImages = ({ oldIndex, newIndex }) => {
+    if (oldIndex === newIndex) {
+      return;
+    }
 
-//     this.setState(({ images }) => ({
-//       images: arrayMove(images, oldIndex, newIndex)
-//       // unSavedImageChange: true,
-//     }));
-//   };
+    this.setState(({ images }) => ({
+      images: arrayMove(images, oldIndex, newIndex)
+      // unSavedImageChange: true,
+    }));
+  };
 
-//   handleDeleteWork = async () => {
-//     const { match, history } = this.props;
-//     const workId = match.params.workId;
-//     const { currentUser } = this.context;
-//     const { formValues } = this.state;
+  handleDeleteWork = async () => {
+    const { match, history } = this.props;
+    const { id } = match.params;
+    const currentUser = Meteor.user();
+    const { formValues } = this.state;
 
-//     if (formValues.authorId !== currentUser._id) {
-//       return;
-//     }
+    if (formValues.authorId !== currentUser._id) {
+      return;
+    }
 
-//     this.setState({ isLoading: true });
+    this.setState({ isLoading: true });
 
-//     try {
-//       await call('deleteWork', workId);
-//       this.setState({
-//         isLoading: false
-//       });
-//       history.push('/my-works');
-//       message.success('Your work is successfully deleted');
-//     } catch (error) {
-//       message.error(error.reason);
-//       this.setState({ isLoading: false });
-//     }
-//   };
+    try {
+      await call('deleteWork', id);
+      this.setState({
+        isLoading: false
+      });
+      history.push('/my-works');
+      message.success('Your work is successfully deleted');
+    } catch (error) {
+      message.error(error.reason);
+      this.setState({ isLoading: false });
+    }
+  };
 
-//   closeDeleteModal = () => this.setState({ isDeleteModalOn: false });
-//   openDeleteModal = () => this.setState({ isDeleteModalOn: true });
+  hideDeleteModal = () => this.setState({ isDeleteModalOn: false });
+  showDeleteModal = () => this.setState({ isDeleteModalOn: true });
 
-//   render() {
-//     const { currentUser } = this.context;
-//     const { match } = this.props;
-//     const workId = match.params.workId;
+  render() {
+    const { match } = this.props;
+    const { username, id } = match.params;
+    const currentUser = Meteor.user();
 
-//     if (!currentUser) {
-//       return (
-//         <div style={{ maxWidth: 600, margin: '0 auto' }}>
-//           <Alert message="Not allowed" type="error" />
-//         </div>
-//       );
-//     }
+    if (!currentUser || currentUser.username !== username) {
+      return (
+        <div style={{ maxWidth: 600, margin: '24px auto' }}>
+          <Alert message="Not allowed" type="error" />
+        </div>
+      );
+    }
 
-//     const {
-//       formValues,
-//       images,
-//       isSuccess,
-//       isCreating,
-//       categories,
-//       isDeleteModalOn
-//     } = this.state;
+    const {
+      formValues,
+      images,
+      isSuccess,
+      isCreating,
+      categories,
+      isDeleteModalOn
+    } = this.state;
 
-//     if (isSuccess) {
-//       return <Redirect to={`/${currentUser.username}/work/${workId}`} />;
-//     }
+    if (isSuccess) {
+      return <Redirect to={`/${currentUser.username}/work/${id}`} />;
+    }
 
-//     const buttonLabel = isCreating ? 'Updating...' : 'Confirm and Update';
-//     const { title } = formValues;
-//     const isFormValid = formValues && title.length > 3;
+    const buttonLabel = isCreating ? 'Updating...' : 'Confirm and Update';
+    const { title } = formValues;
+    const isFormValid = formValues && title.length > 3;
 
-//     return (
-//       <Template>
-//         <WorkForm
-//           formValues={formValues}
-//           categories={categories}
-//           onFormChange={this.handleFormChange}
-//           onQuillChange={this.handleQuillChange}
-//           onSubmit={this.uploadImages}
-//           setUploadableImages={this.setUploadableImages}
-//           images={images.map(image => image.src)}
-//           buttonLabel={buttonLabel}
-//           isFormValid={isFormValid}
-//           isButtonDisabled={!isFormValid || isCreating}
-//           onSortImages={this.handleSortImages}
-//           onRemoveImage={this.handleRemoveImage}
-//         />
+    return (
+      <div style={{ marginBottom: 24 }}>
+        <WorkForm
+          formValues={formValues}
+          categories={categories}
+          images={images.map(image => image.src)}
+          buttonLabel={buttonLabel}
+          isButtonDisabled={isCreating}
+          isFormValid={isFormValid}
+          setUploadableImages={this.setUploadableImages}
+          registerWorkLocally={this.uploadImages}
+          onSortImages={this.handleSortImages}
+          onRemoveImage={this.handleRemoveImage}
+        />
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Button onClick={() => this.showDeleteModal()}>Delete</Button>
+        </div>
 
-//         <Box direction="row" justify="center" pad="medium">
-//           <Button
-//             plain
-//             color="status-critical"
-//             onClick={this.openDeleteModal}
-//             label="Delete"
-//           />
-//         </Box>
+        <Modal
+          title="Confirm"
+          visible={isDeleteModalOn}
+          onOk={this.handleDeleteWork}
+          onCancel={this.hideDeleteModal}
+          okText="Yes, delete"
+          cancelText="Cancel"
+        >
+          Are you sure you want to delete this work?
+        </Modal>
+      </div>
+    );
+  }
+}
 
-//         <ConfirmModal
-//           visible={isDeleteModalOn}
-//           onConfirm={this.handleDeleteWork}
-//           onCancel={this.closeDeleteModal}
-//           title="Confirm Delete"
-//         >
-//           Are you sure you want to delete this item?
-//         </ConfirmModal>
-//       </Template>
-//     );
-//   }
-// }
-
-// EditWork.contextType = StateContext;
-
-// export default EditWork;
+export default EditWork;

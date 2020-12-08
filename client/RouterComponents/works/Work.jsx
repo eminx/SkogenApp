@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
 import { Col, Row, Tag } from 'antd/lib';
 import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 import Loader from '../../UIComponents/Loader';
 
@@ -55,7 +57,7 @@ const Work = ({ history, match, work, isLoading, currentUser }) => {
             </Tag>
           )}
           <h2 style={{ marginBottom: 0 }}>{work.title}</h2>
-          <p style={{ ...noCapitalsHeader }}>{work.subtitle}</p>
+          <p style={{ ...noCapitalsHeader }}>{work.shortDescription}</p>
         </div>
       </Col>
       <Col lg={12}>
@@ -63,19 +65,29 @@ const Work = ({ history, match, work, isLoading, currentUser }) => {
           {work &&
             work.images &&
             work.images.map(image => (
-              <img key={image} alt={work.title} src={image} />
+              <div
+                key={image}
+                style={{
+                  height: 380,
+                  margin: '0 auto'
+                }}
+              >
+                <img
+                  alt={work.title}
+                  src={image}
+                  style={{ margin: '0 auto' }}
+                />
+              </div>
             ))}
         </Slider>
 
         <div style={{ padding: 12, marginBottom: 24 }}>
-          <div>{work.description && renderHTML(work.description)} </div>
+          <div>{work.longDescription && renderHTML(work.longDescription)} </div>
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'center', padding: 12 }}>
           {isOwner && (
-            <Link
-              to={`/${currentUser.username}/edit-work/${match.params.workId}`}
-            >
+            <Link to={`/${currentUser.username}/edit-work/${work._id}`}>
               Edit this Work
             </Link>
           )}

@@ -54,7 +54,7 @@ function WorkThumb({ work, history }) {
       <div
         style={{
           position: 'relative',
-          paddingTop: 96,
+          paddingTop: 120,
           paddingLeft: 16,
           paddingRight: 16
         }}
@@ -68,7 +68,7 @@ function WorkThumb({ work, history }) {
             overflowWrap: 'anywhere'
           }}
         >
-          {work.title}
+          <b>{work.title}</b>
         </h4>
         <p
           style={{
@@ -78,7 +78,7 @@ function WorkThumb({ work, history }) {
             fontStyle: 'italic'
           }}
         >
-          {work.subtitle}
+          {work.shortDescription}
         </p>
       </div>
     </div>

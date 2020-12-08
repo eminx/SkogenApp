@@ -34,6 +34,7 @@ import Categories from './admin/Categories';
 import Works from './works/Works';
 import Work from './works/Work';
 import NewWork from './works/NewWork';
+import EditWork from './works/EditWork';
 
 import DocumentsListContainer from './documents/DocumentsListContainer';
 
@@ -92,6 +93,7 @@ export const renderRoutes = () => (
 
           <Route path="/works" component={Works} />
           <Route path="/:username/work/:id" component={Work} />
+          <Route path="/:username/edit-work/:id" component={EditWork} />
           <Route path="/new-work" component={NewWork} />
 
           {/*<Route path="*" component={NotFoundPage}/>*/}

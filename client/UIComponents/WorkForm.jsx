@@ -24,16 +24,14 @@ const sliderSettings = { dots: true };
 function WorkForm({
   form,
   formValues,
-  onQuillChange,
   setUploadableImages,
   images,
-  imageUrl,
   buttonLabel,
   isButtonDisabled,
   onSortImages,
   onRemoveImage,
   categories,
-  registerGroupLocally
+  registerWorkLocally
 }) {
   const { getFieldDecorator } = form;
 
@@ -52,7 +50,7 @@ function WorkForm({
         return;
       }
 
-      registerGroupLocally(fieldsValue);
+      registerWorkLocally(fieldsValue);
     });
   };
 
@@ -70,18 +68,7 @@ function WorkForm({
                 }
               ],
               initialValue: formValues ? formValues.title : null
-            })(<Input placeholder="Title" />)}
-          </FormItem>
-          <FormItem {...formItemLayout} label="Subtitle">
-            {getFieldDecorator('subtitle', {
-              rules: [
-                {
-                  required: false,
-                  message: 'Please enter subtitle (optional)'
-                }
-              ],
-              initialValue: formValues ? formValues.subtitle : null
-            })(<Input placeholder="Subtitle" />)}
+            })(<Input placeholder="" />)}
           </FormItem>
 
           <FormItem {...formItemLayout} label="Category">
@@ -92,7 +79,7 @@ function WorkForm({
                   message: 'Please select category'
                 }
               ],
-              initialValue: formValues ? formValues.category.label : null
+              initialValue: formValues ? formValues.category : null
             })(
               <Select>
                 {categories &&
@@ -105,15 +92,27 @@ function WorkForm({
             )}
           </FormItem>
 
+          <FormItem {...formItemLayout} label="Short Description">
+            {getFieldDecorator('shortDescription', {
+              rules: [
+                {
+                  required: false,
+                  message: 'Please enter short info (optional)'
+                }
+              ],
+              initialValue: formValues ? formValues.shortDescription : null
+            })(<Input placeholder="" />)}
+          </FormItem>
+
           <FormItem {...formItemLayout} label="Description">
-            {getFieldDecorator('description', {
+            {getFieldDecorator('longDescription', {
               rules: [
                 {
                   required: false,
                   message: 'Please enter a detailed description'
                 }
               ],
-              initialValue: formValues ? formValues.description : null
+              initialValue: formValues ? formValues.longDescription : ''
             })(<ReactQuill modules={editorModules} formats={editorFormats} />)}
           </FormItem>
           <FormItem {...formItemLayout} label="Additional Info">
@@ -128,19 +127,27 @@ function WorkForm({
             })(<Input placeholder="Only limited amount..." />)}
           </FormItem>
 
-          <FormItem {...formItemLayout}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              {images && images.length > 0 && (
-                <Slider settings={sliderSettings}>
-                  {images.map(image => (
-                    <img key={image} alt={formValues.title} src={image} />
-                  ))}
-                </Slider>
-              )}
-            </div>
-          </FormItem>
-
           <FormItem {...formItemLayout} label={`Images (${images.length})`}>
+            <Slider settings={sliderSettings}>
+              {images &&
+                images.length > 0 &&
+                images.map(image => (
+                  <div
+                    key={image}
+                    style={{
+                      height: 180,
+                      margin: '0 auto'
+                    }}
+                  >
+                    <img
+                      alt={form.title}
+                      src={image}
+                      style={{ margin: '0 auto' }}
+                    />
+                  </div>
+                ))}
+            </Slider>
+
             {images && images.length > 0 ? (
               <SortableContainer
                 onSortEnd={onSortImages}
@@ -164,15 +171,17 @@ function WorkForm({
           </FormItem>
 
           <FormItem
-            wrapperCol={{
-              xs: { span: 24, offset: 0 },
-              sm: { span: 16, offset: 8 }
+            {...formItemLayout}
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end'
             }}
           >
             <Button
               type="primary"
               htmlType="submit"
               disabled={isButtonDisabled}
+              style={{ float: 'right' }}
             >
               {buttonLabel}
             </Button>

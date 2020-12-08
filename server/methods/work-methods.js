@@ -1,6 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 
 Meteor.methods({
+  getWork(workId, username) {
+    try {
+      const work = Works.findOne(workId);
+      if (work.authorUsername !== username) {
+        throw new Meteor.Error('Not allowed!');
+      }
+      return work;
+    } catch (error) {
+      throw new Meteor.Error(error);
+    }
+  },
+
   createWork(values, images) {
     const user = Meteor.user();
     if (!user || !user.isRegisteredMember) {

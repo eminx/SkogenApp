@@ -103,7 +103,7 @@ class NewWork extends PureComponent {
     });
   };
 
-  registerGroupLocally = formValues => {
+  registerWorkLocally = formValues => {
     this.setState(
       {
         formValues,
@@ -198,14 +198,13 @@ class NewWork extends PureComponent {
       <WorkForm
         formValues={formValues}
         categories={categories}
-        onSubmit={this.uploadImages}
         setUploadableImages={this.setUploadableImages}
         images={uploadableImagesLocal}
         buttonLabel={buttonLabel}
         isButtonDisabled={isCreating}
         onSortImages={this.handleSortImages}
         onRemoveImage={this.handleRemoveImage}
-        registerGroupLocally={this.registerGroupLocally}
+        registerWorkLocally={this.registerWorkLocally}
       />
     );
   }
