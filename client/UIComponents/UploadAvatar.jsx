@@ -119,7 +119,7 @@ function AvatarUI({
           label="Click/Drag your favourite image to upload avatar"
         />
       </div>
-      {uploadableAvatarLocal && (
+      {(uploadableAvatarLocal || avatar) && (
         <Fragment>
           <Avatar src={avatarImageIfAny} size={120} style={marginStyle} />
           <Button
