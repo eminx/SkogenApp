@@ -16,6 +16,8 @@ import {
 } from 'antd/lib';
 
 import SkogenTerms from '../../UIComponents/SkogenTerms';
+import UploadAvatar from '../../UIComponents/UploadAvatar';
+
 const FormItem = Form.Item;
 import Loader from '../../UIComponents/Loader';
 
@@ -59,7 +61,6 @@ class Profile extends React.Component {
   };
 
   render() {
-    const { isUploading, imageUrl } = this.state;
     const { currentUser } = this.props;
     const { getFieldDecorator } = this.props.form;
     const { isDeleteModalOn } = this.state;
@@ -73,8 +74,9 @@ class Profile extends React.Component {
         </Row>
         <Row>
           <Divider />
+          <h2>Profile</h2>
           <Col md={8}>
-            <h2>Personal Info</h2>
+            <h3>Personal Info</h3>
             {currentUser && (
               <Form onSubmit={this.handleSubmit}>
                 <FormItem>
@@ -145,7 +147,10 @@ class Profile extends React.Component {
             )}
           </Col>
 
-          <Col md={4} />
+          <Col md={6} style={{ paddingeLeft: 12, textAlign: 'center' }}>
+            <h3>Avatar</h3>
+            <UploadAvatar currentUser={currentUser} />
+          </Col>
         </Row>
 
         <Divider />

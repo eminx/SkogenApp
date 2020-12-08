@@ -380,3 +380,7 @@ body {
   margin-bottom: 1em;
   font-size: 14px;
 }
+
+.ant-avatar > img {
+  object-fit: cover;
+}

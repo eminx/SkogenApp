@@ -4,12 +4,17 @@ import { Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
 import { Col, Row, Tag } from 'antd/lib';
 import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
 import Loader from '../../UIComponents/Loader';
 
-const sliderSettings = { dots: true };
+const sliderSettings = {
+  fade: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  autoplay: true
+};
 
 const noCapitalsHeader = {
   textTransform: 'none'
@@ -61,27 +66,33 @@ const Work = ({ history, match, work, isLoading, currentUser }) => {
         </div>
       </Col>
       <Col lg={12}>
-        <Slider settings={sliderSettings}>
-          {work &&
-            work.images &&
-            work.images.map(image => (
-              <div
-                key={image}
-                style={{
-                  height: 380,
-                  margin: '0 auto'
-                }}
-              >
-                <img
-                  alt={work.title}
-                  src={image}
-                  style={{ margin: '0 auto' }}
-                />
-              </div>
-            ))}
-        </Slider>
-
-        <div style={{ padding: 12, marginBottom: 24 }}>
+        <div
+          style={{
+            padding: '0 36px',
+            backgroundColor: 'rgba(0,0,0, 0.85)'
+          }}
+        >
+          <Slider {...sliderSettings}>
+            {work &&
+              work.images &&
+              work.images.map(image => (
+                <div
+                  key={image}
+                  style={{
+                    height: 380,
+                    margin: '0 auto'
+                  }}
+                >
+                  <img
+                    alt={work.title}
+                    src={image}
+                    style={{ margin: '0 auto', objectFit: 'contain' }}
+                  />
+                </div>
+              ))}
+          </Slider>
+        </div>
+        <div style={{ padding: 12, marginBottom: 24, marginTop: 12 }}>
           <div>{work.longDescription && renderHTML(work.longDescription)} </div>
         </div>
 
@@ -102,9 +113,7 @@ const Work = ({ history, match, work, isLoading, currentUser }) => {
           padding: 12
         }}
       >
-        <h4 style={{ flexGrow: 1, marginLeft: 12, ...noCapitalsHeader }}>
-          {work.additionalInfo}
-        </h4>
+        <h4 style={{ flexGrow: 1, marginLeft: 12 }}>{work.additionalInfo}</h4>
         <div
           style={{
             flexGrow: 0,

@@ -20,9 +20,11 @@ const FileDropper = ({
               width: 120,
               height: 80,
               margin: 8,
-              backgroundColor: isDragActive ? '#ea3924' : '#eee',
+              backgroundColor: isDragActive ? '#ea3924' : '#fbd5d0',
               borderStyle: 'dashed',
-              cursor: 'hover'
+              borderColor: '#ea3924',
+              cursor: 'hover',
+              textAlign: 'center'
             }}
           >
             {uploadableImageLocal || imageUrl ? (
