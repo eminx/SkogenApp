@@ -154,12 +154,10 @@ class EditWork extends PureComponent {
   };
 
   updateWork = async (imagesReadyToSave) => {
-    console.log(imagesReadyToSave);
     const { match } = this.props;
     const { id, username } = match.params;
     const { formValues, categories } = this.state;
     const currentUser = Meteor.user();
-    console.log(id, username);
     if (username !== currentUser.username) {
       message.error('You are not allowed');
       return;
