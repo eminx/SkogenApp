@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Form, Icon, Input, message, Row, Select } from 'antd/lib';
+import { Button, Form, Icon, Input, message, Select } from 'antd/lib';
 const FormItem = Form.Item;
 import ReactQuill from 'react-quill';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
@@ -36,8 +36,7 @@ function WorkForm({
   const { getFieldDecorator } = form;
 
   const formItemLayout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 14 },
+    wrapperCol: { span: 24 },
   };
 
   const handleSubmit = (event) => {
@@ -55,143 +54,142 @@ function WorkForm({
   };
 
   return (
-    <Row style={{ padding: 24 }}>
-      <Col lg={6} />
-      <Col lg={12}>
-        <Form onSubmit={handleSubmit}>
-          <FormItem {...formItemLayout} label="Title">
-            {getFieldDecorator('title', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please enter the Title',
-                },
-              ],
-              initialValue: formValues ? formValues.title : null,
-            })(<Input placeholder="" />)}
-          </FormItem>
+    <Form onSubmit={handleSubmit}>
+      <FormItem {...formItemLayout}>
+        {getFieldDecorator('title', {
+          rules: [
+            {
+              required: true,
+              message: 'Please enter the Title',
+            },
+          ],
+          initialValue: formValues ? formValues.title : null,
+        })(<Input placeholder="Title" />)}
+      </FormItem>
 
-          <FormItem {...formItemLayout} label="Category">
-            {getFieldDecorator('category', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please select category',
-                },
-              ],
-              initialValue: formValues ? formValues.category : null,
-            })(
-              <Select>
-                {categories &&
-                  categories.map((category) => (
-                    <Option
-                      key={category._id}
-                      value={category.label.toUpperCase()}
-                    >
-                      {category.label.toUpperCase()}
-                    </Option>
-                  ))}
-              </Select>
-            )}
-          </FormItem>
+      <FormItem {...formItemLayout}>
+        {getFieldDecorator('category', {
+          rules: [
+            {
+              required: true,
+              message: 'Please select category',
+            },
+          ],
+          initialValue: <span style={{ color: '#aaa' }}>Category</span>,
+        })(
+          <Select placeholder="Category">
+            {categories &&
+              categories.map((category) => (
+                <Option key={category._id} value={category.label.toUpperCase()}>
+                  {category.label.toUpperCase()}
+                </Option>
+              ))}
+          </Select>
+        )}
+      </FormItem>
 
-          <FormItem {...formItemLayout} label="Short Description">
-            {getFieldDecorator('shortDescription', {
-              rules: [
-                {
-                  required: false,
-                  message: 'Please enter short info (optional)',
-                },
-              ],
-              initialValue: formValues ? formValues.shortDescription : null,
-            })(<Input placeholder="" />)}
-          </FormItem>
+      <FormItem {...formItemLayout}>
+        {getFieldDecorator('shortDescription', {
+          rules: [
+            {
+              required: false,
+              message: 'Please enter short info (optional)',
+            },
+          ],
+          initialValue: formValues ? formValues.shortDescription : null,
+        })(<Input placeholder="Short Description" />)}
+      </FormItem>
 
-          <FormItem {...formItemLayout} label="Description">
-            {getFieldDecorator('longDescription', {
-              rules: [
-                {
-                  required: false,
-                  message: 'Please enter a detailed description',
-                },
-              ],
-              initialValue: formValues ? formValues.longDescription : '',
-            })(<ReactQuill modules={editorModules} formats={editorFormats} />)}
-          </FormItem>
-          <FormItem {...formItemLayout} label="Additional Info">
-            {getFieldDecorator('additionalInfo', {
-              rules: [
-                {
-                  required: false,
-                  message: 'Please enter additional info (optional)',
-                },
-              ],
-              initialValue: formValues ? formValues.additionalInfo : null,
-            })(<Input placeholder="Only limited amount..." />)}
-          </FormItem>
+      <FormItem {...formItemLayout}>
+        {getFieldDecorator('longDescription', {
+          rules: [
+            {
+              required: false,
+              message: 'Please enter a detailed description',
+            },
+          ],
+          initialValue: formValues ? formValues.longDescription : '',
+        })(
+          <ReactQuill
+            modules={editorModules}
+            formats={editorFormats}
+            placeholder="Description"
+          />
+        )}
+      </FormItem>
+      <FormItem {...formItemLayout}>
+        {getFieldDecorator('additionalInfo', {
+          rules: [
+            {
+              required: false,
+              message: 'Please enter additional info (optional)',
+            },
+          ],
+          initialValue: formValues ? formValues.additionalInfo : null,
+        })(<Input placeholder="Additional Info" />)}
+      </FormItem>
 
-          <FormItem {...formItemLayout} label={`Images (${images.length})`}>
-            <Slider settings={sliderSettings}>
-              {images &&
-                images.length > 0 &&
-                images.map((image) => (
-                  <div
-                    key={image}
-                    style={{
-                      height: 180,
-                      margin: '0 auto',
-                    }}
-                  >
-                    <img
-                      alt={form.title}
-                      src={image}
-                      style={{ margin: '0 auto' }}
-                    />
-                  </div>
-                ))}
-            </Slider>
-
-            {images && images.length > 0 ? (
-              <SortableContainer
-                onSortEnd={onSortImages}
-                axis="xy"
-                helperClass="sortableHelper"
+      <FormItem {...formItemLayout}>
+        <h4>{`Images (${images.length})`}</h4>
+        <Slider settings={sliderSettings}>
+          {images &&
+            images.length > 0 &&
+            images.map((image) => (
+              <div
+                key={image}
+                style={{
+                  height: 180,
+                  margin: '0 auto',
+                }}
               >
-                {images.map((image, index) => (
-                  <SortableItem
-                    key={image}
-                    index={index}
-                    image={image}
-                    onRemoveImage={() => onRemoveImage(index)}
-                  />
-                ))}
+                <img
+                  alt={form.title}
+                  src={image}
+                  style={{ margin: '0 auto', height: 180 }}
+                />
+              </div>
+            ))}
+        </Slider>
 
-                <FileDropper setUploadableImage={setUploadableImages} />
-              </SortableContainer>
-            ) : (
-              <FileDropper setUploadableImage={setUploadableImages} />
-            )}
-          </FormItem>
-
-          <FormItem
-            {...formItemLayout}
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-            }}
+        {images && images.length > 0 ? (
+          <SortableContainer
+            onSortEnd={onSortImages}
+            axis="xy"
+            helperClass="sortableHelper"
           >
-            <Button
-              type="primary"
-              htmlType="submit"
-              disabled={isButtonDisabled}
-              style={{ float: 'right' }}
-            >
-              {buttonLabel}
-            </Button>
-          </FormItem>
-        </Form>
-      </Col>
-    </Row>
+            {images.map((image, index) => (
+              <SortableItem
+                key={image}
+                index={index}
+                image={image}
+                onRemoveImage={() => onRemoveImage(index)}
+              />
+            ))}
+
+            <FileDropper setUploadableImage={setUploadableImages} />
+          </SortableContainer>
+        ) : (
+          <FileDropper setUploadableImage={setUploadableImages} />
+        )}
+      </FormItem>
+
+      <FormItem
+        {...formItemLayout}
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+        }}
+      >
+        <Button
+          type="primary"
+          htmlType="submit"
+          disabled={isButtonDisabled}
+          style={{ float: 'right' }}
+        >
+          {buttonLabel}
+        </Button>
+      </FormItem>
+    </Form>
   );
 }
 

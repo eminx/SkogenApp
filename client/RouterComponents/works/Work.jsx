@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
 import { Avatar, Col, Row, Tag, message } from 'antd/lib';
 import Slider from 'react-slick';
+import MediaQuery from 'react-responsive';
 
 import Loader from '../../UIComponents/Loader';
 import { call } from '../../functions';
@@ -14,11 +15,11 @@ const sliderSettings = {
   speed: 500,
   slidesToShow: 1,
   slidesToScroll: 1,
-  autoplay: true
+  autoplay: true,
 };
 
 const noCapitalsHeader = {
-  textTransform: 'none'
+  textTransform: 'none',
 };
 
 function Work({ history, match }) {
@@ -58,36 +59,43 @@ function Work({ history, match }) {
   return (
     <Row gutter={12}>
       <Col lg={6}>
-        <div style={{ padding: 12 }}>
-          {work.category && (
-            <Tag
-              style={{ borderRadius: 0, marginBottom: 12 }}
-              value={work.category.label}
-              color={work.category.color}
-            >
-              <b>{work.category.label.toUpperCase()}</b>
-            </Tag>
-          )}
-          <h2 style={{ marginBottom: 0 }}>{work.title}</h2>
-          <p style={{ ...noCapitalsHeader }}>{work.shortDescription}</p>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ padding: 12, flexGrow: 1 }}>
+            <h2 style={{ marginBottom: 0 }}>{work.title}</h2>
+            {work.category && (
+              <Tag
+                style={{ borderRadius: 0, marginBottom: 12 }}
+                value={work.category.label}
+                color={work.category.color}
+              >
+                <b>{work.category.label.toUpperCase()}</b>
+              </Tag>
+            )}
+            <p style={{ ...noCapitalsHeader }}>{work.shortDescription}</p>
+          </div>
+          <MediaQuery query="(max-width: 991px)">
+            <div style={{ flexGrow: 0, paddingTop: 12 }}>
+              <AvatarHolder work={work} />
+            </div>
+          </MediaQuery>
         </div>
       </Col>
       <Col lg={12}>
         <div
           style={{
             padding: '0 36px',
-            backgroundColor: 'rgba(0,0,0, 0.85)'
+            backgroundColor: 'rgba(0,0,0, 0.85)',
           }}
         >
           <Slider {...sliderSettings}>
             {work &&
               work.images &&
-              work.images.map(image => (
+              work.images.map((image) => (
                 <div
                   key={image}
                   style={{
                     height: 380,
-                    margin: '0 auto'
+                    margin: '0 auto',
                   }}
                 >
                   <img
@@ -103,48 +111,87 @@ function Work({ history, match }) {
           <div>{work.longDescription && renderHTML(work.longDescription)} </div>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'center', padding: 12 }}>
-          {isOwner && (
-            <Link to={`/${currentUser.username}/edit-work/${work._id}`}>
-              Edit this Work
-            </Link>
-          )}
-        </div>
+        <MediaQuery query="(min-width: 991px)">
+          <div
+            style={{ display: 'flex', justifyContent: 'center', padding: 12 }}
+          >
+            {isOwner && (
+              <Link to={`/${currentUser.username}/edit-work/${work._id}`}>
+                Edit this Work
+              </Link>
+            )}
+          </div>
+        </MediaQuery>
       </Col>
 
-      <Col
-        lg={6}
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          padding: 12
-        }}
-      >
-        <h4 style={{ flexGrow: 1, marginLeft: 12, marginTop: 24 }}>
-          {work.additionalInfo}
-        </h4>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            flexGrow: 0,
-            marginRight: 12,
-            color: 'rgba(0,0,0,.85)',
-            ...noCapitalsHeader
-          }}
-        >
-          <Avatar
-            size={60}
-            src={work.authorAvatar && work.authorAvatar.src}
-            style={{ backgroundColor: '#ea3924' }}
+      <Col lg={6}>
+        <MediaQuery query="(min-width: 992px)">
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              padding: 12,
+            }}
           >
-            {work.authorUsername.substring(0, 1).toUpperCase()}
-          </Avatar>
-          <b>{work.authorUsername}</b>
-        </div>
+            <h4 style={{ flexGrow: 1, marginLeft: 12, marginTop: 24 }}>
+              {work.additionalInfo}
+            </h4>
+            <AvatarHolder work={work} />
+          </div>
+        </MediaQuery>
+
+        <MediaQuery query="(max-width: 991px)">
+          <h4 style={{ textAlign: 'center', marginBottom: 24 }}>
+            {work.additionalInfo}
+          </h4>
+          {isOwner && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginBottom: 24,
+              }}
+            >
+              <Link to={`/${currentUser.username}/edit-work/${work._id}`}>
+                Edit this Work
+              </Link>
+            </div>
+          )}
+        </MediaQuery>
       </Col>
     </Row>
+  );
+}
+
+function AvatarHolder({ work }) {
+  if (!work) {
+    return null;
+  }
+
+  const initials =
+    work.authorUsername && work.authorUsername.substring(0, 1).toUpperCase();
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        flexGrow: 0,
+        marginRight: 12,
+        color: 'rgba(0,0,0,.85)',
+        ...noCapitalsHeader,
+      }}
+    >
+      <Avatar
+        size={60}
+        src={work.authorAvatar && work.authorAvatar.src}
+        style={{ backgroundColor: '#ea3924' }}
+      >
+        {initials}
+      </Avatar>
+      <b>{work.authorUsername}</b>
+    </div>
   );
 }
 

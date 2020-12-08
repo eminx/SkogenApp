@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import arrayMove from 'array-move';
-import { Alert, Button, Modal, message } from 'antd/lib';
+import { Alert, Button, Col, Modal, message, Row } from 'antd/lib';
 
 import WorkForm from '../../UIComponents/WorkForm';
 import { call, resizeImage, uploadImage } from '../../functions';
@@ -266,22 +266,26 @@ class EditWork extends PureComponent {
     const isFormValid = formValues && title.length > 3;
 
     return (
-      <div style={{ marginBottom: 24 }}>
-        <WorkForm
-          formValues={formValues}
-          categories={categories}
-          images={images.map((image) => image.src)}
-          buttonLabel={buttonLabel}
-          isButtonDisabled={isCreating}
-          isFormValid={isFormValid}
-          setUploadableImages={this.setUploadableImages}
-          registerWorkLocally={this.registerWorkLocally}
-          onSortImages={this.handleSortImages}
-          onRemoveImage={this.handleRemoveImage}
-        />
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button onClick={() => this.showDeleteModal()}>Delete</Button>
-        </div>
+      <Row style={{ padding: 24 }}>
+        <Col lg={6} />
+        <Col lg={12}>
+          <h3 style={{ marginBottom: 24 }}>Update Work</h3>
+          <WorkForm
+            formValues={formValues}
+            categories={categories}
+            images={images.map((image) => image.src)}
+            buttonLabel={buttonLabel}
+            isButtonDisabled={isCreating}
+            isFormValid={isFormValid}
+            setUploadableImages={this.setUploadableImages}
+            registerWorkLocally={this.registerWorkLocally}
+            onSortImages={this.handleSortImages}
+            onRemoveImage={this.handleRemoveImage}
+          />
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button onClick={() => this.showDeleteModal()}>Delete</Button>
+          </div>
+        </Col>
 
         <Modal
           title="Confirm"
@@ -293,7 +297,7 @@ class EditWork extends PureComponent {
         >
           Are you sure you want to delete this work?
         </Modal>
-      </div>
+      </Row>
     );
   }
 }

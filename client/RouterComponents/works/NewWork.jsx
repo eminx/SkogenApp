@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
-import { message } from 'antd/lib';
+import { Col, Row, message } from 'antd/lib';
 import arrayMove from 'array-move';
 
 import WorkForm from '../../UIComponents/WorkForm';
@@ -195,17 +195,23 @@ class NewWork extends PureComponent {
       : 'Confirm and Create Work';
 
     return (
-      <WorkForm
-        formValues={formValues}
-        categories={categories}
-        setUploadableImages={this.setUploadableImages}
-        images={uploadableImagesLocal}
-        buttonLabel={buttonLabel}
-        isButtonDisabled={isCreating}
-        onSortImages={this.handleSortImages}
-        onRemoveImage={this.handleRemoveImage}
-        registerWorkLocally={this.registerWorkLocally}
-      />
+      <Row style={{ padding: 24 }}>
+        <Col lg={6} />
+        <Col lg={12}>
+          <h3 style={{ marginBottom: 24 }}>Create New Work</h3>
+          <WorkForm
+            formValues={formValues}
+            categories={categories}
+            setUploadableImages={this.setUploadableImages}
+            images={uploadableImagesLocal}
+            buttonLabel={buttonLabel}
+            isButtonDisabled={isCreating}
+            onSortImages={this.handleSortImages}
+            onRemoveImage={this.handleRemoveImage}
+            registerWorkLocally={this.registerWorkLocally}
+          />
+        </Col>
+      </Row>
     );
   }
 }
