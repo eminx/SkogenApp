@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Blaze from 'meteor/gadicc:blaze-react-component';
-import ReactDropzone from 'react-dropzone';
 import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../../themes/skogen';
 
@@ -15,35 +14,24 @@ import {
   Divider,
   Modal
 } from 'antd/lib';
-const TextArea = Input.TextArea;
+
 import SkogenTerms from '../../UIComponents/SkogenTerms';
 const FormItem = Form.Item;
-import NiceList from '../../UIComponents/NiceList';
 import Loader from '../../UIComponents/Loader';
 
 class Profile extends React.Component {
   state = {
     isDeleteModalOn: false
-    // isAddWorkModalOn: false,
-    // workTitle: '',
-    // workShortDescription: '',
-    // workDescription: '',
-    // isUploading: false,
-    // imageUrl: null
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    this.props.form.validateFields((err, fieldsValue) => {
+    this.props.form.validateFields((err, values) => {
       if (err) {
         console.log(err);
+        message.error(err.reason);
         return;
       }
-      const values = {
-        firstName: fieldsValue['firstName'],
-        lastName: fieldsValue['lastName']
-        // bio: fieldsValue['bio']
-      };
 
       Meteor.call('saveUserInfo', values, (error, respond) => {
         if (error) {
@@ -75,10 +63,6 @@ class Profile extends React.Component {
     const { currentUser } = this.props;
     const { getFieldDecorator } = this.props.form;
     const { isDeleteModalOn } = this.state;
-
-    const formItemStyle = {
-      marginBottom: 24
-    };
 
     return (
       <div style={{ padding: 24, minHeight: '80vh' }}>
@@ -115,6 +99,23 @@ class Profile extends React.Component {
                     ],
                     initialValue: currentUser ? currentUser.lastName : null
                   })(<Input placeholder="last name" />)}
+                </FormItem>
+
+                <FormItem>
+                  {getFieldDecorator('bio', {
+                    rules: [
+                      {
+                        required: true,
+                        message: 'Enter your bio'
+                      }
+                    ],
+                    initialValue: currentUser ? currentUser.bio : ''
+                  })(
+                    <ReactQuill
+                      modules={editorModules}
+                      formats={editorFormats}
+                    />
+                  )}
                 </FormItem>
 
                 <FormItem
