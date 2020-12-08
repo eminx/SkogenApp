@@ -48,7 +48,12 @@ function WorkThumb({ work, history }) {
         ) : (
           <div />
         )}
-        <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+        <Avatar
+          src={work.authorAvatar && work.authorAvatar.src}
+          style={{ backgroundColor: '#ea3924' }}
+        >
+          {work.authorUsername.substring(0, 1).toUpperCase()}
+        </Avatar>
       </div>
 
       <div
