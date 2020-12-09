@@ -37,7 +37,7 @@ const Categories = ({ history, currentUser }) => {
       }
   };
 
-  const removeCategory = async category => {
+  const removeCategory = async (category) => {
     try {
       await call('removeCategory', category._id);
       getCategories();
@@ -50,7 +50,7 @@ const Categories = ({ history, currentUser }) => {
     }
   };
 
-  const handleCategoryInputChange = value => {
+  const handleCategoryInputChange = (value) => {
     if (specialCh.test(value)) {
       message.destroy();
       message.error('Special characters, except dash (-), are not allowed');
@@ -68,13 +68,13 @@ const Categories = ({ history, currentUser }) => {
           <AdminMenu currentPath={currentPath} />
         </Col>
 
-        <Col md={8} style={{ marginBottom: 48, paddingTop: 24 }}>
+        <Col md={8} style={{ marginBottom: 48, padding: 36 }}>
           <h2 style={{ textAlign: 'center' }}>Categories</h2>
           <h4>Work Categories</h4>
           <p>You can set categories for work entries here</p>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', marginBottom: 24 }}>
-            {categories.map(category => (
+            {categories.map((category) => (
               <Tag
                 key={category._id}
                 closable
@@ -93,8 +93,10 @@ const Categories = ({ history, currentUser }) => {
               enterButton="Add"
               size="large"
               value={categoryInput}
-              onChange={event => handleCategoryInputChange(event.target.value)}
-              onSearch={value => addNewCategory()}
+              onChange={(event) =>
+                handleCategoryInputChange(event.target.value)
+              }
+              onSearch={(value) => addNewCategory()}
             />
           </div>
         </Col>
