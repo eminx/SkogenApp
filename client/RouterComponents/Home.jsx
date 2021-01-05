@@ -6,7 +6,7 @@ import PublicActivityThumb from '../UIComponents/PublicActivityThumb';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
-const getFirstFutureOccurence = occurence =>
+const getFirstFutureOccurence = (occurence) =>
   moment(occurence.endDate).isAfter(yesterday);
 
 const compareForSort = (a, b) => {
@@ -36,13 +36,13 @@ const compareForSort = (a, b) => {
 // ];
 
 const covidInfo = [
-  `Skogen håller stängt till den 15e jan.`,
-  `Skogen is closed until jan 15th.`
+  `Skogen håller stängt till den 15e mars.`,
+  `Skogen is closed until march 15th.`,
 ];
 
 class Home extends React.Component {
   state = {
-    isUploading: false
+    isUploading: false,
   };
 
   getPublicActivities = () => {
@@ -52,11 +52,11 @@ class Home extends React.Component {
     }
 
     const publicActivities = bookingsList.filter(
-      activity => activity.isPublicActivity === true
+      (activity) => activity.isPublicActivity === true
     );
 
-    const futurePublicActivities = publicActivities.filter(activity =>
-      activity.datesAndTimes.some(date =>
+    const futurePublicActivities = publicActivities.filter((activity) =>
+      activity.datesAndTimes.some((date) =>
         moment(date.endDate).isAfter(yesterday)
       )
     );
@@ -64,10 +64,10 @@ class Home extends React.Component {
     return futurePublicActivities;
   };
 
-  parseOnlyAllowedGroups = futureGroups => {
+  parseOnlyAllowedGroups = (futureGroups) => {
     const { currentUser } = this.props;
 
-    const futureGroupsAllowed = futureGroups.filter(group => {
+    const futureGroupsAllowed = futureGroups.filter((group) => {
       if (!group.isPrivate) {
         return true;
       } else {
@@ -77,9 +77,9 @@ class Home extends React.Component {
         const currentUserId = currentUser._id;
         return (
           group.adminId === currentUserId ||
-          group.members.some(member => member.memberId === currentUserId) ||
+          group.members.some((member) => member.memberId === currentUserId) ||
           group.peopleInvited.some(
-            person => person.email === currentUser.emails[0].address
+            (person) => person.email === currentUser.emails[0].address
           )
         );
       }
@@ -94,8 +94,8 @@ class Home extends React.Component {
       return null;
     }
 
-    const futureGroups = groupsList.filter(group =>
-      group.meetings.some(meeting =>
+    const futureGroups = groupsList.filter((group) =>
+      group.meetings.some((meeting) =>
         moment(meeting.startDate).isAfter(yesterday)
       )
     );
@@ -104,17 +104,17 @@ class Home extends React.Component {
       futureGroups
     );
 
-    return futureGroupsWithAccessFilter.map(group => ({
+    return futureGroupsWithAccessFilter.map((group) => ({
       ...group,
       datesAndTimes: group.meetings,
-      isGroup: true
+      isGroup: true,
     }));
   };
 
   getAllSorted = () => {
     const allActivities = [
       ...this.getPublicActivities(),
-      ...this.getGroupMeetings()
+      ...this.getGroupMeetings(),
     ];
     return allActivities.sort(compareForSort);
   };
@@ -131,7 +131,7 @@ class Home extends React.Component {
             style={{
               justifyContent: 'center',
               display: 'flex',
-              marginBottom: 50
+              marginBottom: 50,
             }}
           >
             <div style={{ width: '100%' }}>
@@ -145,13 +145,13 @@ class Home extends React.Component {
                       marginBottom: 24,
                       padding: 12,
                       maxWidth: 576,
-                      border: '1px solid #ea3924'
+                      border: '1px solid #ea3924',
                     }}
                   >
                     <h3 style={{ textAlign: 'center', marginBottom: 12 }}>
                       Notice
                     </h3>
-                    {covidInfo.map(p => (
+                    {covidInfo.map((p) => (
                       <p style={{ textAlign: 'center' }} key={p}>
                         {p}
                       </p>
@@ -161,10 +161,10 @@ class Home extends React.Component {
                     style={{
                       display: 'flex',
                       flexWrap: 'wrap',
-                      justifyContent: 'center'
+                      justifyContent: 'center',
                     }}
                   >
-                    {allSortedActivities.map(activity => (
+                    {allSortedActivities.map((activity) => (
                       <PublicActivityThumb
                         key={activity.title}
                         item={activity}
