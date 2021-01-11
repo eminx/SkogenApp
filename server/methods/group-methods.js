@@ -9,19 +9,11 @@ const getGroupLeaveText = (firstName, groupTitle, groupId) => {
 };
 
 const getMeetingAttendText = (firstName, occurence, groupTitle, groupId) => {
-  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully registered your attendance for the meeting on ${
-    occurence.startDate
-  } at ${
-    occurence.startTime
-  } as part of the study group called "${groupTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\nSkogen Team`;
+  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully registered your attendance for the meeting on ${occurence.startDate} at ${occurence.startTime} as part of the study group called "${groupTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\nSkogen Team`;
 };
 
 const getMeetingUnattendText = (firstName, occurence, groupTitle, groupId) => {
-  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that we have successfully removed your attendance from the meeting on ${
-    occurence.startDate
-  } at ${
-    occurence.startTime
-  } as part of the study group called "${groupTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\nSkogen Team`;
+  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that we have successfully removed your attendance from the meeting on ${occurence.startDate} at ${occurence.startTime} as part of the study group called "${groupTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\nSkogen Team`;
 };
 
 const getInviteToPrivateGroupText = (
@@ -60,8 +52,8 @@ Meteor.methods({
               memberId: user._id,
               username: user.username,
               profileImage: user.profileImage || null,
-              joinDate: new Date()
-            }
+              joinDate: new Date(),
+            },
           ],
           documents: [],
           meetings: [],
@@ -73,7 +65,7 @@ Meteor.methods({
           isPublished: true,
           isPrivate: isPrivate,
           peopleInvited: [],
-          creationDate: new Date()
+          creationDate: new Date(),
         },
         () => {
           Meteor.call('createChat', formValues.title, add, (error, result) => {
@@ -91,9 +83,9 @@ Meteor.methods({
               groupId: add,
               name: formValues.title,
               joinDate: new Date(),
-              meAdmin: true
-            }
-          }
+              meAdmin: true,
+            },
+          },
         });
       } catch (error) {
         console.log(error);
@@ -131,8 +123,8 @@ Meteor.methods({
           description: formValues.description,
           readingMaterial: formValues.readingMaterial,
           capacity: formValues.capacity,
-          imageUrl
-        }
+          imageUrl,
+        },
       });
       return groupId;
     } catch (e) {
@@ -172,18 +164,18 @@ Meteor.methods({
             username: user.username,
             profileImage: user.profileImage || null,
             isRegisteredMember: user.isRegisteredMember,
-            joinDate: new Date()
-          }
-        }
+            joinDate: new Date(),
+          },
+        },
       });
       Meteor.users.update(user._id, {
         $addToSet: {
           groups: {
             groupId: theGroup._id,
             name: theGroup.title,
-            joinDate: new Date()
-          }
-        }
+            joinDate: new Date(),
+          },
+        },
       });
       Meteor.call(
         'sendEmail',
@@ -212,16 +204,16 @@ Meteor.methods({
       Groups.update(theGroup._id, {
         $pull: {
           members: {
-            memberId: user._id
-          }
-        }
+            memberId: user._id,
+          },
+        },
       });
       Meteor.users.update(user._id, {
         $pull: {
           groups: {
-            groupId: groupId
-          }
-        }
+            groupId: groupId,
+          },
+        },
       });
       Meteor.call(
         'sendEmail',
@@ -257,8 +249,8 @@ Meteor.methods({
     try {
       Groups.update(groupId, {
         $set: {
-          meetings: sortedMeetings
-        }
+          meetings: sortedMeetings,
+        },
       });
     } catch (error) {
       throw new Meteor.Error(
@@ -286,8 +278,8 @@ Meteor.methods({
     try {
       Groups.update(groupId, {
         $set: {
-          meetings: newMeetings
-        }
+          meetings: newMeetings,
+        },
       });
     } catch (error) {
       throw new Meteor.Error(
@@ -304,7 +296,7 @@ Meteor.methods({
     }
 
     const theGroup = Groups.findOne(groupId);
-    if (!theGroup.members.map(member => member.memberId).includes(user._id)) {
+    if (!theGroup.members.map((member) => member.memberId).includes(user._id)) {
       console.log('you are not a member');
       throw new Meteor.Error('You are not a member!');
     }
@@ -313,14 +305,14 @@ Meteor.methods({
     updatedMeetings[meetingIndex].attendees.push({
       memberId: user._id,
       memberUsername: user.username,
-      confirmDate: new Date()
+      confirmDate: new Date(),
     });
 
     try {
       Groups.update(groupId, {
         $set: {
-          meetings: updatedMeetings
-        }
+          meetings: updatedMeetings,
+        },
       });
       Meteor.call(
         'sendEmail',
@@ -348,7 +340,7 @@ Meteor.methods({
     }
 
     const theGroup = Groups.findOne(groupId);
-    if (!theGroup.members.map(member => member.memberId).includes(user._id)) {
+    if (!theGroup.members.map((member) => member.memberId).includes(user._id)) {
       console.log('your no member');
       throw new Meteor.Error('You are not a member!');
     }
@@ -356,15 +348,15 @@ Meteor.methods({
     const updatedMeetings = [...theGroup.meetings];
     const theAttendees = [...updatedMeetings[meetingIndex].attendees];
     const theAttendeesWithout = theAttendees.filter(
-      attendee => attendee.memberId !== user._id
+      (attendee) => attendee.memberId !== user._id
     );
     updatedMeetings[meetingIndex].attendees = theAttendeesWithout;
 
     try {
       Groups.update(groupId, {
         $set: {
-          meetings: updatedMeetings
-        }
+          meetings: updatedMeetings,
+        },
       });
       Meteor.call(
         'sendEmail',
@@ -400,8 +392,8 @@ Meteor.methods({
     try {
       Groups.update(groupId, {
         $push: {
-          documents: document
-        }
+          documents: document,
+        },
       });
     } catch (error) {
       throw new Meteor.Error('Could not add document due to:', error.reason);
@@ -421,14 +413,14 @@ Meteor.methods({
     }
 
     const newDocuments = theGroup.documents.filter(
-      document => document.name !== documentName
+      (document) => document.name !== documentName
     );
 
     try {
       Groups.update(groupId, {
         $set: {
-          documents: newDocuments
-        }
+          documents: newDocuments,
+        },
       });
     } catch (error) {
       throw new Meteor.Error(
@@ -446,8 +438,8 @@ Meteor.methods({
 
     const theGroup = Groups.findOne(groupId);
     if (theGroup.adminId !== user._id) {
-      console.log('your no admin');
-      throw new Meteor.Error('You are not admin!');
+      console.log('not admin');
+      throw new Meteor.Error('You are not allowed!');
     }
 
     const newAdmin = Meteor.users.findOne({ username: newAdminUsername });
@@ -461,8 +453,8 @@ Meteor.methods({
       Groups.update(groupId, {
         $set: {
           adminId: newAdmin._id,
-          adminUsername: newAdminUsername
-        }
+          adminUsername: newAdminUsername,
+        },
       });
     } catch (error) {
       throw new Meteor.Error('Could not change admin due to :', error.reason);
@@ -479,8 +471,8 @@ Meteor.methods({
     try {
       Groups.update(groupId, {
         $set: {
-          isArchived: true
-        }
+          isArchived: true,
+        },
       });
     } catch (error) {
       throw new Meteor.Error('Could not archive the group', error);
@@ -497,8 +489,8 @@ Meteor.methods({
     try {
       Groups.update(groupId, {
         $set: {
-          isArchived: false
-        }
+          isArchived: false,
+        },
       });
     } catch (error) {
       throw new Meteor.Error('Could not unarchive the group', error);
@@ -517,7 +509,7 @@ Meteor.methods({
     }
 
     const invitedEmailsList = theGroup.peopleInvited.map(
-      person => person.email
+      (person) => person.email
     );
 
     if (invitedEmailsList.indexOf(person.email) !== -1) {
@@ -528,9 +520,7 @@ Meteor.methods({
       Meteor.call(
         'sendEmail',
         person.email,
-        `Invitation to join the group "${theGroup.title}" at Skogen by ${
-          user.username
-        }`,
+        `Invitation to join the group "${theGroup.title}" at Skogen by ${user.username}`,
         getInviteToPrivateGroupText(
           person.firstName,
           theGroup.title,
@@ -543,12 +533,12 @@ Meteor.methods({
         $addToSet: {
           peopleInvited: {
             email: person.email,
-            firstName: person.firstName
-          }
-        }
+            firstName: person.firstName,
+          },
+        },
       });
     } catch (exception) {
       throw new Meteor.Error('Could not send the invite to the person', error);
     }
-  }
+  },
 });
