@@ -12,14 +12,14 @@ import {
   List,
   Avatar,
   Popconfirm,
-  message
+  message,
 } from 'antd/lib';
 import CardArticle from '../UIComponents/CardArticle';
 import Loader from '../UIComponents/Loader';
 const ListItem = List.Item;
 
 class Gathering extends React.Component {
-  addNewChatMessage = message => {
+  addNewChatMessage = (message) => {
     Meteor.call(
       'addChatMessage',
       this.props.gatheringData._id,
@@ -215,7 +215,7 @@ class Gathering extends React.Component {
             justifyContent: 'center',
             position: 'absolute',
             top: 20,
-            right: 30
+            right: 30,
           }}
         >
           <Link to={`/edit-booking/${gatheringData._id}`}>
@@ -227,7 +227,7 @@ class Gathering extends React.Component {
     let messages = [];
     if (chatData) {
       messages = chatData.messages;
-      messages.forEach(message => {
+      messages.forEach((message) => {
         if (message.senderId === currentUser._id) {
           message.isFromMe = true;
         }
@@ -252,7 +252,7 @@ class Gathering extends React.Component {
                 style={{
                   display: 'flex',
                   justifyContent: 'center',
-                  marginTop: 10
+                  marginTop: 10,
                 }}
               >
                 {isMyEventWTF && gatheringData && gatheringData.attendees ? (

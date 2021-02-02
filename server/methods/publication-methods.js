@@ -7,7 +7,6 @@ Meteor.methods({
       throw new Meteor.Error('Not allowed!');
     }
 
-    console.log(formValues, imageUrl, documentId);
     check(formValues.title, String);
     check(formValues.authors, String);
     check(formValues.format, String);
@@ -32,9 +31,8 @@ Meteor.methods({
         linkToDigitalCopy,
         documentId,
         isPublished: true,
-        creationDate: new Date()
+        creationDate: new Date(),
       });
-      console.log(add);
       return add;
     } catch (error) {
       console.log(error);
@@ -84,8 +82,8 @@ Meteor.methods({
           purchaseInfo: formValues.purchaseInfo,
           imageUrl,
           linkToDigitalCopy,
-          documentId
-        }
+          documentId,
+        },
       });
       return publicationId;
     } catch (e) {
@@ -108,5 +106,5 @@ Meteor.methods({
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }
-  }
+  },
 });
