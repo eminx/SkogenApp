@@ -20,7 +20,6 @@ hot-module-replacement
 react-meteor-data
 blaze
 gadicc:blaze-react-component
-accounts-password@1.7.0
 static-html
 accounts-base@1.8.0
 check@1.3.1
@@ -31,4 +30,6 @@ email@2.0.0
 accounts-ui@1.3.2
 force-ssl@1.1.0
 dev-error-overlay
+npm-bcrypt
+accounts-password
 jquery
