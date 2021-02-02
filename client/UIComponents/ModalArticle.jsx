@@ -3,7 +3,7 @@ import { Modal, Card, Avatar } from 'antd/lib';
 import Loader from './Loader';
 const { Meta } = Card;
 
-const getInitials = string => {
+const getInitials = (string) => {
   var names = string.split(' '),
     initials = names[0].substring(0, 1).toUpperCase();
 
@@ -37,7 +37,7 @@ class ModalArticle extends React.Component {
               description={
                 <div
                   dangerouslySetInnerHTML={{
-                    __html: item.longDescription || item.description
+                    __html: item.longDescription || item.description,
                   }}
                 />
               }

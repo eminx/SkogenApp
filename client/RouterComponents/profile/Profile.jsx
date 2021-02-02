@@ -26,23 +26,14 @@ class Profile extends React.Component {
     isDeleteModalOn: false,
   };
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (err) {
-        console.log(err);
-        message.error(err.reason);
-        return;
+  handleSubmit = (fieldsValue) => {
+    Meteor.call('saveUserInfo', fieldsValue, (error, respond) => {
+      if (error) {
+        console.log(error);
+        message.error(error.reason);
+      } else {
+        message.success('Your data is successfully saved');
       }
-
-      Meteor.call('saveUserInfo', values, (error, respond) => {
-        if (error) {
-          console.log(error);
-          message.error(error.reason);
-        } else {
-          message.success('Your data is successfully saved');
-        }
-      });
     });
   };
 
@@ -54,7 +45,6 @@ class Profile extends React.Component {
         return;
       }
     });
-    // message.success('Your account is successfully deleted from our database');
     setTimeout(() => {
       window.location.reload();
     }, 400);
@@ -62,7 +52,6 @@ class Profile extends React.Component {
 
   render() {
     const { currentUser } = this.props;
-    const { getFieldDecorator } = this.props.form;
     const { isDeleteModalOn } = this.state;
 
     return (
@@ -78,46 +67,44 @@ class Profile extends React.Component {
           <Col md={8}>
             <h3>Personal Info</h3>
             {currentUser && (
-              <Form onSubmit={this.handleSubmit}>
-                <FormItem>
-                  {getFieldDecorator('firstName', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please enter your first name',
-                      },
-                    ],
-                    initialValue: currentUser ? currentUser.firstName : null,
-                  })(<Input placeholder="first name" />)}
+              <Form onFinish={this.handleSubmit}>
+                <FormItem
+                  name="firstName"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please enter your first name',
+                    },
+                  ]}
+                >
+                  initialValue={currentUser ? currentUser.firstName : null}
+                  <Input placeholder="first name" />
                 </FormItem>
 
-                <FormItem>
-                  {getFieldDecorator('lastName', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Please enter your last name',
-                      },
-                    ],
-                    initialValue: currentUser ? currentUser.lastName : null,
-                  })(<Input placeholder="last name" />)}
+                <FormItem
+                  name="lastName"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please enter your last name',
+                    },
+                  ]}
+                  initialValue={currentUser ? currentUser.lastName : null}
+                >
+                  <Input placeholder="last name" />
                 </FormItem>
 
-                <FormItem>
-                  {getFieldDecorator('bio', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Enter your bio',
-                      },
-                    ],
-                    initialValue: (currentUser && currentUser.bio) || '',
-                  })(
-                    <ReactQuill
-                      modules={editorModules}
-                      formats={editorFormats}
-                    />
-                  )}
+                <FormItem
+                  name="bio"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Enter your bio',
+                    },
+                  ]}
+                  initialValue={(currentUser && currentUser.bio) || ''}
+                >
+                  <ReactQuill modules={editorModules} formats={editorFormats} />
                 </FormItem>
 
                 <FormItem
@@ -178,4 +165,4 @@ class Profile extends React.Component {
   }
 }
 
-export default Form.create()(Profile);
+export default Profile;

@@ -4,20 +4,20 @@ import { Row, Col, Divider, Input, Button, Tag, message } from 'antd/lib';
 import { emailIsValid, includesSpecialCharacters } from '../../functions';
 
 const marginBottom = {
-  marginBottom: 12
+  marginBottom: 12,
 };
 
 class InviteManager extends React.PureComponent {
   state = {
     emailInput: '',
-    firstNameInput: ''
+    firstNameInput: '',
   };
 
   isAlreadyInvited = () => {
     const { emailInput } = this.state;
     const { group } = this.props;
     const peopleInvited = group.peopleInvited;
-    const inviteEmailsList = peopleInvited.map(person => person.email);
+    const inviteEmailsList = peopleInvited.map((person) => person.email);
 
     if (inviteEmailsList.indexOf(emailInput) !== -1) {
       message.error('This email address is already added');
@@ -46,7 +46,7 @@ class InviteManager extends React.PureComponent {
     return;
   };
 
-  handleSendInvite = event => {
+  handleSendInvite = (event) => {
     event.preventDefault();
     if (this.isAlreadyInvited() || this.isValuesInvalid()) {
       return;
@@ -57,7 +57,7 @@ class InviteManager extends React.PureComponent {
 
     const person = {
       firstName: firstNameInput,
-      email: emailInput
+      email: emailInput,
     };
 
     Meteor.call(
@@ -75,24 +75,24 @@ class InviteManager extends React.PureComponent {
           );
           this.setState({
             firstNameInput: '',
-            emailInput: ''
+            emailInput: '',
           });
         }
       }
     );
   };
 
-  handleEmailInputChange = event => {
+  handleEmailInputChange = (event) => {
     event.preventDefault();
     this.setState({
-      emailInput: event.target.value
+      emailInput: event.target.value,
     });
   };
 
-  handleFirstNameInputChange = event => {
+  handleFirstNameInputChange = (event) => {
     event.preventDefault();
     this.setState({
-      firstNameInput: event.target.value
+      firstNameInput: event.target.value,
     });
   };
 
@@ -110,7 +110,7 @@ class InviteManager extends React.PureComponent {
                 display: 'flex',
                 justifyContent: 'center',
                 flexDirection: 'column',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <p>
@@ -151,7 +151,7 @@ class InviteManager extends React.PureComponent {
               title="People Invited"
               count={peopleInvited.length}
             >
-              {peopleInvited.map(person => (
+              {peopleInvited.map((person) => (
                 <Tag key={person.email} color="green" style={{ margin: 6 }}>
                   <b>{person.firstName}</b> | {person.email}
                 </Tag>
@@ -164,12 +164,12 @@ class InviteManager extends React.PureComponent {
   }
 }
 
-const EmailsContainer = props => (
+const EmailsContainer = (props) => (
   <div
     style={{
       ...marginBottom,
       padding: 12,
-      backgroundColor: '#eee'
+      backgroundColor: '#eee',
     }}
   >
     <h4>

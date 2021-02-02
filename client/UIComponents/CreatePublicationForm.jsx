@@ -12,56 +12,45 @@ import {
   InputNumber,
   Switch,
   Upload,
-  Icon,
   Divider,
   Modal,
-  message
+  message,
 } from 'antd/lib';
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
+import { CheckCircleOutlined, UploadOutlined } from '@ant-design/icons';
 
 class CreatePublicationForm extends React.Component {
-  handleSubmit = e => {
-    e.preventDefault();
+  handleSubmit = (fieldsValue) => {
+    const {
+      uploadableImage,
+      uploadableDocument,
+      registerPublicationLocally,
+    } = this.form;
+    if (!uploadableImage || !uploadableDocument) {
+      Modal.error({
+        title: 'Image and attachment are required',
+        content: 'Please upload an image',
+      });
+      return;
+    }
 
-    this.props.form.validateFields((err, fieldsValue) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
+    const values = {
+      ...fieldsValue,
+      publishDate: fieldsValue['publishDate'].format('YYYY-MM-DD'),
+    };
 
-      if (!this.props.uploadableImage || !this.props.uploadableDocument) {
-        Modal.error({
-          title: 'Image and attachment are required',
-          content: 'Please upload an image'
-        });
-        return;
-      }
-
-      const values = {
-        title: fieldsValue['title'],
-        authors: fieldsValue['authors'],
-        format: fieldsValue['format'],
-        publishDate: fieldsValue['publishDate'].format('YYYY-MM-DD'),
-        description: fieldsValue['description'],
-        purchaseInfo: fieldsValue['purchaseInfo']
-      };
-
-      if (!err) {
-        this.props.registerPublicationLocally(values);
-      }
-    });
+    registerPublicationLocally(values);
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const {
       uploadableImage,
       setUploadableImage,
       uploadableDocument,
       setUploadableDocument,
-      publicationData
+      publicationData,
     } = this.props;
 
     const configDate = {
@@ -69,12 +58,12 @@ class CreatePublicationForm extends React.Component {
         {
           type: 'object',
           required: true,
-          message: 'Please select the of the publication'
-        }
+          message: 'Please select the of the publication',
+        },
       ],
       initialValue: publicationData
         ? moment(publicationData.publishDate, 'YYYY-MM-DD')
-        : null
+        : null,
     };
 
     return (
@@ -82,86 +71,83 @@ class CreatePublicationForm extends React.Component {
         <h3>Please enter the details below</h3>
         <Divider />
 
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem>
-            {getFieldDecorator('title', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please enter the Title'
-                }
-              ],
-              initialValue: publicationData ? publicationData.title : null
-            })(<Input placeholder="Publication title" />)}
+        <Form onFinish={this.handleSubmit}>
+          <FormItem
+            name="title"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter the title',
+              },
+            ]}
+            initialValue={publicationData ? publicationData.title : null}
+          >
+            <Input placeholder="Publication title" />
           </FormItem>
 
-          <FormItem>
-            {getFieldDecorator('authors', {
-              rules: [
-                {
-                  required: true,
-                  message:
-                    'Please enter the name of the author(s). If several, use comma in between.'
-                }
-              ],
-              initialValue: publicationData ? publicationData.authors : null
-            })(<Input placeholder="Author(s) of the publication" />)}
+          <FormItem
+            name="authors"
+            rules={[
+              {
+                required: true,
+                message:
+                  'Please enter the name of the author(s). If several, use comma in between.',
+              },
+            ]}
+            initialValue={publicationData ? publicationData.authors : null}
+          >
+            <Input placeholder="Author(s) of the publication" />
           </FormItem>
 
-          <FormItem>
-            {getFieldDecorator('format', {
-              rules: [
-                {
-                  required: true,
-                  message:
-                    'Please enter the format of the publication (book, journal, poster, pamphlet, etc)'
-                }
-              ],
-              initialValue: publicationData ? publicationData.format : null
-            })(<Input placeholder="Format of the publication" />)}
+          <FormItem
+            name="format"
+            rules={[
+              {
+                required: true,
+                message:
+                  'Please enter the format of the publication (book, journal, poster, pamphlet, etc)',
+              },
+            ]}
+            initialValue={publicationData ? publicationData.format : null}
+          >
+            <Input placeholder="Format of the publication" />
           </FormItem>
 
-          <FormItem>
-            {getFieldDecorator('publishDate', configDate)(
-              <DatePicker placeholder="Select publication date" />
-            )}
+          <FormItem name="publishDate" {...configDate}>
+            <DatePicker placeholder="Select publication date" />
           </FormItem>
 
-          <FormItem>
-            {getFieldDecorator('description', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please enter a short description'
-                }
-              ],
-              initialValue: publicationData ? publicationData.description : null
-            })(
-              <TextArea
-                placeholder="Publication description"
-                autosize={{ minRows: 6, maxRows: 12 }}
-              />
-            )}
+          <FormItem
+            name="description"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter description',
+              },
+            ]}
+            initialValue={publicationData ? publicationData.description : null}
+          >
+            <TextArea
+              placeholder="Publication description"
+              autosize={{ minRows: 6, maxRows: 12 }}
+            />
           </FormItem>
 
-          <FormItem>
-            {getFieldDecorator('purchaseInfo', {
-              rules: [
-                {
-                  required: true,
-                  message:
-                    'Please enter the purchase information (price etc. also)'
-                }
-              ],
-              initialValue: publicationData
-                ? publicationData.purchaseInfo
-                : null
-            })(
-              <TextArea
-                placeholder="Purchase info about the publication"
-                autosize={{ minRows: 6, maxRows: 12 }}
-              />
-            )}
+          <FormItem
+            name="purchaseInfo"
+            rules={[
+              {
+                required: true,
+                message:
+                  'Please enter the purchase information (price etc. also)',
+              },
+            ]}
+            initialValue={publicationData ? publicationData.purchaseInfo : null}
+          >
+            <TextArea
+              placeholder="Purchase info about the publication"
+              autosize={{ minRows: 6, maxRows: 12 }}
+            />
           </FormItem>
 
           <FormItem
@@ -179,12 +165,12 @@ class CreatePublicationForm extends React.Component {
             >
               {uploadableDocument ? (
                 <Button>
-                  <Icon type="check-circle" />
+                  <CheckCircleOutlined />
                   Document selected
                 </Button>
               ) : (
                 <Button>
-                  {/* <Icon type="upload" /> */}
+                  <UploadOutlined />
                   Choose an attachment
                 </Button>
               )}
@@ -203,12 +189,12 @@ class CreatePublicationForm extends React.Component {
             >
               {uploadableImage ? (
                 <Button>
-                  <Icon type="check-circle" />
+                  <CheckCircleOutlined />
                   Image selected
                 </Button>
               ) : (
                 <Button>
-                  {/* <Icon type="upload" /> */}
+                  <UploadOutlined />
                   Choose an image
                 </Button>
               )}
@@ -218,7 +204,7 @@ class CreatePublicationForm extends React.Component {
           <FormItem
             wrapperCol={{
               xs: { span: 24, offset: 0 },
-              sm: { span: 16, offset: 8 }
+              sm: { span: 16, offset: 8 },
             }}
           >
             <Button type="primary" htmlType="submit">
@@ -231,4 +217,4 @@ class CreatePublicationForm extends React.Component {
   }
 }
 
-export default Form.create()(CreatePublicationForm);
+export default CreatePublicationForm;

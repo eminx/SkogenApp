@@ -45,7 +45,7 @@ function Works({ history }) {
 
   const filteredWorks = categoryFilter
     ? sortedWorks.filter(
-        work => work.category && work.category.label === categoryFilter
+        (work) => work.category && work.category.label === categoryFilter
       )
     : sortedWorks;
 
@@ -65,7 +65,7 @@ function Works({ history }) {
           display: 'flex',
           justifyContent: 'center',
           flexWrap: 'wrap',
-          padding: 12
+          padding: 12,
         }}
       >
         <Tag
@@ -75,7 +75,7 @@ function Works({ history }) {
         >
           <b>ALL</b>
         </Tag>
-        {categoriesAssignedToWorks.map(cat => (
+        {categoriesAssignedToWorks.map((cat) => (
           <Tag
             key={cat.label}
             value={cat.label}
@@ -90,7 +90,7 @@ function Works({ history }) {
       <div
         style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
       >
-        {filteredWorks.map(work => (
+        {filteredWorks.map((work) => (
           <div key={work._id} style={{ margin: 12 }}>
             <Link to={`/${work.authorUsername}/work/${work._id}`}>
               <WorkThumb work={work} />
@@ -102,20 +102,20 @@ function Works({ history }) {
   );
 }
 
-getCategories = works => {
+getCategories = (works) => {
   const labels = Array.from(
-    new Set(works.map(work => work.category && work.category.label))
+    new Set(works.map((work) => work.category && work.category.label))
   );
   const colors = Array.from(
-    new Set(works.map(work => work.category && work.category.color))
+    new Set(works.map((work) => work.category && work.category.color))
   );
   return labels.map((label, i) => ({
     label,
-    color: colors[i]
+    color: colors[i],
   }));
 };
 
-getOpacHSL = color => {
+getOpacHSL = (color) => {
   return color ? color.substr(0, color.length - 4) + '1)' : null;
 };
 

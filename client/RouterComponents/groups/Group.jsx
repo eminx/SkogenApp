@@ -7,7 +7,6 @@ import MediaQuery from 'react-responsive';
 import {
   Row,
   Col,
-  Anchor,
   Divider,
   Collapse,
   Drawer,
@@ -21,9 +20,8 @@ import {
   Input,
   Select,
   Switch,
-  Icon,
   Tooltip,
-  message
+  message,
 } from 'antd/lib';
 const ListItem = List.Item;
 const { Meta } = Card;
@@ -31,6 +29,7 @@ const { Option } = Select;
 const Panel = Collapse.Panel;
 const { TextArea } = Input;
 const { TabPane } = Tabs;
+import { CheckOutlined } from '@ant-design/icons';
 
 import Chattery from '../../chattery';
 import Loader from '../../UIComponents/Loader';
@@ -46,7 +45,7 @@ const customPanelStyle = {
   marginBottom: 12,
   paddingRight: 12,
   border: 0,
-  overflow: 'hidden'
+  overflow: 'hidden',
 };
 
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -56,13 +55,13 @@ class Group extends Component {
     modalOpen: false,
     redirectToLogin: false,
     newMeeting: {
-      room: defaultMeetingRoom
+      room: defaultMeetingRoom,
     },
     isFormValid: false,
     isUploading: false,
     droppedDocuments: null,
     potentialNewAdmin: false,
-    inviteManagerOpen: false
+    inviteManagerOpen: false,
   };
 
   isMember = () => {
@@ -72,7 +71,7 @@ class Group extends Component {
     }
 
     const isMember = group.members.some(
-      member => member.memberId === currentUser._id
+      (member) => member.memberId === currentUser._id
     );
 
     return Boolean(isMember);
@@ -92,22 +91,22 @@ class Group extends Component {
   openModal = () => {
     if (!this.props.currentUser) {
       this.setState({
-        redirectToLogin: true
+        redirectToLogin: true,
       });
       return;
     }
     this.setState({
-      modalOpen: true
+      modalOpen: true,
     });
   };
 
   closeModal = () => {
     this.setState({
-      modalOpen: false
+      modalOpen: false,
     });
   };
 
-  addNewChatMessage = message => {
+  addNewChatMessage = (message) => {
     Meteor.call(
       'addChatMessage',
       this.props.group._id,
@@ -129,7 +128,7 @@ class Group extends Component {
 
     if (chatData) {
       messages = [...chatData.messages];
-      messages.forEach(message => {
+      messages.forEach((message) => {
         if (message.senderId === currentUser._id) {
           message.isFromMe = true;
         }
@@ -231,13 +230,13 @@ class Group extends Component {
     });
   };
 
-  removeNotification = messageIndex => {
+  removeNotification = (messageIndex) => {
     const { group, currentUser } = this.props;
-    const shouldRun = currentUser.notifications.find(notification => {
+    const shouldRun = currentUser.notifications.find((notification) => {
       if (!notification.unSeenIndexes) {
         return false;
       }
-      return notification.unSeenIndexes.some(unSeenIndex => {
+      return notification.unSeenIndexes.some((unSeenIndex) => {
         return unSeenIndex === messageIndex;
       });
     });
@@ -275,7 +274,7 @@ class Group extends Component {
     this.setState({ newMeeting, isFormValid: this.isFormValid() });
   };
 
-  handlePlaceChange = place => {
+  handlePlaceChange = (place) => {
     const { newMeeting } = this.state;
     newMeeting.room = place;
     this.setState({ newMeeting, isFormValid: this.isFormValid() });
@@ -298,7 +297,7 @@ class Group extends Component {
     });
   };
 
-  toggleAttendance = meetingIndex => {
+  toggleAttendance = (meetingIndex) => {
     const { group, currentUser } = this.props;
 
     if (!currentUser) {
@@ -313,7 +312,7 @@ class Group extends Component {
     }
 
     const isAttending = group.meetings[meetingIndex].attendees
-      .map(attendee => attendee.memberId)
+      .map((attendee) => attendee.memberId)
       .includes(currentUser._id);
 
     if (isAttending) {
@@ -351,7 +350,7 @@ class Group extends Component {
     }
   };
 
-  deleteMeeting = meetingIndex => {
+  deleteMeeting = (meetingIndex) => {
     const { group } = this.props;
     if (!group || !group.meetings) {
       return;
@@ -380,7 +379,7 @@ class Group extends Component {
       return;
     }
 
-    const isFutureMeeting = meeting =>
+    const isFutureMeeting = (meeting) =>
       moment(meeting.endDate).isAfter(yesterday);
 
     return (
@@ -400,20 +399,20 @@ class Group extends Component {
             ...customPanelStyle,
             flexBasis: 200,
             flexShrink: 0,
-            display: isFutureMeeting(meeting) ? 'block' : 'none'
+            display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
           <div style={{ marginLeft: 24 }}>
             <h4>Attendees ({meeting.attendees && meeting.attendees.length})</h4>
             {meeting.attendees && (
               <List>
-                {meeting.attendees.map(attendee => (
+                {meeting.attendees.map((attendee) => (
                   <ListItem
                     key={attendee.memberUsername}
                     style={{
                       position: 'relative',
                       paddingTop: 6,
-                      paddingBottom: 6
+                      paddingBottom: 6,
                     }}
                   >
                     {attendee.memberUsername}
@@ -441,7 +440,7 @@ class Group extends Component {
       return;
     }
 
-    const isFutureMeeting = meeting =>
+    const isFutureMeeting = (meeting) =>
       moment(meeting.endDate).isAfter(yesterday);
 
     return group.meetings.map((meeting, meetingIndex) => {
@@ -449,7 +448,7 @@ class Group extends Component {
         currentUser &&
         meeting.attendees &&
         meeting.attendees
-          .map(attendee => attendee.memberId)
+          .map((attendee) => attendee.memberId)
           .includes(currentUser._id);
 
       return (
@@ -468,14 +467,14 @@ class Group extends Component {
             ...customPanelStyle,
             flexBasis: 200,
             flexShrink: 0,
-            display: isFutureMeeting(meeting) ? 'block' : 'none'
+            display: isFutureMeeting(meeting) ? 'block' : 'none',
           }}
         >
           <div
             style={{
               display: 'flex',
               justifyContent: 'center',
-              paddingLeft: 12
+              paddingLeft: 12,
             }}
           >
             <Button onClick={() => this.toggleAttendance(meetingIndex)}>
@@ -487,7 +486,7 @@ class Group extends Component {
     });
   };
 
-  handleFileDrop = files => {
+  handleFileDrop = (files) => {
     if (files.length !== 1) {
       message.error('Please drop only one file at a time.');
       return;
@@ -499,10 +498,10 @@ class Group extends Component {
     const closeLoader = () => this.setState({ isUploading: false });
 
     const upload = new Slingshot.Upload('groupDocumentUpload');
-    files.forEach(file => {
+    files.forEach((file) => {
       const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
       const uploadableFile = new File([file], parsedName, {
-        type: file.type
+        type: file.type,
       });
       upload.send(uploadableFile, (error, downloadUrl) => {
         if (error) {
@@ -573,16 +572,16 @@ class Group extends Component {
     );
   };
 
-  handleOpenInviteManager = event => {
+  handleOpenInviteManager = (event) => {
     event.preventDefault();
     this.setState({
-      inviteManagerOpen: true
+      inviteManagerOpen: true,
     });
   };
 
   handleCloseInviteManager = () => {
     this.setState({
-      inviteManagerOpen: false
+      inviteManagerOpen: false,
     });
   };
 
@@ -597,31 +596,31 @@ class Group extends Component {
     const documentsList =
       group &&
       group.documents &&
-      group.documents.map(document => ({
+      group.documents.map((document) => ({
         ...document,
         actions: [
           {
             content: 'Remove',
-            handleClick: () => this.removeGroupDocument(document.name)
-          }
-        ]
+            handleClick: () => this.removeGroupDocument(document.name),
+          },
+        ],
       }));
 
     const membersList =
       group &&
       group.members &&
-      group.members.map(member => ({
+      group.members.map((member) => ({
         ...member,
         actions: [
           {
             content: 'Make admin',
             handleClick: () =>
               this.setState({
-                potentialNewAdmin: member.username
+                potentialNewAdmin: member.username,
               }),
-            isDisabled: member.username === group.adminUsername
-          }
-        ]
+            isDisabled: member.username === group.adminUsername,
+          },
+        ],
       }));
 
     return (
@@ -645,10 +644,10 @@ class Group extends Component {
             </div>
             <div style={{ paddingLeft: 12 }}>
               <NiceList list={membersList} actionsDisabled={!isAdmin}>
-                {member => (
+                {(member) => (
                   <span
                     style={{
-                      fontWeight: group.adminId === member.memberId ? 700 : 400
+                      fontWeight: group.adminId === member.memberId ? 700 : 400,
                     }}
                   >
                     {member.username}
@@ -667,7 +666,7 @@ class Group extends Component {
         <div style={{ paddingLeft: 12 }}>
           {group && group.documents && group.documents.length > 0 ? (
             <NiceList list={documentsList} actionsDisabled={!isAdmin}>
-              {document => (
+              {(document) => (
                 <div style={{ width: '100%' }}>
                   <a href={document.downloadUrl} target="_blank">
                     {document.name}
@@ -691,7 +690,7 @@ class Group extends Component {
                   background: isDragActive ? '#ea3924' : '#fff5f4cc',
                   padding: 24,
                   border: '1px dashed #ea3924',
-                  textAlign: 'center'
+                  textAlign: 'center',
                 }}
               >
                 {isUploading ? (
@@ -713,7 +712,7 @@ class Group extends Component {
     );
   };
 
-  removeGroupDocument = documentName => {
+  removeGroupDocument = (documentName) => {
     if (!this.isAdmin()) {
       return;
     }
@@ -765,7 +764,7 @@ class Group extends Component {
                 description={
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: group.description
+                      __html: group.description,
                     }}
                   />
                 }
@@ -787,7 +786,7 @@ class Group extends Component {
     const titleStyle = {
       marginLeft: 24,
       fontWeigth: 300,
-      color: '#0g0g0g'
+      color: '#0g0g0g',
     };
 
     return (
@@ -822,7 +821,7 @@ class Group extends Component {
     }
 
     const isInvited = group.peopleInvited.some(
-      person => person.email === currentUser.emails[0].address
+      (person) => person.email === currentUser.emails[0].address
     );
 
     return Boolean(isInvited);
@@ -837,7 +836,7 @@ class Group extends Component {
       redirectToLogin,
       isFormValid,
       potentialNewAdmin,
-      inviteManagerOpen
+      inviteManagerOpen,
     } = this.state;
 
     if (redirectToLogin) {
@@ -853,7 +852,7 @@ class Group extends Component {
       marginBottom: 24,
       backgroundColor: '#fff',
       borderRadius: 0,
-      borderColor: '#030303'
+      borderColor: '#030303',
     };
 
     if (group && group.isPrivate && this.isNoAccess()) {
@@ -887,7 +886,7 @@ class Group extends Component {
                 <p style={{ textAlign: 'right' }}>
                   <em>
                     {group.meetings &&
-                    group.meetings.filter(meeting =>
+                    group.meetings.filter((meeting) =>
                       moment(meeting.endDate).isAfter(yesterday)
                     ).length > 0
                       ? isAdmin
@@ -1010,7 +1009,7 @@ class Group extends Component {
 const MeetingInfo = ({ meeting, isAttending, places }) => {
   const style = {
     flexBasis: 180,
-    flexShrink: 0
+    flexShrink: 0,
   };
 
   return (
@@ -1020,7 +1019,7 @@ const MeetingInfo = ({ meeting, isAttending, places }) => {
       {isAttending && (
         <div style={{ paddingTop: 12, textAlign: 'center' }}>
           <em>You're attending</em>
-          <Icon type="check" theme="outlined" style={{ marginLeft: 6 }} />
+          <CheckOutlined style={{ marginLeft: 6 }} />
         </div>
       )}
     </div>
@@ -1029,7 +1028,7 @@ const MeetingInfo = ({ meeting, isAttending, places }) => {
 
 class CreateMeetingForm extends PureComponent {
   state = {
-    isLocal: true
+    isLocal: true,
   };
 
   render() {
@@ -1040,7 +1039,7 @@ class CreateMeetingForm extends PureComponent {
       places,
       handlePlaceChange,
       handleSubmit,
-      buttonDisabled
+      buttonDisabled,
     } = this.props;
 
     const { isLocal } = this.state;
@@ -1050,7 +1049,7 @@ class CreateMeetingForm extends PureComponent {
         style={{
           padding: 12,
           backgroundColor: '#f8f8f8',
-          marginBottom: 12
+          marginBottom: 12,
         }}
       >
         <h4>Add a Meeting</h4>
@@ -1104,7 +1103,7 @@ class CreateMeetingForm extends PureComponent {
           ) : (
             <TextArea
               placeholder="Location"
-              onChange={event => handlePlaceChange(event.target.value)}
+              onChange={(event) => handlePlaceChange(event.target.value)}
               autosize={{ minRows: 2, maxRows: 4 }}
               style={{ width: 200 }}
             />
@@ -1115,7 +1114,7 @@ class CreateMeetingForm extends PureComponent {
           style={{
             display: 'flex',
             justifyContent: 'flex-end',
-            marginBottom: 0
+            marginBottom: 0,
           }}
         >
           <Button

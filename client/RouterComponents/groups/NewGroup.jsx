@@ -9,7 +9,7 @@ import {
   Input,
   Switch,
   Divider,
-  Tag
+  Tag,
 } from 'antd/lib';
 
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
@@ -33,18 +33,18 @@ class NewGroup extends React.Component {
     newGroupId: null,
     uploadedImage: null,
     uploadableImage: null,
-    uploadableImageLocal: null
+    uploadableImageLocal: null,
   };
 
-  registerGroupLocally = values => {
+  registerGroupLocally = (values) => {
     values.authorName = this.props.currentUser.username || 'emowtf';
     this.setState({
       values: values,
-      modalConfirm: true
+      modalConfirm: true,
     });
   };
 
-  setUploadableImage = e => {
+  setUploadableImage = (e) => {
     const theImageFile = e.file.originFileObj;
     const reader = new FileReader();
     reader.readAsDataURL(theImageFile);
@@ -53,7 +53,7 @@ class NewGroup extends React.Component {
       () => {
         this.setState({
           uploadableImage: theImageFile,
-          uploadableImageLocal: reader.result
+          uploadableImageLocal: reader.result,
         });
       },
       false
@@ -73,7 +73,7 @@ class NewGroup extends React.Component {
       } else {
         this.setState(
           {
-            uploadedImageUrl: imageUrl
+            uploadedImageUrl: imageUrl,
           },
           () => this.createGroup()
         );
@@ -94,13 +94,13 @@ class NewGroup extends React.Component {
           console.log('error', error);
           this.setState({
             isLoading: false,
-            isError: true
+            isError: true,
           });
         } else {
           this.setState({
             isLoading: false,
             newGroupId: result,
-            isSuccess: true
+            isSuccess: true,
           });
         }
       }
@@ -113,7 +113,7 @@ class NewGroup extends React.Component {
   handlePrivateGroupSwitch = () => {
     const { isPrivate } = this.state;
     this.setState({
-      isPrivate: !isPrivate
+      isPrivate: !isPrivate,
     });
   };
 
@@ -139,7 +139,7 @@ class NewGroup extends React.Component {
       newGroupId,
       uploadableImage,
       uploadableImageLocal,
-      isPrivate
+      isPrivate,
     } = this.state;
 
     isSuccess ? successCreation() : null;

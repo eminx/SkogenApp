@@ -25,18 +25,18 @@ class EditGroup extends React.Component {
     newGroupId: null,
     uploadedImage: null,
     uploadableImage: null,
-    uploadableImageLocal: null
+    uploadableImageLocal: null,
   };
 
-  registerGroupLocally = values => {
+  registerGroupLocally = (values) => {
     values.authorName = this.props.currentUser.username || 'emo';
     this.setState({
       values: values,
-      modalConfirm: true
+      modalConfirm: true,
     });
   };
 
-  setUploadableImage = e => {
+  setUploadableImage = (e) => {
     const theImageFile = e.file.originFileObj;
     const reader = new FileReader();
     reader.readAsDataURL(theImageFile);
@@ -45,7 +45,7 @@ class EditGroup extends React.Component {
       () => {
         this.setState({
           uploadableImage: theImageFile,
-          uploadableImageLocal: reader.result
+          uploadableImageLocal: reader.result,
         });
       },
       false
@@ -70,7 +70,7 @@ class EditGroup extends React.Component {
         console.error('Error uploading:', error);
       } else {
         this.setState({
-          uploadedImage: downloadUrl
+          uploadedImage: downloadUrl,
         });
         this.updateGroup(downloadUrl);
       }
@@ -91,13 +91,13 @@ class EditGroup extends React.Component {
         if (error) {
           this.setState({
             isLoading: false,
-            isError: true
+            isError: true,
           });
         } else {
           this.setState({
             isLoading: false,
             newGroupId: result,
-            isSuccess: true
+            isSuccess: true,
           });
         }
       }
@@ -116,13 +116,13 @@ class EditGroup extends React.Component {
       if (error) {
         this.setState({
           isLoading: false,
-          isError: true
+          isError: true,
         });
       } else {
         successDelete();
         this.setState({
           isLoading: false,
-          isSuccess: true
+          isSuccess: true,
         });
       }
     });
@@ -149,7 +149,7 @@ class EditGroup extends React.Component {
       newGroupId,
       uploadedImage,
       uploadableImage,
-      uploadableImageLocal
+      uploadableImageLocal,
     } = this.state;
 
     if (isSuccess && newGroupId) {
@@ -179,7 +179,7 @@ class EditGroup extends React.Component {
                 style={{
                   display: 'flex',
                   justifyContent: 'flex-end',
-                  padding: 12
+                  padding: 12,
                 }}
               >
                 <Button onClick={this.showDeleteModal}>Delete</Button>

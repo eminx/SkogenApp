@@ -3,7 +3,7 @@ import { Card, Icon, Avatar, Row, Col, Button, Divider } from 'antd/lib';
 const { Meta } = Card;
 import moment from 'moment';
 
-const getInitials = string => {
+const getInitials = (string) => {
   var names = string.split(' '),
     initials = names[0].substring(0, 1).toUpperCase();
 
@@ -19,11 +19,11 @@ const sectionStyle = {
   paddingRright: 12,
   fontStyle: 'italic',
   textAlign: 'right',
-  whiteSpace: 'pre-line'
+  whiteSpace: 'pre-line',
 };
 
 class CardArticle extends React.Component {
-  getEventTimes = event => {
+  getEventTimes = (event) => {
     if (event) {
       if (event.isMultipleDay || event.isFullDay) {
         return (
@@ -62,10 +62,10 @@ class CardArticle extends React.Component {
         <div
           style={{
             whiteSpace: 'pre-line',
-            color: 'rgba(0,0,0, .85)'
+            color: 'rgba(0,0,0, .85)',
           }}
           dangerouslySetInnerHTML={{
-            __html: item.longDescription
+            __html: item.longDescription,
           }}
         />
 

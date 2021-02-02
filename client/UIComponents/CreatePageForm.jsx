@@ -5,35 +5,19 @@ import { Form, Input, Button, Divider } from 'antd/lib';
 const FormItem = Form.Item;
 
 class CreatePageForm extends React.Component {
-  handleSubmit = e => {
-    e.preventDefault();
-
-    this.props.form.validateFields((err, fieldsValue) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-
-      const values = {
-        title: fieldsValue['title'],
-        longDescription: fieldsValue['longDescription']
-      };
-
-      if (!err) {
-        this.props.registerPageLocally(values);
-      }
-    });
+  handleSubmit = (fieldsValue) => {
+    this.props.registerPageLocally(fieldsValue);
   };
 
   validateTitle = (rule, value, callback) => {
-    const { form, pageData, pageTitles } = this.props;
+    const { pageData, pageTitles } = this.props;
 
     let pageExists = false;
     if (
       pageTitles &&
       value &&
-      (pageTitles.some(title => title.toLowerCase() === value.toLowerCase()) &&
-        pageData.title.toLowerCase() !== value.toLowerCase())
+      pageTitles.some((title) => title.toLowerCase() === value.toLowerCase()) &&
+      pageData.title.toLowerCase() !== value.toLowerCase()
     ) {
       pageExists = true;
     }
@@ -48,12 +32,11 @@ class CreatePageForm extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const { pageData } = this.props;
 
     const formItemLayout = {
       labelCol: { span: 6 },
-      wrapperCol: { span: 14 }
+      wrapperCol: { span: 14 },
     };
 
     return (
@@ -61,38 +44,42 @@ class CreatePageForm extends React.Component {
         <h3>Please enter the details below</h3>
         <Divider />
 
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem {...formItemLayout} label="Title">
-            {getFieldDecorator('title', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please enter the Title'
-                },
-                {
-                  validator: this.validateTitle
-                }
-              ],
-              initialValue: pageData ? pageData.title : null
-            })(<Input placeholder="Page title" />)}
+        <Form onFinish={this.handleSubmit}>
+          <FormItem
+            {...formItemLayout}
+            label="Title"
+            name="title"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter the Title',
+              },
+              { validator: this.validateTitle },
+            ]}
+            initialValue={pageData ? pageData.title : null}
+          >
+            <Input placeholder="Page title" />
           </FormItem>
 
-          <FormItem {...formItemLayout} label="Description">
-            {getFieldDecorator('longDescription', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please enter a detailed description'
-                }
-              ],
-              initialValue: pageData ? pageData.longDescription : null
-            })(<ReactQuill modules={editorModules} formats={editorFormats} />)}
+          <FormItem
+            {...formItemLayout}
+            label="Description"
+            name="longDescription"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter a detailed description',
+              },
+            ]}
+            initialValue={pageData ? pageData.longDescription : null}
+          >
+            <ReactQuill modules={editorModules} formats={editorFormats} />
           </FormItem>
 
           <FormItem
             wrapperCol={{
               xs: { span: 24, offset: 0 },
-              sm: { span: 16, offset: 8 }
+              sm: { span: 16, offset: 8 },
             }}
           >
             <Button type="primary" htmlType="submit">
@@ -105,4 +92,4 @@ class CreatePageForm extends React.Component {
   }
 }
 
-export default Form.create()(CreatePageForm);
+export default CreatePageForm;

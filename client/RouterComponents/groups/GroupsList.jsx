@@ -10,7 +10,7 @@ import {
   Radio,
   Button,
   Divider,
-  message
+  message,
 } from 'antd/lib';
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
@@ -23,18 +23,15 @@ import { compareForSort } from '../../functions';
 const ListItem = List.Item;
 
 function shortenDescription(str) {
-  return str
-    .split(/\s+/)
-    .slice(0, 20)
-    .join(' ');
+  return str.split(/\s+/).slice(0, 20).join(' ');
 }
 
 class GroupsList extends React.PureComponent {
   state = {
-    filterBy: 'active'
+    filterBy: 'active',
   };
 
-  getTitle = group => {
+  getTitle = (group) => {
     return (
       <div>
         <div>
@@ -56,7 +53,7 @@ class GroupsList extends React.PureComponent {
     );
   };
 
-  getExtra = group => {
+  getExtra = (group) => {
     return (
       <div>
         {group.adminUsername}
@@ -68,7 +65,7 @@ class GroupsList extends React.PureComponent {
     );
   };
 
-  archiveGroup = groupId => {
+  archiveGroup = (groupId) => {
     Meteor.call('archiveGroup', groupId, (error, respond) => {
       if (error) {
         message.error(error.error);
@@ -78,7 +75,7 @@ class GroupsList extends React.PureComponent {
     });
   };
 
-  unarchiveGroup = groupId => {
+  unarchiveGroup = (groupId) => {
     Meteor.call('unarchiveGroup', groupId, (error, respond) => {
       if (error) {
         message.error(error.reason);
@@ -95,26 +92,28 @@ class GroupsList extends React.PureComponent {
     if (!groupsData) {
       return [];
     }
-    const filteredGroups = groupsData.filter(group => {
+    const filteredGroups = groupsData.filter((group) => {
       if (filterBy === 'archived') {
         return group.isArchived === true;
       } else if (filterBy === 'my-groups') {
         return group.members.some(
-          member => member.memberId === currentUser._id
+          (member) => member.memberId === currentUser._id
         );
       } else {
         return !group.isArchived;
       }
     });
 
-    const filteredGroupsWithAccessFilter = this.parseOnlyAllowedGroups(filteredGroups);
+    const filteredGroupsWithAccessFilter = this.parseOnlyAllowedGroups(
+      filteredGroups
+    );
     return filteredGroupsWithAccessFilter;
   };
 
-  parseOnlyAllowedGroups = futureGroups => {
+  parseOnlyAllowedGroups = (futureGroups) => {
     const { currentUser } = this.props;
 
-    const futureGroupsAllowed = futureGroups.filter(group => {
+    const futureGroupsAllowed = futureGroups.filter((group) => {
       if (!group.isPrivate) {
         return true;
       } else {
@@ -124,9 +123,9 @@ class GroupsList extends React.PureComponent {
         const currentUserId = currentUser._id;
         return (
           group.adminId === currentUserId ||
-          group.members.some(member => member.memberId === currentUserId) ||
+          group.members.some((member) => member.memberId === currentUserId) ||
           group.peopleInvited.some(
-            person => person.email === currentUser.emails[0].address
+            (person) => person.email === currentUser.emails[0].address
           )
         );
       }
@@ -135,7 +134,7 @@ class GroupsList extends React.PureComponent {
     return futureGroupsAllowed;
   };
 
-  handleSelectedFilter = e => {
+  handleSelectedFilter = (e) => {
     const { currentUser } = this.props;
     const value = e.target.value;
     if (!currentUser && value === 'my-groups') {
@@ -144,7 +143,7 @@ class GroupsList extends React.PureComponent {
       return;
     }
     this.setState({
-      filterBy: value
+      filterBy: value,
     });
   };
 
@@ -165,15 +164,15 @@ class GroupsList extends React.PureComponent {
       display: 'flex',
       justifyContent: 'center',
       padding: 24,
-      paddingBottom: 0
+      paddingBottom: 0,
     };
 
     const radioButton = {
       padding: 8,
-      width: '100%'
+      width: '100%',
     };
 
-    const groupsList = groupsFilteredAndSorted.map(group => ({
+    const groupsList = groupsFilteredAndSorted.map((group) => ({
       ...group,
       actions: [
         {
@@ -183,9 +182,9 @@ class GroupsList extends React.PureComponent {
             : () => this.archiveGroup(group._id),
           isDisabled:
             !currentUser ||
-            (group.adminId !== currentUser._id && !currentUser.isSuperAdmin)
-        }
-      ]
+            (group.adminId !== currentUser._id && !currentUser.isSuperAdmin),
+        },
+      ],
     }));
 
     return (
@@ -226,7 +225,7 @@ class GroupsList extends React.PureComponent {
               list={groupsList.reverse()}
               actionsDisabled={!currentUser || !currentUser.isRegisteredMember}
             >
-              {group => (
+              {(group) => (
                 <Card
                   title={this.getTitle(group)}
                   bordered={false}

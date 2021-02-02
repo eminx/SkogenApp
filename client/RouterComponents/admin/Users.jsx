@@ -18,10 +18,10 @@ class Users extends React.PureComponent {
   state = {
     sortBy: 'join-date',
     filter: 'all',
-    filterWord: ''
+    filterWord: '',
   };
 
-  toggleVerification = user => {
+  toggleVerification = (user) => {
     if (user.isRegisteredMember) {
       Meteor.call('unVerifyMember', user._id, (error, response) => {
         if (error) {
@@ -43,15 +43,15 @@ class Users extends React.PureComponent {
     }
   };
 
-  handleFilterChange = event => {
+  handleFilterChange = (event) => {
     this.setState({
-      filter: event.target.value
+      filter: event.target.value,
     });
   };
 
-  handleSortChange = event => {
+  handleSortChange = (event) => {
     this.setState({
-      sortBy: event.target.value
+      sortBy: event.target.value,
     });
   };
 
@@ -76,7 +76,7 @@ class Users extends React.PureComponent {
 
     const usersFiltered =
       users &&
-      users.filter(user => {
+      users.filter((user) => {
         if (filter === 'all') {
           return true;
         } else if (filter === 'verified') {
@@ -86,7 +86,7 @@ class Users extends React.PureComponent {
         }
       });
 
-    const usersList = usersFiltered.map(user => ({
+    const usersList = usersFiltered.map((user) => ({
       ...user,
       actions: [
         {
@@ -94,38 +94,38 @@ class Users extends React.PureComponent {
             ? 'Remove user membership'
             : 'Verify this user',
           handleClick: () => this.toggleVerification(user),
-          isDisabled: user.isSuperAdmin
-        }
-      ]
+          isDisabled: user.isSuperAdmin,
+        },
+      ],
     }));
 
     const filterOptions = [
       {
         label: 'All',
-        value: 'all'
+        value: 'all',
       },
       {
         label: 'Verified',
-        value: 'verified'
+        value: 'verified',
       },
       {
         label: 'Unverified',
-        value: 'unverified'
-      }
+        value: 'unverified',
+      },
     ];
 
     const sortOptions = [
       {
         label: 'Date joined',
-        value: 'join-date'
+        value: 'join-date',
       },
       {
         label: 'Username',
-        value: 'username'
-      }
+        value: 'username',
+      },
     ];
 
-    const usersFilteredWithType = usersList.filter(user => {
+    const usersFilteredWithType = usersList.filter((user) => {
       return (
         user.username.toLowerCase().indexOf(filterWord.toLowerCase()) !== -1 ||
         user.emails[0].address
@@ -171,7 +171,7 @@ class Users extends React.PureComponent {
             <Input
               placeholder="filter by username or email address..."
               value={filterWord}
-              onChange={e => this.setState({ filterWord: e.target.value })}
+              onChange={(e) => this.setState({ filterWord: e.target.value })}
             />
 
             <Divider />
@@ -186,7 +186,7 @@ class Users extends React.PureComponent {
           </div>
 
           <NiceList list={usersSorted}>
-            {user => (
+            {(user) => (
               <div key={user.username}>
                 <div>
                   <b>{user.username}</b>

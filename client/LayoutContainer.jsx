@@ -6,45 +6,45 @@ import {
   Layout,
   Divider,
   Button,
-  Icon,
   Form,
   Input,
   Badge,
   Popover,
   List,
   Row,
-  Col
+  Col,
 } from 'antd/lib';
 const { Content } = Layout;
+import { BellOutlined } from '@ant-design/icons';
 
 const menu = [
   {
     label: 'Program',
-    route: '/'
+    route: '/',
   },
   {
     label: 'Making It Work',
-    route: '/calendar'
+    route: '/calendar',
   },
   {
     label: 'Groups',
-    route: '/groups'
+    route: '/groups',
   },
   {
     label: 'Community Press',
-    route: '/publications'
+    route: '/publications',
   },
   {
     label: 'Info',
-    route: '/page/about-skogen'
-  }
+    route: '/page/about-skogen',
+  },
 ];
 
 const adminMenu = [
   {
     label: 'Admin',
-    route: '/admin/users'
-  }
+    route: '/admin/users',
+  },
 ];
 
 const FormItem = Form.Item;
@@ -53,7 +53,7 @@ class LayoutPage extends React.Component {
   state = {
     menuOpen: false,
     me: false,
-    isNotificationPopoverOpen: false
+    isNotificationPopoverOpen: false,
   };
 
   componentWillUpdate(nextProps, nextState) {
@@ -66,23 +66,23 @@ class LayoutPage extends React.Component {
 
   openMenu = () => {
     this.setState({
-      menuOpen: true
+      menuOpen: true,
     });
   };
 
   closeMenu = () => {
     this.setState({
-      menuOpen: false
+      menuOpen: false,
     });
   };
 
   handleNotificationVisibility = () => {
     this.setState({
-      isNotificationPopoverOpen: !this.state.isNotificationPopoverOpen
+      isNotificationPopoverOpen: !this.state.isNotificationPopoverOpen,
     });
   };
 
-  renderNotificationList = list => {
+  renderNotificationList = (list) => {
     if (list.length === 0) {
       return <em>You don't have unread messages</em>;
     }
@@ -91,7 +91,7 @@ class LayoutPage extends React.Component {
       <List
         size="small"
         dataSource={list}
-        renderItem={item => (
+        renderItem={(item) => (
           <List.Item>
             <Link
               to={`/${item.context}/${item.contextId}`}
@@ -114,7 +114,7 @@ class LayoutPage extends React.Component {
     const notifications = currentUser && currentUser.notifications;
     let notificationsCounter = 0;
     if (notifications && notifications.length > 0) {
-      notifications.forEach(notification => {
+      notifications.forEach((notification) => {
         notificationsCounter += notification.count;
       });
     }
@@ -129,7 +129,7 @@ class LayoutPage extends React.Component {
                   padding: '6px 12px',
                   textTransform: 'uppercase',
                   fontWeight: 700,
-                  backgroundColor: 'rgba(255, 255, 255, .7)'
+                  backgroundColor: 'rgba(255, 255, 255, .7)',
                 }}
               >
                 <Link to="/my-profile" style={{ color: '#030303' }}>
@@ -155,10 +155,8 @@ class LayoutPage extends React.Component {
                   onVisibleChange={this.handleNotificationVisibility}
                 >
                   <Badge count={notificationsCounter}>
-                    <Icon
+                    <BellOutlined
                       onClick={this.toggleNotificationsPopover}
-                      theme="outlined"
-                      type="bell"
                       style={{ fontSize: 24, cursor: 'pointer' }}
                     />
                   </Badge>
@@ -169,14 +167,14 @@ class LayoutPage extends React.Component {
         </div>
 
         <div className="skogen-menu-layout">
-          {menu.map(item => (
+          {menu.map((item) => (
             <Link to={item.route} key={item.label}>
               <b>{item.label}</b>
             </Link>
           ))}
           {currentUser &&
             currentUser.isSuperAdmin &&
-            adminMenu.map(item => (
+            adminMenu.map((item) => (
               <Link to={item.route} key={item.label}>
                 <b>{item.label}</b>
               </Link>
@@ -198,12 +196,12 @@ const widgetBgrstyle = {
   padding: 24,
   margin: 12,
   marginTop: 32,
-  maxWidth: 320
+  maxWidth: 320,
 };
 
 const boldBabe = {
   textTransform: 'uppercase',
-  fontWeight: 700
+  fontWeight: 700,
 };
 
 const FancyFooter = () => {
@@ -212,7 +210,7 @@ const FancyFooter = () => {
       style={{
         display: 'flex',
         justifyContent: 'center',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
       }}
     >
       <div style={widgetBgrstyle}>
@@ -292,11 +290,11 @@ const SkogenInfo = () => (
   </Fragment>
 );
 
-export default (LayoutContainer = withTracker(props => {
+export default LayoutContainer = withTracker((props) => {
   const meSub = Meteor.subscribe('me');
   const currentUser = Meteor.user();
 
   return {
-    currentUser
+    currentUser,
   };
-})(LayoutPage));
+})(LayoutPage);

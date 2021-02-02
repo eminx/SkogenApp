@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Menu, Icon, List, Dropdown } from 'antd/lib';
+import { Menu, List, Dropdown } from 'antd/lib';
+import { EllipsisOutlined } from '@ant-design/icons';
 
 const MenuItem = Menu.Item;
 const ListItem = List.Item;
@@ -24,7 +25,7 @@ class NiceList extends PureComponent {
                       placement="bottomRight"
                       overlay={
                         <Menu>
-                          {listItem.actions.map(action => (
+                          {listItem.actions.map((action) => (
                             <MenuItem key={action.content}>
                               <a
                                 onClick={
@@ -34,7 +35,7 @@ class NiceList extends PureComponent {
                                   action.isDisabled
                                     ? {
                                         color: '#ccc',
-                                        cursor: 'not-allowed'
+                                        cursor: 'not-allowed',
                                       }
                                     : null
                                 }
@@ -47,16 +48,15 @@ class NiceList extends PureComponent {
                       }
                     >
                       <div>
-                        <Icon
+                        <EllipsisOutlined
                           style={{
                             fontSize: 24,
                             marginTop: 6,
-                            transform: 'rotate(90deg)'
+                            transform: 'rotate(90deg)',
                           }}
-                          type="ellipsis"
                         />
                       </div>
-                    </Dropdown>
+                    </Dropdown>,
                   ]
             }
           >

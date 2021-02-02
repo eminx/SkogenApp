@@ -22,7 +22,6 @@ function getBase64(file) {
 const sliderSettings = { dots: true };
 
 function WorkForm({
-  form,
   formValues,
   setUploadableImages,
   images,
@@ -33,100 +32,94 @@ function WorkForm({
   categories,
   registerWorkLocally,
 }) {
-  const { getFieldDecorator } = form;
-
   const formItemLayout = {
     wrapperCol: { span: 24 },
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    form.validateFields((err, fieldsValue) => {
-      if (err) {
-        message.error(err);
-        console.log(err);
-        return;
-      }
-
-      registerWorkLocally(fieldsValue);
-    });
+  const handleSubmit = (fieldsValue) => {
+    registerWorkLocally(fieldsValue);
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <FormItem {...formItemLayout}>
-        {getFieldDecorator('title', {
-          rules: [
-            {
-              required: true,
-              message: 'Please enter the Title',
-            },
-          ],
-          initialValue: formValues ? formValues.title : null,
-        })(<Input placeholder="Title" />)}
+    <Form onFinish={handleSubmit}>
+      <FormItem
+        {...formItemLayout}
+        name="title"
+        rules={[
+          {
+            required: true,
+            message: 'Please enter the title',
+          },
+        ]}
+        initialValue={formValues ? formValues.title : null}
+      >
+        <Input placeholder="Title" />
       </FormItem>
 
-      <FormItem {...formItemLayout}>
-        {getFieldDecorator('category', {
-          rules: [
-            {
-              required: true,
-              message: 'Please select category',
-            },
-          ],
-          initialValue: <span style={{ color: '#aaa' }}>Category</span>,
-        })(
-          <Select placeholder="Category">
-            {categories &&
-              categories.map((category) => (
-                <Option key={category._id} value={category.label.toUpperCase()}>
-                  {category.label.toUpperCase()}
-                </Option>
-              ))}
-          </Select>
-        )}
+      <FormItem
+        {...formItemLayout}
+        name="category"
+        rules={[
+          {
+            required: true,
+            message: 'Please select a category',
+          },
+        ]}
+        initialValue={<span style={{ color: '#aaa' }}>Category</span>}
+      >
+        <Select placeholder="Category">
+          {categories &&
+            categories.map((category) => (
+              <Option key={category._id} value={category.label.toUpperCase()}>
+                {category.label.toUpperCase()}
+              </Option>
+            ))}
+        </Select>
       </FormItem>
 
-      <FormItem {...formItemLayout}>
-        {getFieldDecorator('shortDescription', {
-          rules: [
-            {
-              required: false,
-              message: 'Please enter short info (optional)',
-            },
-          ],
-          initialValue: formValues ? formValues.shortDescription : null,
-        })(<Input placeholder="Short Description" />)}
+      <FormItem
+        {...formItemLayout}
+        name="shortDescription"
+        rules={[
+          {
+            required: true,
+            message: 'Please enter short info (optional)',
+          },
+        ]}
+        initialValue={formValues ? formValues.shortDescription : null}
+      >
+        <Input placeholder="Short Description" />
       </FormItem>
 
-      <FormItem {...formItemLayout}>
-        {getFieldDecorator('longDescription', {
-          rules: [
-            {
-              required: false,
-              message: 'Please enter a detailed description',
-            },
-          ],
-          initialValue: formValues ? formValues.longDescription : '',
-        })(
-          <ReactQuill
-            modules={editorModules}
-            formats={editorFormats}
-            placeholder="Description"
-          />
-        )}
+      <FormItem
+        {...formItemLayout}
+        name="longDescription"
+        rules={[
+          {
+            required: true,
+            message: 'Please enter a detailed description (optional)',
+          },
+        ]}
+        initialValue={formValues ? formValues.longDescription : null}
+      >
+        <ReactQuill
+          modules={editorModules}
+          formats={editorFormats}
+          placeholder="Description"
+        />
       </FormItem>
-      <FormItem {...formItemLayout}>
-        {getFieldDecorator('additionalInfo', {
-          rules: [
-            {
-              required: false,
-              message: 'Please enter additional info (optional)',
-            },
-          ],
-          initialValue: formValues ? formValues.additionalInfo : null,
-        })(<Input placeholder="Additional Info" />)}
+      <FormItem
+        {...formItemLayout}
+        name="additionalInfo"
+        rules={[
+          {
+            required: true,
+            message: 'Please enter additional info (optional)',
+          },
+        ]}
+        initialValue={formValues ? formValues.additionalInfo : null}
+      >
+        <Input placeholder="Additional Info" />
       </FormItem>
 
       <FormItem {...formItemLayout}>
@@ -236,4 +229,4 @@ const SortableContainer = sortableContainer(({ children }) => {
   return <div style={{ display: 'flex', wrap: 'wrap' }}>{children}</div>;
 });
 
-export default Form.create()(WorkForm);
+export default WorkForm;

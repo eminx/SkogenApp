@@ -43,13 +43,14 @@ const SkogenTerms = () => {
       <Divider />
       <h3>Skogen's data policy, GDPR</h3>
       <p>
-        GDPR (General Data Protection Regulation) is an EU law that regulates how
-        you as a user own your personal information and how you have the right
-        to see it and know how it is used. Parties that collect, use, and store
-        your private information do so only on loan, and must promise you that
-        they will protect it against intrusion and store it safely according to
-        the law. You must have knowledge of, and be able to agree or decline, as
-        well as terminate, any usage and storage of your personal information.
+        GDPR (General Data Protection Regulation) is an EU law that regulates
+        how you as a user own your personal information and how you have the
+        right to see it and know how it is used. Parties that collect, use, and
+        store your private information do so only on loan, and must promise you
+        that they will protect it against intrusion and store it safely
+        according to the law. You must have knowledge of, and be able to agree
+        or decline, as well as terminate, any usage and storage of your personal
+        information.
       </p>
       <h4>What data we collect, how we store it, and why</h4>
       <p>

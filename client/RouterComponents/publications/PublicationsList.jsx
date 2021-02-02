@@ -10,10 +10,7 @@ const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 
 function shortenDescription(str) {
-  return str
-    .split(/\s+/)
-    .slice(0, 20)
-    .join(' ');
+  return str.split(/\s+/).slice(0, 20).join(' ');
 }
 
 const compareByPublishDate = (a, b) => {
@@ -24,10 +21,10 @@ const compareByPublishDate = (a, b) => {
 
 class PublicationsList extends React.PureComponent {
   state = {
-    filterType: 'all'
+    filterType: 'all',
   };
 
-  getTitle = publication => {
+  getTitle = (publication) => {
     return (
       <div>
         <h3>
@@ -42,7 +39,7 @@ class PublicationsList extends React.PureComponent {
     );
   };
 
-  getExtra = publication => {
+  getExtra = (publication) => {
     return (
       <div>
         <b>{publication.format}</b>
@@ -54,9 +51,9 @@ class PublicationsList extends React.PureComponent {
     );
   };
 
-  handleFilter = event => {
+  handleFilter = (event) => {
     this.setState({
-      filterType: event.target.value
+      filterType: event.target.value,
     });
   };
 
@@ -74,16 +71,16 @@ class PublicationsList extends React.PureComponent {
       display: 'flex',
       justifyContent: 'center',
       padding: 24,
-      paddingBottom: 0
+      paddingBottom: 0,
     };
 
-    const publicationTypesRepeated = publicationsData.map(pub => pub.format);
+    const publicationTypesRepeated = publicationsData.map((pub) => pub.format);
     const publicationTypes = ['all', ...new Set(publicationTypesRepeated)];
 
     const publicationsFiltered =
       filterType === 'all'
         ? publicationsSorted
-        : publicationsSorted.filter(pub => pub.format === filterType);
+        : publicationsSorted.filter((pub) => pub.format === filterType);
 
     return (
       <Row gutter={24}>
@@ -113,7 +110,7 @@ class PublicationsList extends React.PureComponent {
 
           <List
             dataSource={publicationsFiltered}
-            renderItem={publication => (
+            renderItem={(publication) => (
               <ListItem style={{ paddingBottom: 0 }}>
                 <Card
                   title={this.getTitle(publication)}

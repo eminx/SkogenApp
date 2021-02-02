@@ -16,10 +16,10 @@ class Calendar extends React.PureComponent {
     mode: 'list',
     editBooking: null,
     calendarFilter: 'All rooms',
-    selectedBooking: null
+    selectedBooking: null,
   };
 
-  handleModeChange = e => {
+  handleModeChange = (e) => {
     const mode = e.target.value;
     this.setState({ mode });
   };
@@ -27,29 +27,29 @@ class Calendar extends React.PureComponent {
   handleSelectBooking = (booking, e) => {
     e.preventDefault();
     this.setState({
-      selectedBooking: booking
+      selectedBooking: booking,
     });
   };
 
-  handleCalendarFilterChange = value => {
+  handleCalendarFilterChange = (value) => {
     this.setState({
-      calendarFilter: value
+      calendarFilter: value,
     });
   };
 
   handleCloseModal = () => {
     this.setState({
-      selectedBooking: null
+      selectedBooking: null,
     });
   };
 
   handleEditBooking = () => {
     this.setState({
-      editBooking: true
+      editBooking: true,
     });
   };
 
-  getBookingTimes = booking => {
+  getBookingTimes = (booking) => {
     if (!booking) {
       return '';
     }
@@ -87,7 +87,7 @@ class Calendar extends React.PureComponent {
     }
   };
 
-  handleDropDocument = files => {
+  handleDropDocument = (files) => {
     const { currentUser } = this.props;
     if (files.length > 1) {
       message.error('Please drop only one file at a time.');
@@ -99,10 +99,10 @@ class Calendar extends React.PureComponent {
     const closeLoader = () => this.setState({ isUploading: false });
 
     const upload = new Slingshot.Upload('groupDocumentUpload');
-    files.forEach(file => {
+    files.forEach((file) => {
       const parsedName = file.name.replace(/\s+/g, '-').toLowerCase();
       const uploadableFile = new File([file], parsedName, {
-        type: file.type
+        type: file.type,
       });
       upload.send(uploadableFile, (error, downloadUrl) => {
         if (error) {
@@ -122,9 +122,7 @@ class Calendar extends React.PureComponent {
                 closeLoader();
               } else {
                 message.success(
-                  `${
-                    uploadableFile.name
-                  } is succesfully uploaded and assigned to manuals!`
+                  `${uploadableFile.name} is succesfully uploaded and assigned to manuals!`
                 );
                 closeLoader();
               }
@@ -135,7 +133,7 @@ class Calendar extends React.PureComponent {
     });
   };
 
-  removeManual = documentId => {
+  removeManual = (documentId) => {
     const { currentUser } = this.props;
     if (!currentUser || !currentUser.isSuperAdmin) {
       return;
@@ -157,18 +155,18 @@ class Calendar extends React.PureComponent {
       currentUser,
       placesList,
       allActivities,
-      manuals
+      manuals,
     } = this.props;
     const {
       editBooking,
       calendarFilter,
       selectedBooking,
-      isUploading
+      isUploading,
     } = this.state;
 
     const futureBookings = [];
 
-    allActivities.filter(booking => {
+    allActivities.filter((booking) => {
       if (moment(booking.endDate).isAfter(yesterday)) {
         futureBookings.push(booking);
       }
@@ -178,7 +176,7 @@ class Calendar extends React.PureComponent {
 
     if (calendarFilter !== 'All rooms') {
       filteredBookings = allActivities.filter(
-        booking => booking.room === calendarFilter
+        (booking) => booking.room === calendarFilter
       );
     }
 
@@ -191,17 +189,17 @@ class Calendar extends React.PureComponent {
     const centerStyle = {
       display: 'flex',
       justifyContent: 'center',
-      marginBottom: 24
+      marginBottom: 24,
     };
 
-    const manualsList = manuals.map(manual => ({
+    const manualsList = manuals.map((manual) => ({
       ...manual,
       actions: [
         {
           content: 'Remove',
-          handleClick: () => this.removeManual(manual._id)
-        }
-      ]
+          handleClick: () => this.removeManual(manual._id),
+        },
+      ],
     }));
 
     return (
@@ -221,7 +219,7 @@ class Calendar extends React.PureComponent {
             style={{
               justifyContent: 'center',
               display: 'flex',
-              marginBottom: 50
+              marginBottom: 50,
             }}
           >
             <div style={{ width: '100%' }}>
@@ -230,7 +228,7 @@ class Calendar extends React.PureComponent {
                 style={{
                   display: 'flex',
                   justifyContent: 'center',
-                  flexWrap: 'wrap'
+                  flexWrap: 'wrap',
                 }}
               >
                 <Tag.CheckableTag
@@ -280,7 +278,7 @@ class Calendar extends React.PureComponent {
                       background: isDragActive ? '#ea3924' : '#fff5f4cc',
                       padding: 24,
                       border: '1px dashed #ea3924',
-                      textAlign: 'center'
+                      textAlign: 'center',
                     }}
                   >
                     {isUploading ? (
@@ -302,7 +300,7 @@ class Calendar extends React.PureComponent {
           <Col md={16} style={{ paddingLeft: 12, paddingRight: 12 }}>
             {manuals && manuals.length > 0 && (
               <NiceList list={manualsList} actionsDisabled={!isSuperAdmin}>
-                {manual => (
+                {(manual) => (
                   <Card
                     key={manual.documentLabel}
                     title={
@@ -328,7 +326,7 @@ class Calendar extends React.PureComponent {
           cancelText="Close"
           okButtonProps={
             (!this.isCreatorOrAdmin() || selectedBooking.isGroup) && {
-              style: { display: 'none' }
+              style: { display: 'none' },
             }
           }
           onOk={this.handleEditBooking}
@@ -362,7 +360,7 @@ class Calendar extends React.PureComponent {
                     selectedBooking.longDescription &&
                     (selectedBooking.isPrivateGroup
                       ? ''
-                      : selectedBooking.longDescription.slice(0, 120) + '...')
+                      : selectedBooking.longDescription.slice(0, 120) + '...'),
                 }}
               />
               {selectedBooking && selectedBooking.isPublicActivity && (

@@ -21,18 +21,18 @@ class NewPublication extends React.Component {
     uploadableImage: null,
     uploadableImageLocal: null,
     uploadedDocument: null,
-    uploadableDocument: null
+    uploadableDocument: null,
   };
 
-  registerPublicationLocally = values => {
+  registerPublicationLocally = (values) => {
     values.authorName = this.props.currentUser.username || 'emowtf';
     this.setState({
       values: values,
-      modalConfirm: true
+      modalConfirm: true,
     });
   };
 
-  setUploadableImage = e => {
+  setUploadableImage = (e) => {
     const theImageFile = e.file.originFileObj;
     const reader = new FileReader();
     reader.readAsDataURL(theImageFile);
@@ -41,14 +41,14 @@ class NewPublication extends React.Component {
       () => {
         this.setState({
           uploadableImage: theImageFile,
-          uploadableImageLocal: reader.result
+          uploadableImageLocal: reader.result,
         });
       },
       false
     );
   };
 
-  setUploadableDocument = e => {
+  setUploadableDocument = (e) => {
     const theDocumentFile = e.file.originFileObj;
     const reader = new FileReader();
     reader.readAsDataURL(theDocumentFile);
@@ -56,7 +56,7 @@ class NewPublication extends React.Component {
       'load',
       () => {
         this.setState({
-          uploadableDocument: theDocumentFile
+          uploadableDocument: theDocumentFile,
         });
       },
       false
@@ -85,7 +85,7 @@ class NewPublication extends React.Component {
               this.setState(
                 {
                   uploadedDocumentUrl: downloadUrl,
-                  uploadedDocumentId: respond
+                  uploadedDocumentId: respond,
                 },
                 () => this.uploadImage()
               );
@@ -107,7 +107,7 @@ class NewPublication extends React.Component {
       } else {
         this.setState(
           {
-            uploadedImageUrl: imageUrl
+            uploadedImageUrl: imageUrl,
           },
           () => this.createPublication()
         );
@@ -120,7 +120,7 @@ class NewPublication extends React.Component {
       values,
       uploadedDocumentUrl,
       uploadedDocumentId,
-      uploadedImageUrl
+      uploadedImageUrl,
     } = this.state;
 
     Meteor.call(
@@ -133,13 +133,13 @@ class NewPublication extends React.Component {
         if (error) {
           this.setState({
             isLoading: false,
-            isError: true
+            isError: true,
           });
         } else {
           this.setState({
             isLoading: false,
             newPublicationId: result,
-            isSuccess: true
+            isSuccess: true,
           });
         }
       }
@@ -171,7 +171,7 @@ class NewPublication extends React.Component {
       newPublicationId,
       uploadableImage,
       uploadableImageLocal,
-      uploadableDocument
+      uploadableDocument,
     } = this.state;
 
     isSuccess ? successCreation() : null;

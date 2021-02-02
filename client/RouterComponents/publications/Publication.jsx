@@ -9,7 +9,7 @@ import {
   List,
   Card,
   Button,
-  message
+  message,
 } from 'antd/lib';
 const ListItem = List.Item;
 const { Meta } = Card;
@@ -18,7 +18,7 @@ import Loader from '../../UIComponents/Loader';
 class Publication extends React.PureComponent {
   state = {
     modalOpen: false,
-    redirectToLogin: false
+    redirectToLogin: false,
   };
 
   isAdmin = () => {
@@ -32,7 +32,7 @@ class Publication extends React.PureComponent {
     return Boolean(isAdmin);
   };
 
-  getTitle = publication => {
+  getTitle = (publication) => {
     return (
       <div>
         <h2 style={{ marginBottom: 0 }}>{publication.title}</h2>

@@ -8,7 +8,7 @@ import {
   Radio,
   Button,
   IconButton,
-  Divider
+  Divider,
 } from 'antd/lib';
 
 import Loader from '../../UIComponents/Loader';
@@ -19,14 +19,11 @@ const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 
 function shortenDescription(str) {
-  return str
-    .split(/\s+/)
-    .slice(0, 20)
-    .join(' ');
+  return str.split(/\s+/).slice(0, 20).join(' ');
 }
 
 class DocumentsList extends React.PureComponent {
-  getExtra = doc => {
+  getExtra = (doc) => {
     return (
       <div>
         <em> {doc.uploadedByName}</em>
@@ -45,7 +42,7 @@ class DocumentsList extends React.PureComponent {
       display: 'flex',
       justifyContent: 'center',
       padding: 24,
-      paddingBottom: 0
+      paddingBottom: 0,
     };
 
     return (
@@ -72,7 +69,7 @@ class DocumentsList extends React.PureComponent {
           <List
             dataSource={documentsData}
             split={false}
-            renderItem={doc => (
+            renderItem={(doc) => (
               <ListItem style={{ paddingBottom: 0 }}>
                 <div
                   style={{
@@ -80,7 +77,7 @@ class DocumentsList extends React.PureComponent {
                     display: 'flex',
                     justifyContent: 'space-between',
                     border: '1px solid #030303',
-                    padding: 12
+                    padding: 12,
                   }}
                 >
                   <div>

@@ -26,19 +26,19 @@ class NewBookSpace extends React.Component {
     uploadableImage: null,
     isPublicActivity: false,
     isBookingsDisabled: false,
-    numberOfRecurrence: 1
+    numberOfRecurrence: 1,
   };
 
-  registerGatheringLocally = values => {
+  registerGatheringLocally = (values) => {
     values.authorName = this.props.currentUser.username || 'emo';
 
     this.setState({
       values,
-      modalConfirm: true
+      modalConfirm: true,
     });
   };
 
-  setUploadableImage = e => {
+  setUploadableImage = (e) => {
     const theImageFile = e.file.originFileObj;
 
     Resizer.imageFileResizer(
@@ -48,10 +48,10 @@ class NewBookSpace extends React.Component {
       'JPEG',
       95,
       0,
-      uri => {
+      (uri) => {
         this.setState({
           uploadableImage: dataURLtoFile(uri, theImageFile.name),
-          uploadableImageLocal: uri
+          uploadableImageLocal: uri,
         });
       },
       'base64'
@@ -71,7 +71,7 @@ class NewBookSpace extends React.Component {
       } else {
         this.setState(
           {
-            uploadedImage: downloadUrl
+            uploadedImage: downloadUrl,
           },
           () => this.createBooking()
         );
@@ -84,7 +84,7 @@ class NewBookSpace extends React.Component {
       values,
       isPublicActivity,
       isBookingsDisabled,
-      uploadedImage
+      uploadedImage,
     } = this.state;
 
     values.isPublicActivity = isPublicActivity;
@@ -95,13 +95,13 @@ class NewBookSpace extends React.Component {
         console.log('error', error);
         this.setState({
           isLoading: false,
-          isError: true
+          isError: true,
         });
       } else {
         this.setState({
           isLoading: false,
           newBookingId: result,
-          isSuccess: true
+          isSuccess: true,
         });
       }
     });
@@ -110,15 +110,15 @@ class NewBookSpace extends React.Component {
   hideModal = () => this.setState({ modalConfirm: false });
   showModal = () => this.setState({ modalConfirm: true });
 
-  handlePublicActivitySwitch = value => {
+  handlePublicActivitySwitch = (value) => {
     this.setState({
-      isPublicActivity: value
+      isPublicActivity: value,
     });
   };
 
-  handleDisableBookingsSwitch = value => {
+  handleDisableBookingsSwitch = (value) => {
     this.setState({
-      isBookingsDisabled: value
+      isBookingsDisabled: value,
     });
   };
 
@@ -157,7 +157,7 @@ class NewBookSpace extends React.Component {
       uploadableImageLocal,
       isPublicActivity,
       isBookingsDisabled,
-      numberOfRecurrence
+      numberOfRecurrence,
     } = this.state;
 
     return (

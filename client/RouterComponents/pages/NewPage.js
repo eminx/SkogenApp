@@ -22,18 +22,18 @@ class NewPage extends React.Component {
     newPageId: null,
     uploadedImage: null,
     uploadableImage: null,
-    uploadableImageLocal: null
+    uploadableImageLocal: null,
   };
 
-  registerPageLocally = values => {
+  registerPageLocally = (values) => {
     values.authorName = this.props.currentUser.username || 'emowtf';
     this.setState({
       values: values,
-      modalConfirm: true
+      modalConfirm: true,
     });
   };
 
-  setUploadableImage = e => {
+  setUploadableImage = (e) => {
     const theImageFile = e.file.originFileObj;
     const reader = new FileReader();
     reader.readAsDataURL(theImageFile);
@@ -42,7 +42,7 @@ class NewPage extends React.Component {
       () => {
         this.setState({
           uploadableImage: theImageFile,
-          uploadableImageLocal: reader.result
+          uploadableImageLocal: reader.result,
         });
       },
       false
@@ -62,7 +62,7 @@ class NewPage extends React.Component {
         this.setState(
           {
             uploadedImageUrl: imageUrl,
-            isLoading: false
+            isLoading: false,
           },
           () => this.createPage()
         );
@@ -83,13 +83,13 @@ class NewPage extends React.Component {
         console.log('error', error);
         this.setState({
           isLoading: false,
-          isError: true
+          isError: true,
         });
       } else {
         this.setState({
           isLoading: false,
           newPageId: parseTitle(result),
-          isSuccess: true
+          isSuccess: true,
         });
       }
     });
@@ -119,7 +119,7 @@ class NewPage extends React.Component {
       isSuccess,
       newPageId,
       uploadableImage,
-      uploadableImageLocal
+      uploadableImageLocal,
     } = this.state;
 
     isSuccess ? successCreation() : null;

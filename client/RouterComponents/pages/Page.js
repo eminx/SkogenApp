@@ -9,10 +9,10 @@ import { parseTitle } from '../../functions';
 class Page extends PureComponent {
   render() {
     const { pages, pageId, currentUser, isLoading, history } = this.props;
-    const pageTitles = pages ? pages.map(page => page.title) : [];
+    const pageTitles = pages ? pages.map((page) => page.title) : [];
     const page =
       pages && pages.length > 0
-        ? pages.find(page => parseTitle(page.title) === parseTitle(pageId))
+        ? pages.find((page) => parseTitle(page.title) === parseTitle(pageId))
         : null;
 
     if (isLoading) {
@@ -40,7 +40,7 @@ class Page extends PureComponent {
           <Col md={10}>
             <div
               style={{
-                marginBottom: 24
+                marginBottom: 24,
               }}
             >
               <h2>{page && page.title}</h2>
@@ -48,7 +48,7 @@ class Page extends PureComponent {
                 {page && (
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: page.longDescription
+                      __html: page.longDescription,
                     }}
                   />
                 )}

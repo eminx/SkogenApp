@@ -26,7 +26,7 @@ const Resources = ({ history }) => {
     }
   };
 
-  const removePlace = async place => {
+  const removePlace = async (place) => {
     try {
       await call('removePlace', place._id);
       message.success('Place is successfully removed');
@@ -36,7 +36,7 @@ const Resources = ({ history }) => {
     }
   };
 
-  const addPlace = async name => {
+  const addPlace = async (name) => {
     try {
       await call('addPlace', name);
       message.success('Your place succesfully added to the list');
@@ -49,15 +49,15 @@ const Resources = ({ history }) => {
 
   const currentPath = history && history.location.pathname;
 
-  const placesWithActions = places.map(place => ({
+  const placesWithActions = places.map((place) => ({
     ...place,
     actions: [
       {
         content: 'Remove',
         handleClick: () => removePlace(place),
-        isDisabled: false
-      }
-    ]
+        isDisabled: false,
+      },
+    ],
   }));
 
   return (
@@ -74,14 +74,14 @@ const Resources = ({ history }) => {
               display: 'flex',
               justifyContent: 'center',
               alignItems: 'center',
-              padding: 12
+              padding: 12,
             }}
           >
             <Button onClick={() => setAddModal(true)}>Add</Button>
           </div>
           {places && (
             <NiceList list={placesWithActions}>
-              {place => <h4>{place.name}</h4>}
+              {(place) => <h4>{place.name}</h4>}
             </NiceList>
           )}
         </Col>
@@ -104,7 +104,7 @@ const Resources = ({ history }) => {
           placeholder="type and press enter"
           enterButton="Add"
           size="large"
-          onSearch={value => addPlace(value)}
+          onSearch={(value) => addPlace(value)}
         />
       </Modal>
     </div>

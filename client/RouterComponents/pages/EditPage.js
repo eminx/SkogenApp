@@ -22,18 +22,18 @@ class EditPage extends React.Component {
     newPageTitle: null,
     uploadedImage: null,
     uploadableImage: null,
-    isDeleteModalOn: false
+    isDeleteModalOn: false,
   };
 
-  registerPageLocally = values => {
+  registerPageLocally = (values) => {
     values.authorName = this.props.currentUser.username || 'emo';
     this.setState({
       values: values,
-      modalConfirm: true
+      modalConfirm: true,
     });
   };
 
-  setUploadableImage = e => {
+  setUploadableImage = (e) => {
     const theImageFile = e.file.originFileObj;
     const reader = new FileReader();
     reader.readAsDataURL(theImageFile);
@@ -42,7 +42,7 @@ class EditPage extends React.Component {
       () => {
         this.setState({
           uploadableImage: theImageFile,
-          uploadableImageLocal: reader.result
+          uploadableImageLocal: reader.result,
         });
       },
       false
@@ -67,7 +67,7 @@ class EditPage extends React.Component {
       } else {
         this.setState(
           {
-            uploadedImageUrl: imageUrl
+            uploadedImageUrl: imageUrl,
           },
           () => this.updatePage()
         );
@@ -94,13 +94,13 @@ class EditPage extends React.Component {
         if (error) {
           this.setState({
             isLoading: false,
-            isError: true
+            isError: true,
           });
         } else {
           this.setState({
             isLoading: false,
             newPageTitle: parseTitle(respond),
-            isSuccess: true
+            isSuccess: true,
           });
         }
       }
@@ -120,13 +120,13 @@ class EditPage extends React.Component {
       if (error) {
         this.setState({
           isLoading: false,
-          isError: true
+          isError: true,
         });
       } else {
         this.setState({
           isLoading: false,
           newPageTitle: 'deleted',
-          isSuccess: true
+          isSuccess: true,
         });
       }
     });
@@ -156,7 +156,7 @@ class EditPage extends React.Component {
       isSuccess,
       newPageTitle,
       uploadableImage,
-      isDeleteModalOn
+      isDeleteModalOn,
     } = this.state;
 
     if (isSuccess) {

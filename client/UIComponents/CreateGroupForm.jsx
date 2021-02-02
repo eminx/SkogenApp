@@ -8,115 +8,86 @@ import {
   Select,
   InputNumber,
   Upload,
-  Icon,
   Divider,
-  Modal
+  Modal,
 } from 'antd/lib';
 const FormItem = Form.Item;
+import { CheckCircleOutlined } from '@ant-design/icons';
 
 class CreateGroupForm extends React.Component {
-  handleSubmit = e => {
-    e.preventDefault();
+  handleSubmit = (fieldsValue) => {
+    if (!this.props.uploadableImage) {
+      Modal.error({
+        title: 'Image is required',
+        content: 'Please upload an image',
+      });
+      return;
+    }
 
-    this.props.form.validateFields((err, fieldsValue) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-
-      if (!this.props.uploadableImage) {
-        Modal.error({
-          title: 'Image is required',
-          content: 'Please upload an image'
-        });
-        return;
-      }
-
-      const values = {
-        title: fieldsValue['title'],
-        description: fieldsValue['description'],
-        readingMaterial: fieldsValue['readingMaterial'],
-        capacity: fieldsValue['capacity']
-      };
-
-      if (!err) {
-        this.props.registerGroupLocally(values);
-      }
-    });
+    this.props.registerGroupLocally(fieldsValue);
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const {
-      uploadableImage,
-      setUploadableImage,
-      uploadableDocument,
-      setUploadableDocument,
-      groupData
-    } = this.props;
+    const { uploadableImage, setUploadableImage, groupData } = this.props;
 
     return (
       <div className="create-gathering-form">
         <h3>Please enter the details below</h3>
         <Divider />
 
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem>
-            {getFieldDecorator('title', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please enter the Title'
-                }
-              ],
-              initialValue: groupData ? groupData.title : null
-            })(<Input placeholder="Group title" />)}
+        <Form onFinish={this.handleSubmit}>
+          <FormItem
+            name="title"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter the title',
+              },
+            ]}
+            initialValue={groupData ? groupData.title : null}
+          >
+            <Input placeholder="Group title" />
           </FormItem>
 
-          <FormItem>
-            {getFieldDecorator('readingMaterial', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please enter a subtitle'
-                }
-              ],
-              initialValue: groupData ? groupData.readingMaterial : null
-            })(<Input placeholder="Subtitle" />)}
+          <FormItem
+            name="readingMaterial"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter a subtitle',
+              },
+            ]}
+            initialValue={groupData ? groupData.readingMaterial : null}
+          >
+            <Input placeholder="Subtitle" />
           </FormItem>
 
-          <FormItem>
-            {getFieldDecorator('description', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please enter a detailed description'
-                }
-              ],
-              initialValue: groupData ? groupData.description : null
-            })(
-              // <TextArea
-              //   placeholder="Group description (details of the Study etc.)"
-              //   autosize={{ minRows: 6, maxRows: 12 }}
-              // />
-              <ReactQuill modules={editorModules} formats={editorFormats} />
-            )}
+          <FormItem
+            name="description"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter a detailed description',
+              },
+            ]}
+            initialValue={groupData ? groupData.description : null}
+          >
+            <ReactQuill modules={editorModules} formats={editorFormats} />
           </FormItem>
 
-          <FormItem>
-            {getFieldDecorator('capacity', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please enter capacity for the group'
-                }
-              ],
-              min: 2,
-              max: 50,
-              initialValue: groupData ? groupData.capacity : null
-            })(
-              <InputNumber min={2} max={50} placeholder="Capacity" autosize />
-            )}
+          <FormItem
+            name="capacity"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter capacity for the group',
+              },
+            ]}
+            initialValue={groupData ? groupData.capacity : null}
+            min={2}
+            max={50}
+          >
+            <InputNumber min={2} max={50} placeholder="Capacity" autosize />
           </FormItem>
 
           <FormItem
@@ -131,14 +102,11 @@ class CreateGroupForm extends React.Component {
             >
               {uploadableImage ? (
                 <Button>
-                  <Icon type="check-circle" />
+                  <CheckCircleOutlined />
                   Image selected
                 </Button>
               ) : (
-                <Button>
-                  {/* <Icon type="upload" /> */}
-                  Choose an image
-                </Button>
+                <Button>Choose an image</Button>
               )}
             </Upload>
           </FormItem>
@@ -146,7 +114,7 @@ class CreateGroupForm extends React.Component {
           <FormItem
             wrapperCol={{
               xs: { span: 24, offset: 0 },
-              sm: { span: 16, offset: 8 }
+              sm: { span: 16, offset: 8 },
             }}
           >
             <Button type="primary" htmlType="submit">
@@ -159,4 +127,4 @@ class CreateGroupForm extends React.Component {
   }
 }
 
-export default Form.create()(CreateGroupForm);
+export default CreateGroupForm;

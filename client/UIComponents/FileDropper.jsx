@@ -24,7 +24,7 @@ const FileDropper = ({
               borderStyle: 'dashed',
               borderColor: '#ea3924',
               cursor: 'hover',
-              textAlign: 'center'
+              textAlign: 'center',
             }}
           >
             {uploadableImageLocal || imageUrl ? (
@@ -37,7 +37,7 @@ const FileDropper = ({
                 style={{
                   backgroundColor: 'rgba(0,0,0,0)',
                   margin: '24px auto',
-                  border: 'none'
+                  border: 'none',
                 }}
               >
                 Choose

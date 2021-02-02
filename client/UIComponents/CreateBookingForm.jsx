@@ -11,13 +11,14 @@ import {
   Select,
   InputNumber,
   Upload,
-  Icon,
   Divider,
-  Modal
+  Modal,
 } from 'antd/lib';
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
+import { CheckCircleOutlined, UploadOutlined } from '@ant-design/icons';
+
 import moment from 'moment';
 
 const compareForSort = (a, b) => {
@@ -34,7 +35,7 @@ let emptyDateAndTime = {
   startTime: null,
   endTime: null,
   attendees: [],
-  capacity: defaultCapacity
+  capacity: defaultCapacity,
 };
 
 const skogenAddress = 'Masthuggsterrassen 3, SE-413 18 Göteborg, Sverige';
@@ -46,12 +47,12 @@ const iconStyle = {
   display: 'flex',
   justifyContent: 'center',
   marginBottom: 24,
-  backgroundColor: '#f8f8f8'
+  backgroundColor: '#f8f8f8',
 };
 
 class CreateBookingForm extends Component {
   state = {
-    datesAndTimes: [emptyDateAndTime]
+    datesAndTimes: [emptyDateAndTime],
   };
 
   componentDidMount() {
@@ -72,85 +73,75 @@ class CreateBookingForm extends Component {
 
     const datesAndTimesSorted = bookingData.datesAndTimes.sort(compareForSort);
 
-    const datesAndTimesWithMoment = datesAndTimesSorted.map(recurrence => ({
+    const datesAndTimesWithMoment = datesAndTimesSorted.map((recurrence) => ({
       ...recurrence,
       startDateMoment: moment(recurrence.startDate, 'YYYY-MM-DD'),
       startTimeMoment: moment(recurrence.startTime, 'HH:mm'),
       endDateMoment: moment(recurrence.endDate, 'YYYY-MM-DD'),
       endTimeMoment: moment(recurrence.endTime, 'HH:mm'),
       capacity: recurrence.capacity,
-      attendees: recurrence.attendees || []
+      attendees: recurrence.attendees || [],
     }));
 
     this.setState({
-      datesAndTimes: datesAndTimesWithMoment
+      datesAndTimes: datesAndTimesWithMoment,
     });
   };
 
   addRecurrence = () => {
     this.setState({
-      datesAndTimes: [...this.state.datesAndTimes, { ...emptyDateAndTime }]
+      datesAndTimes: [...this.state.datesAndTimes, { ...emptyDateAndTime }],
     });
   };
 
-  removeRecurrence = index => {
+  removeRecurrence = (index) => {
     const allOccurences = [...this.state.datesAndTimes];
     allOccurences.splice(index, 1);
 
     this.setState({
-      datesAndTimes: allOccurences
+      datesAndTimes: allOccurences,
     });
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
+  handleSubmit = (fieldsValue) => {
     const { datesAndTimes } = this.state;
-    const { form, isPublicActivity } = this.props;
+    const { isPublicActivity, registerGatheringLocally } = this.props;
 
-    form.validateFields((err, fieldsValue) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
+    if (this.props.isPublicActivity && !this.props.uploadableImage) {
+      Modal.error({
+        title: 'Image is required',
+        content: 'Please upload an image',
+      });
+      return;
+    }
 
-      if (this.props.isPublicActivity && !this.props.uploadableImage) {
-        Modal.error({
-          title: 'Image is required',
-          content: 'Please upload an image'
-        });
-        return;
-      }
+    const datesAndTimesWithoutMoment = datesAndTimes.map((recurrence) => ({
+      startDate: recurrence.startDate,
+      startTime: recurrence.startTime,
+      endDate: recurrence.endDate,
+      endTime: recurrence.endTime,
+      capacity: isPublicActivity && (recurrence.capacity || defaultCapacity),
+      attendees: recurrence.attendees || [],
+    }));
 
-      const datesAndTimesWithoutMoment = datesAndTimes.map(recurrence => ({
-        startDate: recurrence.startDate,
-        startTime: recurrence.startTime,
-        endDate: recurrence.endDate,
-        endTime: recurrence.endTime,
-        capacity: isPublicActivity && (recurrence.capacity || defaultCapacity),
-        attendees: recurrence.attendees || []
-      }));
+    const values = {
+      title: fieldsValue['title'],
+      subTitle: fieldsValue['subTitle'],
+      longDescription: fieldsValue['longDescription'],
+      datesAndTimes: datesAndTimesWithoutMoment,
+    };
 
-      const values = {
-        title: fieldsValue['title'],
-        subTitle: fieldsValue['subTitle'],
-        longDescription: fieldsValue['longDescription'],
-        datesAndTimes: datesAndTimesWithoutMoment
-      };
+    if (isPublicActivity) {
+      values.room = fieldsValue['room'];
+      values.place = fieldsValue['place'];
+      values.address = fieldsValue['address'];
+      values.practicalInfo = fieldsValue['practicalInfo'];
+      values.internalInfo = fieldsValue['internalInfo'];
+    } else {
+      values.room = fieldsValue['room'];
+    }
 
-      if (isPublicActivity) {
-        values.room = fieldsValue['room'];
-        values.place = fieldsValue['place'];
-        values.address = fieldsValue['address'];
-        values.practicalInfo = fieldsValue['practicalInfo'];
-        values.internalInfo = fieldsValue['internalInfo'];
-      } else {
-        values.room = fieldsValue['room'];
-      }
-
-      if (!err) {
-        this.props.registerGatheringLocally(values);
-      }
-    });
+    registerGatheringLocally(values);
   };
 
   renderDateTime = () => {
@@ -178,16 +169,15 @@ class CreateBookingForm extends Component {
             handleFinishTimeChange={(time, timeString) =>
               this.handleDateAndTimeChange(time, timeString, index, 'endTime')
             }
-            handleCapacityChange={value =>
+            handleCapacityChange={(value) =>
               this.handleCapacityChange(value, index)
             }
           />
         ))}
         <div style={{ ...iconStyle, padding: 24 }}>
-          <Icon
-            style={{ fontSize: 48, cursor: 'pointer' }}
-            type="plus-circle"
+          <PlusCircleOutlined
             onClick={this.addRecurrence}
+            style={{ fontSize: 48, cursor: 'pointer' }}
           />
         </div>
       </div>
@@ -204,7 +194,7 @@ class CreateBookingForm extends Component {
       return item;
     });
     this.setState({
-      datesAndTimes: newDatesAndTimes
+      datesAndTimes: newDatesAndTimes,
     });
   };
 
@@ -217,69 +207,70 @@ class CreateBookingForm extends Component {
       return item;
     });
     this.setState({
-      datesAndTimes: newDatesAndTimes
+      datesAndTimes: newDatesAndTimes,
     });
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
     const {
       uploadableImage,
       setUploadableImage,
       places,
       bookingData,
       currentUser,
-      isPublicActivity
+      isPublicActivity,
     } = this.props;
 
     const formItemLayout = {
       labelCol: { span: 8 },
-      wrapperCol: { span: 16 }
+      wrapperCol: { span: 16 },
     };
 
     return (
       <div className="create-gathering-form">
         <h3>Please enter the details below</h3>
         <Divider />
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem>
-            {getFieldDecorator('title', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Enter the Title'
-                }
-              ],
-              initialValue: bookingData ? bookingData.title : null
-            })(<Input placeholder="Title" />)}
+        <Form onFinish={this.handleSubmit}>
+          <FormItem
+            name="title"
+            rules={[
+              {
+                required: true,
+                message: 'Enter the Title',
+              },
+            ]}
+            initialValue={bookingData ? bookingData.title : null}
+          >
+            <Input placeholder="Title" />
           </FormItem>
 
           {isPublicActivity && (
-            <FormItem>
-              {getFieldDecorator('subTitle', {
-                rules: [
-                  {
-                    required: true,
-                    message: 'Please enter a subtitle (typically artists name)'
-                  }
-                ],
-                initialValue:
-                  bookingData && bookingData.subTitle
-                    ? bookingData.subTitle
-                    : ''
-              })(<Input placeholder="Subtitle (i.e. the artist)" />)}
+            <FormItem
+              name="subTitle"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please enter a subtitle (typically artists name)',
+                },
+              ]}
+              initialValue={
+                bookingData && bookingData.subTitle ? bookingData.subTitle : ''
+              }
+            >
+              <Input placeholder="Subtitle (i.e. the artist)" />
             </FormItem>
           )}
 
-          <FormItem>
-            {getFieldDecorator('longDescription', {
-              rules: [
-                {
-                  message: 'Please enter a detailed description (optional)'
-                }
-              ],
-              initialValue: bookingData ? bookingData.longDescription : null
-            })(<ReactQuill modules={editorModules} formats={editorFormats} />)}
+          <FormItem
+            name="longDescription"
+            rules={[
+              {
+                message: 'Please enter a detailed description (optional)',
+              },
+            ]}
+            initialValue={bookingData ? bookingData.longDescription : null}
+          >
+            <ReactQuill modules={editorModules} formats={editorFormats} />
           </FormItem>
 
           {this.renderDateTime()}
@@ -296,12 +287,12 @@ class CreateBookingForm extends Component {
               >
                 {uploadableImage ? (
                   <Button>
-                    <Icon type="check-circle" />
+                    <CheckCircleOutlined />
                     Image selected
                   </Button>
                 ) : (
                   <Button>
-                    <Icon type="upload" />
+                    <UploadOutlined />
                     Pick an image
                   </Button>
                 )}
@@ -310,108 +301,109 @@ class CreateBookingForm extends Component {
           )}
 
           {isPublicActivity && (
-            <FormItem>
-              {getFieldDecorator('place', {
-                rules: [
-                  {
-                    required: true,
-                    message: 'Please enter the address'
-                  }
-                ],
-                initialValue:
-                  bookingData && bookingData.place
-                    ? bookingData.place
-                    : 'Skogen'
-              })(<Input placeholder="Please enter the name of the place" />)}
-            </FormItem>
-          )}
-
-          {isPublicActivity && (
-            <FormItem>
-              {getFieldDecorator('address', {
-                rules: [
-                  {
-                    required: true,
-                    message: 'Please enter the address'
-                  }
-                ],
-                initialValue:
-                  bookingData && bookingData.address
-                    ? bookingData.address
-                    : skogenAddress
-              })(<Input placeholder="Please enter the address" />)}
-            </FormItem>
-          )}
-
-          {isPublicActivity && (
-            <FormItem>
-              {getFieldDecorator('practicalInfo', {
-                rules: [
-                  {
-                    message: 'Please enter practical info (if any)'
-                  }
-                ],
-                initialValue:
-                  bookingData && bookingData.practicalInfo
-                    ? bookingData.practicalInfo
-                    : ''
-              })(
-                <TextArea
-                  placeholder="Practical info"
-                  autosize={{ minRows: 3, maxRows: 6 }}
-                />
-              )}
-            </FormItem>
-          )}
-
-          {isPublicActivity && (
-            <FormItem>
-              {getFieldDecorator('internalInfo', {
-                rules: [
-                  {
-                    message:
-                      'Please enter internal info - shown only to Skogen members (if any)'
-                  }
-                ],
-                initialValue:
-                  bookingData && bookingData.internalInfo
-                    ? bookingData.internalInfo
-                    : ''
-              })(
-                <TextArea
-                  placeholder="Internal info"
-                  autosize={{ minRows: 3, maxRows: 6 }}
-                />
-              )}
-            </FormItem>
-          )}
-
-          <FormItem>
-            {getFieldDecorator('room', {
-              rules: [
+            <FormItem
+              name="place"
+              rules={[
                 {
                   required: true,
-                  message: 'Please enter which part of Skogen you want to book'
-                }
-              ],
-              initialValue: bookingData ? bookingData.room : 'Studio'
-            })(
-              <Select placeholder="Select space/equipment">
-                {places
-                  ? places.map((part, i) => (
-                      <Option key={part.name + i} value={part.name}>
-                        {part.name}
-                      </Option>
-                    ))
-                  : null}
-              </Select>
-            )}
+                  message: 'Please enter the name of the place',
+                },
+              ]}
+              initialValue={
+                bookingData && bookingData.place ? bookingData.place : 'Skogen'
+              }
+            >
+              <Input placeholder="Please enter the name of the place" />
+            </FormItem>
+          )}
+
+          {isPublicActivity && (
+            <FormItem
+              name="address"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please enter the address',
+                },
+              ]}
+              initialValue={
+                bookingData && bookingData.address
+                  ? bookingData.address
+                  : skogenAddress
+              }
+            >
+              <Input placeholder="Please enter the address" />
+            </FormItem>
+          )}
+
+          {isPublicActivity && (
+            <FormItem
+              name="practicalInfo"
+              rules={[
+                {
+                  message: 'Please enter practical info (if any)',
+                },
+              ]}
+              initialValue={
+                bookingData && bookingData.practicalInfo
+                  ? bookingData.practicalInfo
+                  : ''
+              }
+            >
+              <TextArea
+                placeholder="Practical info"
+                autosize={{ minRows: 3, maxRows: 6 }}
+              />
+            </FormItem>
+          )}
+
+          {isPublicActivity && (
+            <FormItem
+              name="internalInfo"
+              rules={[
+                {
+                  message:
+                    'Please enter internal info - shown only to Skogen members (if any)',
+                },
+              ]}
+              initialValue={
+                bookingData && bookingData.internalInfo
+                  ? bookingData.internalInfo
+                  : ''
+              }
+            >
+              <TextArea
+                placeholder="Internal info"
+                autosize={{ minRows: 3, maxRows: 6 }}
+              />
+            </FormItem>
+          )}
+
+          <FormItem
+            name="room"
+            rules={[
+              {
+                required: true,
+                message: 'Please enter which part of Skogen you want to book',
+              },
+            ]}
+            initialValue={bookingData ? bookingData.room : 'Studio'}
+          >
+            <Select placeholder="Select space/equipment">
+              {places
+                ? places.map((part, i) => (
+                    <Option key={part.name + i} value={part.name}>
+                      {part.name}
+                    </Option>
+                  ))
+                : null}
+            </Select>
           </FormItem>
 
           <FormItem
             wrapperCol={{
               xs: { span: 24, offset: 0 },
-              sm: { span: 16, offset: 8 }
+              sm: { span: 16, offset: 8 },
             }}
           >
             <Button type="primary" htmlType="submit">
@@ -424,8 +416,7 @@ class CreateBookingForm extends Component {
   }
 }
 
-const WrappedAddContentForm = Form.create()(CreateBookingForm);
-export default WrappedAddContentForm;
+export default CreateBookingForm;
 
 class DatesAndTimes extends Component {
   render() {
@@ -438,7 +429,7 @@ class DatesAndTimes extends Component {
       handleCapacityChange,
       removeRecurrence,
       isNotDeletable,
-      isPublicActivity
+      isPublicActivity,
     } = this.props;
 
     return (
@@ -446,15 +437,14 @@ class DatesAndTimes extends Component {
         style={{
           padding: 12,
           backgroundColor: '#f8f8f8',
-          marginBottom: 12
+          marginBottom: 12,
         }}
       >
         {!isNotDeletable && (
           <div style={iconStyle}>
-            <Icon
-              style={{ fontSize: 18, cursor: 'pointer' }}
-              type="delete"
+            <DeleteOutlined
               onClick={removeRecurrence}
+              style={{ fontSize: 18, cursor: 'pointer' }}
             />
           </div>
         )}

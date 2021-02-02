@@ -26,18 +26,18 @@ class EditPublication extends React.Component {
     uploadedImage: null,
     uploadableImage: null,
     uploadableImageLocal: null,
-    uploadableDocument: null
+    uploadableDocument: null,
   };
 
-  registerPublicationLocally = values => {
+  registerPublicationLocally = (values) => {
     values.authorName = this.props.currentUser.username || 'emo';
     this.setState({
       values: values,
-      modalConfirm: true
+      modalConfirm: true,
     });
   };
 
-  setUploadableImage = e => {
+  setUploadableImage = (e) => {
     const theImageFile = e.file.originFileObj;
     const reader = new FileReader();
     reader.readAsDataURL(theImageFile);
@@ -46,14 +46,14 @@ class EditPublication extends React.Component {
       () => {
         this.setState({
           uploadableImage: theImageFile,
-          uploadableImageLocal: reader.result
+          uploadableImageLocal: reader.result,
         });
       },
       false
     );
   };
 
-  setUploadableDocument = e => {
+  setUploadableDocument = (e) => {
     const theDocumentFile = e.file.originFileObj;
     const reader = new FileReader();
     reader.readAsDataURL(theDocumentFile);
@@ -61,7 +61,7 @@ class EditPublication extends React.Component {
       'load',
       () => {
         this.setState({
-          uploadableDocument: theDocumentFile
+          uploadableDocument: theDocumentFile,
         });
       },
       false
@@ -96,7 +96,7 @@ class EditPublication extends React.Component {
               this.setState(
                 {
                   uploadedDocumentUrl: downloadUrl,
-                  uploadedDocumentId: respond
+                  uploadedDocumentId: respond,
                 },
                 () => this.uploadImage()
               );
@@ -125,7 +125,7 @@ class EditPublication extends React.Component {
         console.error('Error uploading:', error);
       } else {
         this.setState({
-          uploadedImage: downloadUrl
+          uploadedImage: downloadUrl,
         });
         this.updatePublication(downloadUrl);
       }
@@ -137,7 +137,7 @@ class EditPublication extends React.Component {
       values,
       uploadedImage,
       uploadedDocumentUrl,
-      uploadedDocumentId
+      uploadedDocumentId,
     } = this.state;
     const { publicationData } = this.props;
     const imageUrl = uploadedImage || publicationData.imageUrl;
@@ -157,13 +157,13 @@ class EditPublication extends React.Component {
           console.log(error);
           this.setState({
             isLoading: false,
-            isError: true
+            isError: true,
           });
         } else {
           this.setState({
             isLoading: false,
             newPublicationId: result,
-            isSuccess: true
+            isSuccess: true,
           });
         }
       }
@@ -182,13 +182,13 @@ class EditPublication extends React.Component {
       if (error) {
         this.setState({
           isLoading: false,
-          isError: true
+          isError: true,
         });
       } else {
         successDelete();
         this.setState({
           isLoading: false,
-          isSuccess: true
+          isSuccess: true,
         });
       }
     });
@@ -216,7 +216,7 @@ class EditPublication extends React.Component {
       uploadedImage,
       uploadableImage,
       uploadableImageLocal,
-      uploadableDocument
+      uploadableDocument,
     } = this.state;
 
     if (isSuccess && newPublicationId) {
@@ -248,7 +248,7 @@ class EditPublication extends React.Component {
                   style={{
                     display: 'flex',
                     justifyContent: 'flex-end',
-                    padding: 12
+                    padding: 12,
                   }}
                 >
                   <Button onClick={this.showDeleteModal}>Delete</Button>

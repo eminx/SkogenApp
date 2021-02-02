@@ -11,7 +11,7 @@ import {
   Modal,
   Button,
   Switch,
-  Divider
+  Divider,
 } from 'antd/lib';
 import { Redirect } from 'react-router-dom';
 import { dataURLtoFile } from '../../functions';
@@ -19,7 +19,7 @@ import { dataURLtoFile } from '../../functions';
 import CreateBookingForm from '../../UIComponents/CreateBookingForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
 
-const successEditMessage = isDeleted => {
+const successEditMessage = (isDeleted) => {
   if (isDeleted) {
     message.success('The booking is successfully deleted', 4);
   } else {
@@ -46,7 +46,7 @@ class EditBooking extends React.Component {
     uploadableImageLocal: null,
     isPublicActivity: false,
     isBookingsDisabled: false,
-    numberOfRecurrence: 0
+    numberOfRecurrence: 0,
   };
 
   componentDidMount() {
@@ -64,7 +64,7 @@ class EditBooking extends React.Component {
     }
   }
 
-  setUploadableImage = e => {
+  setUploadableImage = (e) => {
     const theImageFile = e.file.originFileObj;
 
     Resizer.imageFileResizer(
@@ -74,10 +74,10 @@ class EditBooking extends React.Component {
       'JPEG',
       95,
       0,
-      uri => {
+      (uri) => {
         this.setState({
           uploadableImage: dataURLtoFile(uri, theImageFile.name),
-          uploadableImageLocal: uri
+          uploadableImageLocal: uri,
         });
       },
       'base64'
@@ -92,7 +92,7 @@ class EditBooking extends React.Component {
 
     this.setState({
       isPublicActivity: gatheringData.isPublicActivity,
-      isBookingsDisabled: Boolean(gatheringData.isBookingsDisabled)
+      isBookingsDisabled: Boolean(gatheringData.isBookingsDisabled),
     });
   };
 
@@ -102,27 +102,27 @@ class EditBooking extends React.Component {
       return;
     }
     this.setState({
-      numberOfRecurrence: gatheringData.datesAndTimes.length
+      numberOfRecurrence: gatheringData.datesAndTimes.length,
     });
   };
 
   addRecurrence = () => {
     this.setState({
-      numberOfRecurrence: this.state.numberOfRecurrence + 1
+      numberOfRecurrence: this.state.numberOfRecurrence + 1,
     });
   };
 
-  removeRecurrence = index => {
+  removeRecurrence = (index) => {
     this.setState({
-      numberOfRecurrence: this.state.numberOfRecurrence + 1
+      numberOfRecurrence: this.state.numberOfRecurrence + 1,
     });
   };
 
-  registerGatheringLocally = values => {
+  registerGatheringLocally = (values) => {
     values.authorName = this.props.currentUser.username || 'emo';
     this.setState({
       values: values,
-      modalConfirm: true
+      modalConfirm: true,
     });
   };
 
@@ -147,7 +147,7 @@ class EditBooking extends React.Component {
       }
       this.setState(
         {
-          uploadedImage: downloadUrl
+          uploadedImage: downloadUrl,
         },
         () => this.updateBooking()
       );
@@ -159,7 +159,7 @@ class EditBooking extends React.Component {
       values,
       isPublicActivity,
       isBookingsDisabled,
-      uploadedImage
+      uploadedImage,
     } = this.state;
     const { gatheringData, history } = this.props;
 
@@ -177,7 +177,7 @@ class EditBooking extends React.Component {
         if (error) {
           this.setState({
             isLoading: false,
-            isError: true
+            isError: true,
           });
           message.error(error.reason);
           return;
@@ -185,7 +185,7 @@ class EditBooking extends React.Component {
         this.setState({
           isLoading: false,
           newBookingId: respond,
-          isSuccess: true
+          isSuccess: true,
         });
         const redirectUrl = gatheringData.isPublicActivity
           ? `/event/${gatheringData._id}`
@@ -211,29 +211,29 @@ class EditBooking extends React.Component {
       if (error) {
         this.setState({
           isLoading: false,
-          isError: true
+          isError: true,
         });
         message.error(error.reason);
         return;
       }
       this.setState({
         isLoading: false,
-        isSuccess: true
+        isSuccess: true,
       });
       message.success('Booking is successfully deleted');
       history.push('/calendar');
     });
   };
 
-  handlePublicActivitySwitch = value => {
+  handlePublicActivitySwitch = (value) => {
     this.setState({
-      isPublicActivity: value
+      isPublicActivity: value,
     });
   };
 
-  handleDisableBookingsSwitch = value => {
+  handleDisableBookingsSwitch = (value) => {
     this.setState({
-      isBookingsDisabled: value
+      isBookingsDisabled: value,
     });
   };
 
@@ -274,7 +274,7 @@ class EditBooking extends React.Component {
       uploadableImage,
       isPublicActivity,
       isBookingsDisabled,
-      numberOfRecurrence
+      numberOfRecurrence,
     } = this.state;
 
     return (
@@ -299,7 +299,7 @@ class EditBooking extends React.Component {
                   style={{
                     display: 'flex',
                     justifyContent: 'flex-end',
-                    padding: 12
+                    padding: 12,
                   }}
                 >
                   <Button onClick={this.showDeleteModal}>Delete</Button>
