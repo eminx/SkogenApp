@@ -1,26 +1,17 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import {
-  Row,
-  Col,
-  message,
-  Button,
-  Alert,
-  Input,
-  Switch,
-  Divider,
-  Tag,
-} from 'antd/lib';
+import { Row, Col, message, Alert, Switch, Divider } from 'antd/lib';
+import Resizer from 'react-image-file-resizer';
 
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
-import { emailIsValid } from '../../functions';
+import { dataURLtoFile } from '../../functions';
 
 const successCreation = () => {
   message.success('Your group is successfully created', 6);
 };
 
-const sideNote = 'This page is dedicated to create groups at Skogen.';
+const resizedImageWidth = 900;
 
 class NewGroup extends React.Component {
   state = {
@@ -46,27 +37,29 @@ class NewGroup extends React.Component {
 
   setUploadableImage = (e) => {
     const theImageFile = e.file.originFileObj;
-    const reader = new FileReader();
-    reader.readAsDataURL(theImageFile);
-    reader.addEventListener(
-      'load',
-      () => {
+
+    Resizer.imageFileResizer(
+      theImageFile,
+      resizedImageWidth,
+      (resizedImageWidth * theImageFile.height) / theImageFile.width,
+      'JPEG',
+      95,
+      0,
+      (uri) => {
         this.setState({
-          uploadableImage: theImageFile,
-          uploadableImageLocal: reader.result,
+          uploadableImage: dataURLtoFile(uri, theImageFile.name),
+          uploadableImageLocal: uri,
         });
       },
-      false
+      'base64'
     );
   };
 
   uploadImage = () => {
     this.setState({ isLoading: true });
-
     const { uploadableImage } = this.state;
 
     const upload = new Slingshot.Upload('groupImageUpload');
-
     upload.send(uploadableImage, (error, imageUrl) => {
       if (error) {
         console.error('Error uploading:', error);
