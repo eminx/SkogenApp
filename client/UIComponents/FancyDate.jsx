@@ -4,7 +4,7 @@ import moment from 'moment';
 const fancyDateStyle = {
   color: '#030303',
   fontWeight: 700,
-  lineHeight: 1
+  lineHeight: 1,
 };
 
 const DateJust = ({ children, ...otherProps }) => {
@@ -14,9 +14,7 @@ const DateJust = ({ children, ...otherProps }) => {
         {moment(children).format('DD')}
       </div>
       <div style={{ ...fancyDateStyle, fontSize: 15 }}>
-        {moment(children)
-          .format('MMM')
-          .toUpperCase()}
+        {moment(children).format('MMM').toUpperCase()}
       </div>
     </div>
   );
@@ -32,9 +30,9 @@ const FancyDate = ({ occurence, places, ...otherProps }) => (
         <DateJust>{occurence.startDate}</DateJust>
       ) : (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <DateJust>{occurence.startDate}</DateJust>
+          <DateJust style={{ paddingRight: 6 }}>{occurence.startDate}</DateJust>
           {' – '}
-          <DateJust style={{ paddingLeft: 12 }}>{occurence.endDate}</DateJust>
+          <DateJust style={{ paddingLeft: 6 }}>{occurence.endDate}</DateJust>
         </div>
       )}
     </div>
@@ -44,7 +42,7 @@ const FancyDate = ({ occurence, places, ...otherProps }) => (
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
       }}
     >
       <div>
@@ -56,11 +54,11 @@ const FancyDate = ({ occurence, places, ...otherProps }) => (
             fontWeight: 300,
             maxWidth: 120,
             marginTop: 12,
-            textAlign: 'right'
+            textAlign: 'right',
           }}
         >
           <em>
-            {places.map(place => place.name).includes(occurence.room)
+            {places.map((place) => place.name).includes(occurence.room)
               ? occurence.room + ', Skogen'
               : occurence.room}
           </em>

@@ -17,7 +17,7 @@ import {
   message,
   Modal,
 } from 'antd/lib';
-import { LeftOutlined } from '@ant-design/icons';
+import { LeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
@@ -80,49 +80,39 @@ class Booking extends React.Component {
     return messages;
   };
 
-  handleRSVPSubmit = (event, occurenceIndex) => {
-    event.preventDefault();
+  handleRSVPSubmit = (values, occurenceIndex) => {
     const { bookingData } = this.props;
-    const { resetFields } = this.props.form;
-    this.props.form.validateFields((error, values) => {
-      if (!error) {
-        let isAlreadyRegistered = false;
-        bookingData.datesAndTimes[occurenceIndex].attendees.forEach(
-          (attendee, attendeeIndex) => {
-            if (
-              attendee.lastName === values.lastName &&
-              attendee.email === values.email
-            ) {
-              registrationAlreadyMade();
-              isAlreadyRegistered = true;
-              return;
-            }
-          }
-        );
-        if (isAlreadyRegistered) {
+    let isAlreadyRegistered = false;
+    bookingData.datesAndTimes[occurenceIndex].attendees.forEach(
+      (attendee, attendeeIndex) => {
+        if (
+          attendee.lastName === values.lastName &&
+          attendee.email === values.email
+        ) {
+          registrationAlreadyMade();
+          isAlreadyRegistered = true;
           return;
         }
-
-        Meteor.call(
-          'registerAttendance',
-          bookingData._id,
-          values,
-          occurenceIndex,
-          (error, respond) => {
-            if (error) {
-              console.log(error);
-              message.error(error.reason);
-            } else {
-              registrationSuccess();
-              // message.success(
-              //   'You have successfully registered your attendance'
-              // );
-              resetFields();
-            }
-          }
-        );
       }
-    });
+    );
+    if (isAlreadyRegistered) {
+      return;
+    }
+
+    Meteor.call(
+      'registerAttendance',
+      bookingData._id,
+      values,
+      occurenceIndex,
+      (error, respond) => {
+        if (error) {
+          console.log(error);
+          message.error(error.reason);
+          return;
+        }
+        registrationSuccess();
+      }
+    );
   };
 
   openCancelRsvpModal = (occurenceIndex) => {
@@ -236,13 +226,13 @@ class Booking extends React.Component {
         if (error) {
           console.log(error);
           message.error(error.reason);
-        } else {
-          message.success('You have successfully updated your RSVP');
-          this.setState({
-            rsvpCancelModalInfo: null,
-            isRsvpCancelModalOn: false,
-          });
+          return;
         }
+        message.success('You have successfully updated your RSVP');
+        this.setState({
+          rsvpCancelModalInfo: null,
+          isRsvpCancelModalOn: false,
+        });
       }
     );
   };
@@ -283,10 +273,10 @@ class Booking extends React.Component {
     const isRegisteredMember = this.isRegisteredMember();
 
     const customPanelStyle = {
-      background: '#f7f7f7',
+      marginBottom: 24,
       borderRadius: 4,
-      marginBottom: 12,
       border: 0,
+      background: '#f7f7f7',
       overflow: 'hidden',
     };
 
@@ -344,8 +334,8 @@ class Booking extends React.Component {
                 ) : (
                   <RsvpForm
                     currentUser={currentUser}
-                    handleSubmit={(event) =>
-                      this.handleRSVPSubmit(event, occurenceIndex)
+                    handleSubmit={(values) =>
+                      this.handleRSVPSubmit(values, occurenceIndex)
                     }
                   />
                 )}
@@ -381,7 +371,13 @@ class Booking extends React.Component {
     };
 
     return (
-      <Collapse bordered={false} accordion defaultActiveKey={['1']}>
+      <Collapse
+        bordered={false}
+        accordion
+        expandIcon={({ isActive }) => (
+          <CaretRightOutlined rotate={isActive ? 90 : 0} />
+        )}
+      >
         {bookingData.datesAndTimes.map((occurence, occurenceIndex) => (
           <Panel
             key={occurence.startDate + occurence.startTime}
@@ -491,7 +487,7 @@ class Booking extends React.Component {
             <Col lg={8} style={{ display: 'flex', justifyContent: 'center' }}>
               {/* <Button type="primary">RSVP</Button> */}
 
-              <Row style={{ width: '100%' }}>
+              <div style={{ width: '100%' }}>
                 <h3>Dates</h3>
                 <p>
                   {bookingData.isBookingsDisabled
@@ -499,7 +495,7 @@ class Booking extends React.Component {
                     : 'Please click and open the date to RSVP'}
                 </p>
                 {this.renderDates()}
-              </Row>
+              </div>
             </Col>
           </Row>
         ) : (
@@ -556,8 +552,12 @@ function hasErrors(fieldsError) {
 
 const RsvpForm = (props) => {
   const { isUpdateMode, handleSubmit, handleDelete } = props;
+
+  const layout = {
+    wrapperCol: { span: 4 },
+  };
   return (
-    <Form layout="inline" onFinish={handleSubmit} style={{ paddingLeft: 12 }}>
+    <Form {...layout} onFinish={handleSubmit} style={{ paddingLeft: 12 }}>
       <FormItem
         name="firstName"
         rules={[{ required: true, message: 'Please enter your first name' }]}
