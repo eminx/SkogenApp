@@ -1,93 +1,98 @@
-Meteor.publish('attendingEvents', function() {
+Meteor.publish('attendingEvents', function () {
   return Meteor.users.find(this.userId, {
     fields: {
       attending: 1,
       profile: 1,
-      isSuperAdmin: 1
-    }
+      isSuperAdmin: 1,
+    },
   });
 });
 
-Meteor.publish('gatherings', function() {
+Meteor.publish('gatherings', function (onlyPublic = false) {
   const user = Meteor.user();
-  if (user && user.isSuperAdmin) {
-    return Gatherings.find();
-  } else if (user) {
+  const fields = {
+    title: 1,
+    datesAndTimes: 1,
+    roomIndex: 1,
+    room: 1,
+    place: 1,
+  };
+  const publicFields = {
+    ...fields,
+    imageUrl: 1,
+    subTitle: 1,
+    isPublicActivity: 1,
+  };
+
+  if (onlyPublic) {
     return Gatherings.find(
       {
-        $or: [
-          {
-            isPublished: true
-          },
-          {
-            authorId: user._id
-          }
-        ]
+        isPublicActivity: true,
       },
-      {
-        fields: {
-          isSentForReview: 0,
-          phoneNumber: 0
-        }
-      }
+      { publicFields }
     );
   } else {
-    return Gatherings.find({
-      isPublished: true
-    });
+    return Gatherings.find({}, { fields });
   }
 });
 
-Meteor.publish('groups', function() {
-  // const user = Meteor.user();
-  // if (user) {
+Meteor.publish('groups', function () {
   return Groups.find(
     {
-      isPublished: true
+      isPublished: true,
     },
-    { sort: { creationDate: 1 } }
+    {
+      fields: {
+        title: 1,
+        readingMaterial: 1,
+        imageUrl: 1,
+        meetings: 1,
+        adminUsername: 1,
+      },
+      sort: { creationDate: 1 },
+    }
   );
   // }
 });
 
-Meteor.publish('manuals', function() {
+Meteor.publish('manuals', function () {
   return Documents.find({
-    contextType: 'manual'
+    contextType: 'manual',
   });
 });
 
-Meteor.publish('publications', function() {
+Meteor.publish('publications', function () {
   return Publications.find(
     {
-      isPublished: true
+      isPublished: true,
     },
     { sort: { creationDate: 1 } }
   );
   // }
 });
 
-Meteor.publish('gathering', function(id) {
+Meteor.publish('gathering', function (id) {
   const user = Meteor.user();
   if (user && user.isSuperAdmin) {
     return Gatherings.find({
-      _id: id
+      _id: id,
     });
   } else if (user) {
     return Gatherings.find({
       _id: id,
       $or: [
         {
-          isPublished: true
+          isPublished: true,
         },
         {
-          authorId: user._id
-        }
-      ]
+          authorId: user._id,
+        },
+      ],
     });
   } else {
     return Gatherings.find({
       _id: id,
-      isPublished: true
+      isPublished: true,
     });
   }
   /*, {
@@ -98,71 +103,71 @@ Meteor.publish('gathering', function(id) {
   })*/
 });
 
-Meteor.publish('group', function(id) {
+Meteor.publish('group', function (id) {
   return Groups.find({
-    _id: id
+    _id: id,
   });
 });
 
-Meteor.publish('publication', function(id) {
+Meteor.publish('publication', function (id) {
   return Publications.find({
-    _id: id
+    _id: id,
   });
 });
 
-Meteor.publish('pages', function() {
+Meteor.publish('pages', function () {
   return Pages.find({}, { sort: { creationDate: 1 } });
 });
 
-Meteor.publish('page', function(title) {
+Meteor.publish('page', function (title) {
   return Pages.find({ title });
 });
 
-Meteor.publish('work', function(id) {
+Meteor.publish('work', function (id) {
   return Works.find({
-    _id: id
+    _id: id,
   });
 });
 
-Meteor.publish('works', function() {
+Meteor.publish('works', function () {
   return Works.find({}, { sort: { creationDate: 1 } });
 });
 
-Meteor.publish('myworks', function() {
+Meteor.publish('myworks', function () {
   const currentUserId = Meteor.userId();
   return Works.find(
     {
-      authorId: currentUserId
+      authorId: currentUserId,
     },
     { sort: { creationDate: 1 } }
   );
 });
 
-Meteor.publish('chat', function(contextId) {
+Meteor.publish('chat', function (contextId) {
   const user = Meteor.user();
   if (user) {
     return Chats.find({
-      contextId: contextId
+      contextId: contextId,
     });
   }
 });
 
-Meteor.publish('places', function() {
+Meteor.publish('places', function () {
   return Places.find({}, { sort: { roomIndex: 1 } });
 });
 
-Meteor.publish('documents', function() {
+Meteor.publish('documents', function () {
   return Documents.find();
 });
 
-Meteor.publish('users', function() {
+Meteor.publish('users', function () {
   const user = Meteor.user();
   if (user && user.isSuperAdmin) {
     return Meteor.users.find();
   }
 });
 
-Meteor.publish('me', function() {
+Meteor.publish('me', function () {
   const userId = Meteor.userId();
   if (userId) {
     return Meteor.users.find(userId);
