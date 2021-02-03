@@ -29,7 +29,7 @@ const { Option } = Select;
 const Panel = Collapse.Panel;
 const { TextArea } = Input;
 const { TabPane } = Tabs;
-import { CheckOutlined } from '@ant-design/icons';
+import { CheckOutlined, LeftOutlined } from '@ant-design/icons';
 
 import Chattery from '../../chattery';
 import Loader from '../../UIComponents/Loader';
@@ -863,7 +863,7 @@ class Group extends Component {
       <div>
         <div style={{ padding: 12 }}>
           <Link to="/groups">
-            <Button icon="arrow-left">Groups</Button>
+            <Button icon={<LeftOutlined />}>Groups</Button>
           </Link>
         </div>
 

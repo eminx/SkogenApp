@@ -1,18 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import Chattery from '../../chattery';
-import {
-  Row,
-  Col,
-  Divider,
-  Modal,
-  List,
-  Card,
-  Button,
-  message,
-} from 'antd/lib';
-const ListItem = List.Item;
-const { Meta } = Card;
+import { Row, Col, Divider, Card, Button } from 'antd/lib';
+import { LeftOutlined } from '@ant-design/icons';
+
 import Loader from '../../UIComponents/Loader';
 
 class Publication extends React.PureComponent {
@@ -79,7 +69,7 @@ class Publication extends React.PureComponent {
       <div>
         <div style={{ padding: 12 }}>
           <Link to="/publications">
-            <Button icon="arrow-left">Publications</Button>
+            <Button icon={<LeftOutlined />}>Publications</Button>
           </Link>
         </div>
 

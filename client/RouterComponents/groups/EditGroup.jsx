@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import React from 'react';
+import { Row, Col, message, Alert, Modal, Button, Affix } from 'antd/lib';
+import { LeftOutlined } from '@ant-design/icons';
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
-import { Row, Col, message, Alert, Modal, Button, Affix } from 'antd/lib';
-import { Redirect } from 'react-router-dom';
 
 const successCreation = () =>
   message.success('Your group is successfully updated', 6);
@@ -166,7 +166,7 @@ class EditGroup extends React.Component {
         {groupData && (
           <div style={{ marginBottom: 12 }}>
             <Link to={`/group/${groupData._id}`}>
-              <Button icon="arrow-left">{groupData.title}</Button>
+              <Button icon={<LeftOutlined />}>{groupData.title}</Button>
             </Link>
           </div>
         )}

@@ -13,9 +13,9 @@ import {
   Switch,
   Divider,
 } from 'antd/lib';
-import { Redirect } from 'react-router-dom';
-import { dataURLtoFile } from '../../functions';
+import { LeftOutlined } from '@ant-design/icons';
 
+import { dataURLtoFile } from '../../functions';
 import CreateBookingForm from '../../UIComponents/CreateBookingForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
 
@@ -282,7 +282,7 @@ class EditBooking extends React.Component {
         {gatheringData && (
           <div style={{ marginBottom: 12 }}>
             <Link to={`/event/${gatheringData._id}`}>
-              <Button icon="arrow-left">{gatheringData.title}</Button>
+              <Button icon={<LeftOutlined />}>{gatheringData.title}</Button>
             </Link>
           </div>
         )}

@@ -17,6 +17,7 @@ import {
   message,
   Modal,
 } from 'antd/lib';
+import { LeftOutlined } from '@ant-design/icons';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
@@ -464,7 +465,7 @@ class Booking extends React.Component {
       <div style={{ padding: 24 }}>
         <div style={{ paddingBottom: 24 }}>
           <Link to="/">
-            <Button icon="arrow-left">Program</Button>
+            <Button icon={<LeftOutlined />}>Program</Button>
           </Link>
         </div>
 

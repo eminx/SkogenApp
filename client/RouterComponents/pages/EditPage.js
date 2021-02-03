@@ -1,9 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Row, Col, message, Alert, Modal, Button } from 'antd/lib';
-import { Redirect } from 'react-router-dom';
-
+import { LeftOutlined } from '@ant-design/icons';
 import CreatePageForm from '../../UIComponents/CreatePageForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
 import { parseTitle } from '../../functions';
@@ -173,7 +172,7 @@ class EditPage extends React.Component {
         {pageData && (
           <div style={{ marginBottom: 12 }}>
             <Link to={`/page/${pageData.title}`}>
-              <Button icon="arrow-left">{pageData.title}</Button>
+              <Button icon={<LeftOutlined />}>{pageData.title}</Button>
             </Link>
           </div>
         )}

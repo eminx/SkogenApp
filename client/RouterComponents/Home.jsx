@@ -125,55 +125,44 @@ class Home extends React.Component {
     const allSortedActivities = this.getAllSorted();
 
     return (
-      <div style={{ padding: 24 }}>
+      <div style={{ padding: 24, marginBottom: 48 }}>
         <Row gutter={24}>
-          <div
-            style={{
-              justifyContent: 'center',
-              display: 'flex',
-              marginBottom: 50,
-            }}
-          >
-            <div style={{ width: '100%' }}>
-              {isLoading ? (
-                <Loader />
-              ) : (
-                <div>
-                  <div
-                    style={{
-                      margin: '0 auto',
-                      marginBottom: 24,
-                      padding: 12,
-                      maxWidth: 576,
-                      border: '1px solid #ea3924',
-                    }}
-                  >
-                    <h3 style={{ textAlign: 'center', marginBottom: 12 }}>
-                      Notice
-                    </h3>
-                    {covidInfo.map((p) => (
-                      <p style={{ textAlign: 'center' }} key={p}>
-                        {p}
-                      </p>
-                    ))}
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {allSortedActivities.map((activity) => (
-                      <PublicActivityThumb
-                        key={activity.title}
-                        item={activity}
-                      />
-                    ))}
-                  </div>
+          <div style={{ width: '100%' }}>
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <div>
+                <div
+                  style={{
+                    margin: '0 auto',
+                    marginBottom: 24,
+                    padding: 12,
+                    maxWidth: 576,
+                    border: '1px solid #ea3924',
+                  }}
+                >
+                  <h3 style={{ textAlign: 'center', marginBottom: 12 }}>
+                    Notice
+                  </h3>
+                  {covidInfo.map((p) => (
+                    <p style={{ textAlign: 'center' }} key={p}>
+                      {p}
+                    </p>
+                  ))}
                 </div>
-              )}
-            </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {allSortedActivities.map((activity) => (
+                    <PublicActivityThumb key={activity.title} item={activity} />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </Row>
       </div>

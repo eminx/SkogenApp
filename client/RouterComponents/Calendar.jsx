@@ -205,60 +205,50 @@ class Calendar extends React.PureComponent {
     return (
       <div style={{ padding: 24 }}>
         {currentUser && currentUser.isRegisteredMember && (
-          <Row gutter={24}>
-            <div style={centerStyle}>
-              <Link to="/new-booking">
-                <Button type="primary">New Booking</Button>
-              </Link>
-            </div>
+          <Row gutter={24} justify="center" style={{ paddingBottom: 24 }}>
+            <Link to="/new-booking">
+              <Button type="primary">New Booking</Button>
+            </Link>
           </Row>
         )}
 
-        <Row gutter={24}>
-          <div
-            style={{
-              justifyContent: 'center',
-              display: 'flex',
-              marginBottom: 50,
-            }}
-          >
-            <div style={{ width: '100%' }}>
-              <div
-                className="tags-container"
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  flexWrap: 'wrap',
-                }}
+        <Row gutter={24} justify="center">
+          <div style={{ width: '100%' }}>
+            <div
+              className="tags-container"
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                flexWrap: 'wrap',
+              }}
+            >
+              <Tag.CheckableTag
+                checked={calendarFilter === 'All rooms'}
+                onChange={() => this.handleCalendarFilterChange('All rooms')}
+                key={'All rooms'}
               >
-                <Tag.CheckableTag
-                  checked={calendarFilter === 'All rooms'}
-                  onChange={() => this.handleCalendarFilterChange('All rooms')}
-                  key={'All rooms'}
+                {'All rooms'}
+              </Tag.CheckableTag>
+              {placesList.map((room, i) => (
+                <Tag
+                  color={colors[i]}
+                  className={calendarFilter === room.name ? 'checked' : null}
+                  onClick={() => this.handleCalendarFilterChange(room.name)}
+                  key={room.name}
                 >
-                  {'All rooms'}
-                </Tag.CheckableTag>
-                {placesList.map((room, i) => (
-                  <Tag
-                    color={colors[i]}
-                    className={calendarFilter === room.name ? 'checked' : null}
-                    onClick={() => this.handleCalendarFilterChange(room.name)}
-                    key={room.name}
-                  >
-                    {room.name}
-                  </Tag>
-                ))}
-              </div>
-
-              {isLoading ? (
-                <Loader />
-              ) : (
-                <CalendarView
-                  bookings={filteredBookings}
-                  onSelect={this.handleSelectBooking}
-                />
-              )}
+                  {room.name}
+                </Tag>
+              ))}
             </div>
+
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <CalendarView
+                bookings={filteredBookings}
+                onSelect={this.handleSelectBooking}
+              />
+            )}
           </div>
         </Row>
 

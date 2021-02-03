@@ -1,10 +1,10 @@
 import { Meteor } from 'meteor/meteor';
-import { Link } from 'react-router-dom';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Row, Col, message, Alert, Modal, Button, Affix } from 'antd/lib';
+import { LeftOutlined } from '@ant-design/icons';
 import CreatePublicationForm from '../../UIComponents/CreatePublicationForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
-import { Row, Col, message, Alert, Modal, Button, Affix } from 'antd/lib';
-import { Redirect } from 'react-router-dom';
 
 const successCreation = () =>
   message.success('Your publication is successfully updated', 6);
@@ -233,7 +233,7 @@ class EditPublication extends React.Component {
         {publicationData && (
           <div style={{ marginBottom: 12 }}>
             <Link to={`/publication/${publicationData._id}`}>
-              <Button icon="arrow-left">{publicationData.title}</Button>
+              <Button icon={<LeftOutlined />}> {publicationData.title}</Button>
             </Link>
           </div>
         )}
