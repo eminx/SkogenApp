@@ -17,7 +17,14 @@ import {
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
-import { CheckCircleOutlined, UploadOutlined } from '@ant-design/icons';
+const { RangePicker } = DatePicker;
+
+import {
+  PlusCircleOutlined,
+  CheckCircleOutlined,
+  UploadOutlined,
+  DeleteOutlined,
+} from '@ant-design/icons';
 
 import moment from 'moment';
 
@@ -73,15 +80,27 @@ class CreateBookingForm extends Component {
 
     const datesAndTimesSorted = bookingData.datesAndTimes.sort(compareForSort);
 
-    const datesAndTimesWithMoment = datesAndTimesSorted.map((recurrence) => ({
-      ...recurrence,
-      startDateMoment: moment(recurrence.startDate, 'YYYY-MM-DD'),
-      startTimeMoment: moment(recurrence.startTime, 'HH:mm'),
-      endDateMoment: moment(recurrence.endDate, 'YYYY-MM-DD'),
-      endTimeMoment: moment(recurrence.endTime, 'HH:mm'),
-      capacity: recurrence.capacity,
-      attendees: recurrence.attendees || [],
-    }));
+    const datesAndTimesWithMoment = datesAndTimesSorted.map((recurrence) => {
+      const rangeInMoment = [
+        moment(
+          recurrence.startDate + ' ' + recurrence.startTime,
+          'YYYY-MM-DD HH:mm'
+        ),
+        moment(
+          recurrence.endDate + ' ' + recurrence.endTime,
+          'YYYY-MM-DD HH:mm'
+        ),
+      ];
+      return {
+        ...recurrence,
+        // startDateMoment: moment(recurrence.startDate, 'YYYY-MM-DD'),
+        // startTimeMoment: moment(recurrence.startTime, 'HH:mm'),
+        // endDateMoment: moment(recurrence.endDate, 'YYYY-MM-DD'),
+        // endTimeMoment: moment(recurrence.endTime, 'HH:mm'),
+        rangeInMoment,
+        attendees: recurrence.attendees || [],
+      };
+    });
 
     this.setState({
       datesAndTimes: datesAndTimesWithMoment,
@@ -157,17 +176,20 @@ class CreateBookingForm extends Component {
             removeRecurrence={() => this.removeRecurrence(index)}
             isNotDeletable={index === 0}
             isPublicActivity={isPublicActivity}
-            handleStartDateChange={(date, dateString) =>
-              this.handleDateAndTimeChange(date, dateString, index, 'startDate')
-            }
-            handleStartTimeChange={(time, timeString) =>
-              this.handleDateAndTimeChange(time, timeString, index, 'startTime')
-            }
-            handleFinishDateChange={(date, dateString) =>
-              this.handleDateAndTimeChange(date, dateString, index, 'endDate')
-            }
-            handleFinishTimeChange={(time, timeString) =>
-              this.handleDateAndTimeChange(time, timeString, index, 'endTime')
+            // handleStartDateChange={(date, dateString) =>
+            //   this.handleDateAndTimeChange(date, dateString, index, 'startDate')
+            // }
+            // handleStartTimeChange={(time, timeString) =>
+            //   this.handleDateAndTimeChange(time, timeString, index, 'startTime')
+            // }
+            // handleFinishDateChange={(date, dateString) =>
+            //   this.handleDateAndTimeChange(date, dateString, index, 'endDate')
+            // }
+            // handleFinishTimeChange={(time, timeString) =>
+            //   this.handleDateAndTimeChange(time, timeString, index, 'endTime')
+            // }
+            handleRangeChange={(range, rangeString) =>
+              this.handleRangeChange(range, rangeString, index)
             }
             handleCapacityChange={(value) =>
               this.handleCapacityChange(value, index)
@@ -184,12 +206,29 @@ class CreateBookingForm extends Component {
     );
   };
 
-  handleDateAndTimeChange = (date, dateString, index, entity) => {
+  // handleDateAndTimeChange = (date, dateString, index, entity) => {
+  //   const { datesAndTimes } = this.state;
+  //   const newDatesAndTimes = datesAndTimes.map((item, i) => {
+  //     if (index === i) {
+  //       item[entity + 'Moment'] = date;
+  //       item[entity] = dateString;
+  //     }
+  //     return item;
+  //   });
+  //   this.setState({
+  //     datesAndTimes: newDatesAndTimes,
+  //   });
+  // };
+
+  handleRangeChange = (range, rangeString, index) => {
     const { datesAndTimes } = this.state;
     const newDatesAndTimes = datesAndTimes.map((item, i) => {
       if (index === i) {
-        item[entity + 'Moment'] = date;
-        item[entity] = dateString;
+        item.startDate = rangeString[0].split(' ')[0];
+        item.startTime = rangeString[0].split(' ')[1];
+        item.endDate = rangeString[1].split(' ')[0];
+        item.endTime = rangeString[1].split(' ')[1];
+        item.rangeInMoment = range;
       }
       return item;
     });
@@ -217,7 +256,6 @@ class CreateBookingForm extends Component {
       setUploadableImage,
       places,
       bookingData,
-      currentUser,
       isPublicActivity,
     } = this.props;
 
@@ -230,7 +268,7 @@ class CreateBookingForm extends Component {
       <div className="create-gathering-form">
         <h3>Please enter the details below</h3>
         <Divider />
-        <Form onFinish={this.handleSubmit}>
+        <Form {...formItemLayout} onFinish={this.handleSubmit}>
           <FormItem
             name="title"
             rules={[
@@ -422,10 +460,11 @@ class DatesAndTimes extends Component {
   render() {
     const {
       recurrence,
-      handleStartDateChange,
-      handleStartTimeChange,
-      handleFinishDateChange,
-      handleFinishTimeChange,
+      // handleStartDateChange,
+      // handleStartTimeChange,
+      // handleFinishDateChange,
+      // handleFinishTimeChange,
+      handleRangeChange,
       handleCapacityChange,
       removeRecurrence,
       isNotDeletable,
@@ -448,7 +487,19 @@ class DatesAndTimes extends Component {
             />
           </div>
         )}
-        <FormItem style={{ marginBottom: 6 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', padding: 24 }}>
+          <RangePicker
+            showTime
+            showNow
+            size="large"
+            format="YYYY-MM-DD HH:mm"
+            minuteStep={5}
+            value={recurrence.rangeInMoment}
+            onChange={handleRangeChange}
+          />
+        </div>
+
+        {/* <FormItem style={{ marginBottom: 6 }}>
           <DatePicker
             onChange={handleStartDateChange}
             value={recurrence.startDateMoment}
@@ -479,7 +530,7 @@ class DatesAndTimes extends Component {
             minuteStep={5}
             placeholder="Finish time"
           />
-        </FormItem>
+        </FormItem> */}
         {isPublicActivity && (
           <FormItem style={{ marginBottom: 12 }}>
             <InputNumber
