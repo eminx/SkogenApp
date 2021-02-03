@@ -15,6 +15,8 @@ Meteor.publish('gatherings', function (onlyPublic = false) {
     roomIndex: 1,
     room: 1,
     place: 1,
+    isPublicActivity: 1,
+    authorName: 1,
   };
   const publicFields = {
     title: 1,
