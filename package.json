@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "start": "meteor run --settings settings.json",
+    "analyze": "meteor run --settings settings.json --extra-packages bundle-visualizer --production",
     "deploy": "DEPLOY_HOSTNAME=eu-west-1.galaxy-deploy.meteor.com meteor deploy --settings settings.json www.skogen.pm"
   },
   "theme": {

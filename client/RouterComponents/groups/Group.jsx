@@ -356,13 +356,6 @@ class Group extends Component {
       return;
     }
 
-    if (group.meetings[meetingIndex].attendees.length > 0) {
-      message.error(
-        'Sorry. Currently you can not delete meetings which have attendees registered to attend'
-      );
-      return;
-    }
-
     Meteor.call('deleteMeeting', group._id, meetingIndex, (error, respond) => {
       if (error) {
         console.log(error);

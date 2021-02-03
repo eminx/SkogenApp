@@ -16,6 +16,16 @@ const getMeetingUnattendText = (firstName, occurence, groupTitle, groupId) => {
   return `Hi ${firstName},\n\nThis is a confirmation email to inform you that we have successfully removed your attendance from the meeting on ${occurence.startDate} at ${occurence.startTime} as part of the study group called "${groupTitle}".\nMay there be any changes to your attendance, please update and inform your friends at the group page: ${siteUrl}group/${groupId}.\n\nYou are encouraged to follow the updates, register to attend meetings and join the discussion at this page.\n\nWe look forward to your participation.\nSkogen Team`;
 };
 
+const getCanceledMeetingText = (
+  username,
+  groupTitle,
+  meetingDate,
+  meetingTime,
+  groupId
+) => {
+  return `Hi ${username},\n\nThis email is to inform you that the meeting for the group "${groupTitle}" on ${meetingDate} at ${meetingTime} is canceled by the admin.\n\nWe're sorry for the inconvencience and look forward to your participation in other encounters.\n\nYou can always follow the updates about the group via the discussion forum within the group page: ${siteUrl}group/${groupId}\n\nKind regards,\nSkogen Team`;
+};
+
 const getInviteToPrivateGroupText = (
   firstName,
   groupTitle,
@@ -281,6 +291,24 @@ Meteor.methods({
           meetings: newMeetings,
         },
       });
+      const meeting = theGroup.meetings[meetingIndex];
+      const attendees = meeting.attendees;
+      if (attendees && attendees.length > 0) {
+        attendees.forEach((attendee) => {
+          Meteor.call(
+            'sendEmail',
+            attendee.memberId,
+            `Cancelled Meeting: "${theGroup.title}"`,
+            getCanceledMeetingText(
+              attendee.memberUsername,
+              theGroup.title,
+              meeting.startDate,
+              meeting.startTime,
+              groupId
+            )
+          );
+        });
+      }
     } catch (error) {
       throw new Meteor.Error(
         'Could not remove the meeting due to: ',
