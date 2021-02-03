@@ -254,8 +254,8 @@ class Calendar extends React.PureComponent {
 
         <Divider />
 
-        <Row>
-          <h3 style={{ textAlign: 'center' }}>Skogen Manuals</h3>
+        <h3 style={{ textAlign: 'center' }}>Skogen Manuals</h3>
+        <Row justify="center">
           <Col md={8}>
             {isSuperAdmin && (
               <ReactDropzone onDrop={this.handleDropDocument}>
