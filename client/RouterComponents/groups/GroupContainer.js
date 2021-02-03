@@ -1,7 +1,7 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import Group from './Group';
 
-export default (GroupContainer = withTracker(props => {
+export default GroupContainer = withTracker((props) => {
   const groupId = props.match.params.id;
   const groupSubscription = Meteor.subscribe('group', groupId);
   const isLoading = !groupSubscription.ready();
@@ -12,12 +12,11 @@ export default (GroupContainer = withTracker(props => {
 
   const chatSubscription = Meteor.subscribe('chat', groupId);
   const chatData = Chats ? Chats.findOne({ contextId: groupId }) : null;
-
   return {
     isLoading,
     group,
     currentUser,
     chatData,
-    places
+    places,
   };
-})(Group));
+})(Group);

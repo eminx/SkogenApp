@@ -9,7 +9,6 @@ Meteor.publish('attendingEvents', function () {
 });
 
 Meteor.publish('gatherings', function (onlyPublic = false) {
-  const user = Meteor.user();
   const fields = {
     title: 1,
     datesAndTimes: 1,
@@ -18,9 +17,10 @@ Meteor.publish('gatherings', function (onlyPublic = false) {
     place: 1,
   };
   const publicFields = {
-    ...fields,
-    imageUrl: 1,
+    title: 1,
     subTitle: 1,
+    imageUrl: 1,
+    datesAndTimes: 1,
     isPublicActivity: 1,
   };
 
@@ -29,7 +29,7 @@ Meteor.publish('gatherings', function (onlyPublic = false) {
       {
         isPublicActivity: true,
       },
-      { publicFields }
+      { fields: publicFields }
     );
   } else {
     return Gatherings.find({}, { fields });

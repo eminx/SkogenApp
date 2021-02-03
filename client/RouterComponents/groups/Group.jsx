@@ -70,9 +70,9 @@ class Group extends Component {
       return false;
     }
 
-    const isMember = group.members.some(
-      (member) => member.memberId === currentUser._id
-    );
+    const isMember =
+      group.members &&
+      group.members.some((member) => member.memberId === currentUser._id);
 
     return Boolean(isMember);
   };
