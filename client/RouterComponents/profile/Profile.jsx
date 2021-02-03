@@ -61,9 +61,9 @@ class Profile extends React.Component {
             <Blaze template="loginButtons" />
           </Col>
         </Row>
+        <Divider />
+        <h2>Profile</h2>
         <Row>
-          <Divider />
-          <h2>Profile</h2>
           <Col md={8}>
             <h3>Personal Info</h3>
             {currentUser && (
@@ -76,8 +76,8 @@ class Profile extends React.Component {
                       message: 'Please enter your first name',
                     },
                   ]}
-                >
                   initialValue={currentUser ? currentUser.firstName : null}
+                >
                   <Input placeholder="first name" />
                 </FormItem>
 

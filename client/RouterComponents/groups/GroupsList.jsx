@@ -96,8 +96,9 @@ class GroupsList extends React.PureComponent {
       if (filterBy === 'archived') {
         return group.isArchived === true;
       } else if (filterBy === 'my-groups') {
-        return group.members.some(
-          (member) => member.memberId === currentUser._id
+        return (
+          group.members &&
+          group.members.some((member) => member.memberId === currentUser._id)
         );
       } else {
         return !group.isArchived;

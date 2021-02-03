@@ -39,6 +39,7 @@ Meteor.publish('gatherings', function (onlyPublic = false) {
 });
 
 Meteor.publish('groups', function () {
+  const userId = Meteor.userId();
   return Groups.find(
     {
       isPublished: true,
@@ -50,6 +51,8 @@ Meteor.publish('groups', function () {
         imageUrl: 1,
         meetings: 1,
         adminUsername: 1,
+        isArchived: 1,
+        members: 1,
       },
       sort: { creationDate: 1 },
     }
