@@ -1,10 +1,13 @@
 import { Meteor } from 'meteor/meteor';
-import { Link, Redirect } from 'react-router-dom';
 import React from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import { Row, Col, message, Alert, Modal, Button, Affix } from 'antd/lib';
 import { LeftOutlined } from '@ant-design/icons';
+import Resizer from 'react-image-file-resizer';
+
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
+import { dataURLtoFile } from '../../functions';
 
 const successCreation = () =>
   message.success('Your group is successfully updated', 6);
@@ -13,6 +16,8 @@ const successDelete = () =>
   message.success('The group is successfully deleted', 4);
 
 const sideNote = 'This page is dedicated to create groups at Skogen.';
+
+const resizedImageWidth = 900;
 
 class EditGroup extends React.Component {
   state = {
@@ -38,17 +43,21 @@ class EditGroup extends React.Component {
 
   setUploadableImage = (e) => {
     const theImageFile = e.file.originFileObj;
-    const reader = new FileReader();
-    reader.readAsDataURL(theImageFile);
-    reader.addEventListener(
-      'load',
-      () => {
+
+    Resizer.imageFileResizer(
+      theImageFile,
+      resizedImageWidth,
+      (resizedImageWidth * theImageFile.height) / theImageFile.width,
+      'JPEG',
+      95,
+      0,
+      (uri) => {
         this.setState({
-          uploadableImage: theImageFile,
-          uploadableImageLocal: reader.result,
+          uploadableImage: dataURLtoFile(uri, theImageFile.name),
+          uploadableImageLocal: uri,
         });
       },
-      false
+      'base64'
     );
   };
 
