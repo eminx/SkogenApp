@@ -125,7 +125,7 @@ class Home extends React.Component {
     const allSortedActivities = this.getAllSorted();
 
     return (
-      <div style={{ padding: 24, marginBottom: 48 }}>
+      <div style={{ marginBottom: 48 }}>
         <Row gutter={24}>
           <div style={{ width: '100%' }}>
             {isLoading ? (
