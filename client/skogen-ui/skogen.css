@@ -35,6 +35,7 @@ body .ant-input,
 .ant-modal-body .ant-confirm-body .ant-confirm-title,
 .ant-modal-title {
   text-transform: uppercase;
+  font-weight: 700;
 }
 
 /* button.ant-btn,
