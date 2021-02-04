@@ -213,15 +213,16 @@ body {
   margin: 0 auto;
 }
 
-/* .skogen-menu-layout > a > b {
-  color: #ea3924;
-} */
-
 .skogen-menu-layout > a {
   padding: 6px 12px;
 }
 
+.thumb-cover-child-lazy-image {
+  width: 100%;
+}
+
 .thumb-cover {
+  width: 100%;
   position: absolute;
   filter: brightness(50%);
   transition: all ease-in-out 200ms;

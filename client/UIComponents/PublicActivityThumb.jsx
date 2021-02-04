@@ -1,17 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-// import LazyLoad from 'react-lazyload';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
 const yesterday = moment(new Date()).add(-1, 'days');
-
-const compareForSort = (a, b) => {
-  const dateA = moment(a.startDate, 'YYYY-MM-DD');
-  const dateB = moment(b.startDate, 'YYYY-MM-DD');
-  return dateA.diff(dateB);
-};
 
 const dateStyle = {
   color: '#fff',
@@ -119,6 +112,7 @@ class PublicActivityThumb extends React.Component {
               src={item.imageUrl}
               style={imageStyle}
               effect="black-and-white"
+              wrapperClassName="thumb-cover-child-lazy-image"
             />
           </div>
 

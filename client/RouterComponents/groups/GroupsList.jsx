@@ -185,11 +185,13 @@ class GroupsList extends React.PureComponent {
       <div>
         <h2 style={{ textAlign: 'center', marginTop: 12 }}>Groups</h2>
 
-        <div style={centerStyle}>
-          <Link to="/new-group">
-            <Button component="span">New Group</Button>
-          </Link>
-        </div>
+        {currentUser && currentUser.isRegisteredMember && (
+          <div style={centerStyle}>
+            <Link to="/new-group">
+              <Button component="span">New Group</Button>
+            </Link>
+          </div>
+        )}
 
         <div style={centerStyle}>
           <RadioGroup

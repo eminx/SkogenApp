@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { Row } from 'antd/lib';
 import Loader from '../UIComponents/Loader';
@@ -21,26 +21,7 @@ const compareForSort = (a, b) => {
   return dateA - dateB;
 };
 
-// const covidInfo = [
-//   `Due to Covid-19 our public program is cancelled until september. In the fall we hope to see you all at Skogen again for more conversions, dinners and upcoming presentations of Frédéric Gies, Patricia Vane, Josefina Björk, Lisen Ellard & Mattias Lech, Ichi, Erik Sjögren & Joel Nordström, Sarah Vanhee, Tova Gerge & Britta Kiessling…`,
-//   `We are curious to see how this is changing us all, and what kind of community and world we are able to build from here! We will continue to use Skogen to come together, to share resources, work and learn together.`,
-//   `Until the fall Skogen is still open for Study groups, artists are working in the studio, books and zines are being printed in the press and we are making up plans for the future.`,
-//   `Since our staff are on furlough, response to emails etc might be slower than usual.`,
-//   `We miss you all here, take care, and have a good summer!`
-// ];
-
-// const covidInfo = [
-//   `Skogen continues to be open. We are planning our autumn events for limited audiences, so we can maintain physical distance. We ask for anyone with symptoms of coronavirus to stay home.`,
-//   `Because we will only have a limited number of seats, please cancel your booking if you cannot attend.`,
-//   `Take care of each other, and welcome!`
-// ];
-
-const covidInfo = [
-  `Skogen håller stängt till den 15e mars.`,
-  `Skogen is closed until march 15th.`,
-];
-
-class Home extends React.Component {
+class Home extends PureComponent {
   state = {
     isUploading: false,
   };
@@ -132,24 +113,7 @@ class Home extends React.Component {
               <Loader />
             ) : (
               <div>
-                <div
-                  style={{
-                    margin: '0 auto',
-                    marginBottom: 24,
-                    padding: 12,
-                    maxWidth: 576,
-                    border: '1px solid #ea3924',
-                  }}
-                >
-                  <h3 style={{ textAlign: 'center', marginBottom: 12 }}>
-                    Notice
-                  </h3>
-                  {covidInfo.map((p) => (
-                    <p style={{ textAlign: 'center' }} key={p}>
-                      {p}
-                    </p>
-                  ))}
-                </div>
+                <CovidInfo />
                 <div
                   style={{
                     display: 'flex',
@@ -168,6 +132,47 @@ class Home extends React.Component {
       </div>
     );
   }
+}
+
+// const covidInfo = [
+//   `Due to Covid-19 our public program is cancelled until september. In the fall we hope to see you all at Skogen again for more conversions, dinners and upcoming presentations of Frédéric Gies, Patricia Vane, Josefina Björk, Lisen Ellard & Mattias Lech, Ichi, Erik Sjögren & Joel Nordström, Sarah Vanhee, Tova Gerge & Britta Kiessling…`,
+//   `We are curious to see how this is changing us all, and what kind of community and world we are able to build from here! We will continue to use Skogen to come together, to share resources, work and learn together.`,
+//   `Until the fall Skogen is still open for Study groups, artists are working in the studio, books and zines are being printed in the press and we are making up plans for the future.`,
+//   `Since our staff are on furlough, response to emails etc might be slower than usual.`,
+//   `We miss you all here, take care, and have a good summer!`
+// ];
+
+// const covidInfo = [
+//   `Skogen continues to be open. We are planning our autumn events for limited audiences, so we can maintain physical distance. We ask for anyone with symptoms of coronavirus to stay home.`,
+//   `Because we will only have a limited number of seats, please cancel your booking if you cannot attend.`,
+//   `Take care of each other, and welcome!`
+// ];
+
+const covidInfo = [
+  `Skogen håller stängt till den 15e mars.`,
+  `Skogen is closed until march 15th.`,
+];
+
+const innerBoxStyle = {
+  margin: 12,
+  padding: 12,
+  maxWidth: 576,
+  border: '1px solid #ea3924',
+};
+
+function CovidInfo() {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={innerBoxStyle}>
+        <h3 style={{ textAlign: 'center', marginBottom: 12 }}>Notice</h3>
+        {covidInfo.map((p) => (
+          <p style={{ textAlign: 'center' }} key={p}>
+            {p}
+          </p>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default Home;
