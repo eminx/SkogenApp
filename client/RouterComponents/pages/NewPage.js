@@ -99,7 +99,7 @@ class NewPage extends React.Component {
   showModal = () => this.setState({ modalConfirm: true });
 
   render() {
-    const { currentUser, pageTitles } = this.props;
+    const { currentUser, pageTitles, history } = this.props;
 
     if (!currentUser || !currentUser.isSuperAdmin) {
       return (
@@ -131,7 +131,7 @@ class NewPage extends React.Component {
             <PagesList
               pageTitles={pageTitles}
               activePageTitle={''}
-              onChange={this.handlePageClick}
+              history={history}
             />
           </Col>
           <Col xs={24} sm={24} md={16}>

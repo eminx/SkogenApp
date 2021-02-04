@@ -51,7 +51,9 @@ function PagesList({ pageTitles, activePageTitle, history }) {
           <Select
             defaultValue={activePageTitle}
             onChange={(value) => history.push(`/page/${value}`)}
-            style={{ width: 180 }}
+            size="large"
+            loading={!activePageTitle}
+            style={{ width: '100%' }}
           >
             {pageTitles.map((title, index) => (
               <Option key={title} value={parseTitle(title)}>
