@@ -52,12 +52,12 @@ Meteor.methods({
       if (!user) {
         return false;
       }
-      const currentUserId = user._id;
+      const userId = user._id;
       return (
-        group.adminId === currentUserId ||
-        group.members.some((member) => member.memberId === currentUserId) ||
+        group.adminId === userId ||
+        group.members.some((member) => member.memberId === userId) ||
         group.peopleInvited.some(
-          (person) => person.email === currentUser.emails[0].address
+          (person) => person.email === user.emails[0].address
         )
       );
     });
