@@ -31,9 +31,9 @@ class Profile extends React.Component {
       if (error) {
         console.log(error);
         message.error(error.reason);
-      } else {
-        message.success('Your data is successfully saved');
+        return;
       }
+      message.success('Your data is successfully saved');
     });
   };
 
@@ -53,6 +53,8 @@ class Profile extends React.Component {
   render() {
     const { currentUser } = this.props;
     const { isDeleteModalOn } = this.state;
+
+    console.log(currentUser);
 
     return (
       <div style={{ padding: 24, minHeight: '80vh' }}>
@@ -98,7 +100,7 @@ class Profile extends React.Component {
                   name="bio"
                   rules={[
                     {
-                      required: true,
+                      required: false,
                       message: 'Enter your bio',
                     },
                   ]}

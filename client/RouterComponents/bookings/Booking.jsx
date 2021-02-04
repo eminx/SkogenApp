@@ -467,7 +467,7 @@ class Booking extends React.Component {
 
         {!isLoading && bookingData ? (
           <Row gutter={24}>
-            <Col lg={5}>
+            <Col md={24} lg={5}>
               <div style={{ marginBottom: 16 }}>
                 <h2 style={{ marginBottom: 0 }}>{bookingData.title}</h2>
                 {bookingData.subTitle && (
@@ -476,7 +476,11 @@ class Booking extends React.Component {
               </div>
             </Col>
 
-            <Col lg={11} style={{ position: 'relative', marginBottom: 24 }}>
+            <Col
+              md={24}
+              lg={12}
+              style={{ position: 'relative', marginBottom: 24 }}
+            >
               <CardArticle
                 item={bookingData}
                 isLoading={isLoading}
@@ -484,9 +488,13 @@ class Booking extends React.Component {
               />
               {EditButton}
             </Col>
-            <Col lg={8} style={{ display: 'flex', justifyContent: 'center' }}>
-              {/* <Button type="primary">RSVP</Button> */}
-
+            <Col
+              xs={24}
+              sm={24}
+              md={24}
+              lg={7}
+              style={{ display: 'flex', justifyContent: 'center' }}
+            >
               <div style={{ width: '100%' }}>
                 <h3>Dates</h3>
                 <p>
@@ -509,8 +517,8 @@ class Booking extends React.Component {
           messages &&
           isRegisteredMember && (
             <Row gutter={24}>
-              <Col lg={5} />
-              <Col lg={11}>
+              <Col md={0} lg={5} />
+              <Col xs={24} sm={24} md={24} lg={11}>
                 {chatData && (
                   <div>
                     <h2>Chat Section</h2>

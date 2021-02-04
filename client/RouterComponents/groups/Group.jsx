@@ -862,18 +862,18 @@ class Group extends Component {
 
         {!isLoading && group ? (
           <Row gutter={24} style={{ paddingRight: 12, paddingLeft: 12 }}>
-            <Col lg={5} style={{ padding: 12, paddingTop: 0 }}>
+            <Col md={0} lg={6} style={{ padding: 12, paddingTop: 0 }}>
               <MediaQuery query="(min-width: 992px)">
                 {this.renderMembersAndDocuments()}
               </MediaQuery>
             </Col>
 
-            <Col md={14} lg={12}>
+            <Col sm={24} md={14} lg={12}>
               {this.renderGroupInfo()}
             </Col>
 
-            <Col md={10} lg={6} style={{ paddingTop: 24 }}>
-              <div style={{ paddingLeft: 12, paddingRight: 12 }}>
+            <Col sm={24} md={10} lg={6} style={{ paddingTop: 24 }}>
+              <div style={{ paddingLeft: 12, paddingRight: 12, width: '100%' }}>
                 <h3>Meetings</h3>
 
                 <p style={{ textAlign: 'right' }}>
@@ -945,11 +945,9 @@ class Group extends Component {
         )}
 
         <MediaQuery query="(max-width: 991px)">
-          <Row>
-            <div style={{ padding: 12 }}>
-              {this.renderMembersAndDocuments()}
-            </div>
-          </Row>
+          <div style={{ padding: 12, width: '100%' }}>
+            {this.renderMembersAndDocuments()}
+          </div>
         </MediaQuery>
 
         <Modal
