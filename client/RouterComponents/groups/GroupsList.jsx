@@ -29,7 +29,21 @@ const groupFilterOptions = [
 class GroupsList extends React.PureComponent {
   state = {
     filterOption: 'active',
+    groups: [],
   };
+
+  componentDidMount() {
+    Meteor.call('getGroups', (error, respond) => {
+      if (error) {
+        message.error(error.reason);
+        console.log(error);
+        return;
+      }
+      this.setState({
+        groups: respond,
+      });
+    });
+  }
 
   getTitle = (group) => {
     return (
@@ -86,13 +100,13 @@ class GroupsList extends React.PureComponent {
   };
 
   getFilteredGroups = () => {
-    const { groupsData, currentUser } = this.props;
-    const { filterOption } = this.state;
+    const { currentUser } = this.props;
+    const { groups, filterOption } = this.state;
 
-    if (!groupsData) {
+    if (!groups) {
       return [];
     }
-    const filteredGroups = groupsData.filter((group) => {
+    const filteredGroups = groups.filter((group) => {
       if (filterOption === 'archived') {
         return group.isArchived === true;
       } else if (filterOption === 'my-groups') {
@@ -105,46 +119,7 @@ class GroupsList extends React.PureComponent {
       }
     });
 
-    const filteredGroupsWithAccessFilter = this.parseOnlyAllowedGroups(
-      filteredGroups
-    );
-    return filteredGroupsWithAccessFilter;
-  };
-
-  parseOnlyAllowedGroups = (futureGroups) => {
-    const { currentUser } = this.props;
-
-    const futureGroupsAllowed = futureGroups.filter((group) => {
-      if (!group.isPrivate) {
-        console.log(group, 'filtered in - not private');
-        return true;
-      }
-      if (!currentUser) {
-        console.log(group, 'filtered out - no user');
-        return false;
-      }
-      const currentUserId = currentUser._id;
-      console.log(group.title, group.adminId === currentUserId);
-      console.log(
-        group.title,
-        group.members.some((member) => member.memberId === currentUserId)
-      );
-      console.log(
-        group.title,
-        group.peopleInvited.some(
-          (person) => person.email === currentUser.emails[0].address
-        )
-      );
-      return (
-        group.adminId === currentUserId ||
-        group.members.some((member) => member.memberId === currentUserId) ||
-        group.peopleInvited.some(
-          (person) => person.email === currentUser.emails[0].address
-        )
-      );
-    });
-
-    return futureGroupsAllowed;
+    return filteredGroups;
   };
 
   handleSelectedFilter = (e) => {

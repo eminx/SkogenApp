@@ -42,6 +42,38 @@ const compareForSort = (a, b) => {
 };
 
 Meteor.methods({
+  getGroups() {
+    const user = Meteor.user();
+    const allGroups = Groups.find().fetch();
+    const groupsFiltered = allGroups.filter((group) => {
+      if (!group.isPrivate) {
+        return true;
+      }
+      if (!user) {
+        return false;
+      }
+      const currentUserId = user._id;
+      return (
+        group.adminId === currentUserId ||
+        group.members.some((member) => member.memberId === currentUserId) ||
+        group.peopleInvited.some(
+          (person) => person.email === currentUser.emails[0].address
+        )
+      );
+    });
+
+    return groupsFiltered.map((group) => ({
+      _id: group._id,
+      title: group.title,
+      readingMaterial: group.readingMaterial,
+      imageUrl: group.imageUrl,
+      meetings: group.meetings,
+      adminUsername: group.adminUsername,
+      isArchived: group.isArchived,
+      members: user ? group.members : null,
+    }));
+  },
+
   createGroup(formValues, imageUrl, isPrivate = false) {
     const user = Meteor.user();
     if (!user || !user.isRegisteredMember) {
