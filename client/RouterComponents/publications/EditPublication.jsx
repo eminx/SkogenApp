@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { Row, Col, message, Alert, Modal, Button, Affix } from 'antd/lib';
 import { LeftOutlined } from '@ant-design/icons';
 import CreatePublicationForm from '../../UIComponents/CreatePublicationForm';
@@ -277,6 +277,10 @@ class EditPublication extends React.Component {
             isLoading={isLoading}
             title="Overview The Information"
             visible={modalConfirm}
+            imageSrc={
+              uploadableImageLocal ||
+              (publicationData && publicationData.imageUrl)
+            }
             onOk={this.uploadDocument}
             onCancel={this.hideModal}
             okText="Confirm"

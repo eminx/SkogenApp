@@ -187,9 +187,7 @@ class GroupsList extends React.PureComponent {
 
         <div style={centerStyle}>
           <Link to="/new-group">
-            <Button type="primary" component="span">
-              New Group
-            </Button>
+            <Button component="span">New Group</Button>
           </Link>
         </div>
 
@@ -199,7 +197,7 @@ class GroupsList extends React.PureComponent {
             options={groupFilterOptions}
             onChange={this.handleSelectedFilter}
             optionType="button"
-            // buttonStyle="solid"
+            buttonStyle="solid"
           />
         </div>
 

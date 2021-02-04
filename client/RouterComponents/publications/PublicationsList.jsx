@@ -21,7 +21,7 @@ const compareByPublishDate = (a, b) => {
 
 class PublicationsList extends React.PureComponent {
   state = {
-    filterType: 'all',
+    filterType: 'All',
   };
 
   getTitle = (publication) => {
@@ -68,64 +68,57 @@ class PublicationsList extends React.PureComponent {
     const publicationsSorted = publicationsData.sort(compareByPublishDate);
 
     const centerStyle = {
+      width: '100%',
       display: 'flex',
       justifyContent: 'center',
-      padding: 24,
-      paddingBottom: 0,
+      padding: 6,
     };
 
     const publicationTypesRepeated = publicationsData.map((pub) => pub.format);
-    const publicationTypes = ['all', ...new Set(publicationTypesRepeated)];
+    const publicationTypes = ['All', ...new Set(publicationTypesRepeated)];
 
     const publicationsFiltered =
-      filterType === 'all'
+      filterType === 'All'
         ? publicationsSorted
         : publicationsSorted.filter((pub) => pub.format === filterType);
 
     return (
-      <Row gutter={24}>
-        <Col md={8}>
-          {currentUser && currentUser.isRegisteredMember && (
-            <div style={centerStyle}>
-              <Link to="/new-publication">
-                <Button type="primary" component="span">
-                  New Publication
-                </Button>
-              </Link>
-            </div>
-          )}
-        </Col>
-
-        <Col md={14} style={{ padding: 24 }}>
-          <h2 style={{ textAlign: 'center' }}>Publications</h2>
-
+      <div>
+        <h2 style={{ textAlign: 'center', marginTop: 12 }}>Publications</h2>
+        {currentUser && currentUser.isRegisteredMember && (
           <div style={centerStyle}>
-            <RadioGroup
-              options={publicationTypes}
-              onChange={this.handleFilter}
-              value={filterType}
-              style={{ marginBottom: 12 }}
-            />
+            <Link to="/new-publication">
+              <Button component="span">New Publication</Button>
+            </Link>
           </div>
+        )}
 
-          <List
-            dataSource={publicationsFiltered}
-            renderItem={(publication) => (
-              <ListItem style={{ paddingBottom: 0 }}>
-                <Card
-                  title={this.getTitle(publication)}
-                  bordered
-                  extra={this.getExtra(publication)}
-                  style={{ width: '100%', marginBottom: 0 }}
-                  className="empty-card-body"
-                />
-              </ListItem>
-            )}
+        <div style={centerStyle}>
+          <RadioGroup
+            options={publicationTypes}
+            onChange={this.handleFilter}
+            value={filterType}
+            optionType="button"
+            buttonStyle="solid"
+            style={{ marginBottom: 12 }}
           />
-        </Col>
+        </div>
 
-        <Col md={16} />
-      </Row>
+        <List
+          dataSource={publicationsFiltered}
+          renderItem={(publication) => (
+            <ListItem style={{ paddingBottom: 0 }}>
+              <Card
+                title={this.getTitle(publication)}
+                bordered
+                extra={this.getExtra(publication)}
+                style={{ width: '100%', marginBottom: 0 }}
+                className="empty-card-body"
+              />
+            </ListItem>
+          )}
+        />
+      </div>
     );
   }
 }

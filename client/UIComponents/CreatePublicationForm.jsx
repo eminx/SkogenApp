@@ -27,7 +27,7 @@ class CreatePublicationForm extends React.Component {
       uploadableImage,
       uploadableDocument,
       registerPublicationLocally,
-    } = this.form;
+    } = this.props;
     if (!uploadableImage || !uploadableDocument) {
       Modal.error({
         title: 'Image and attachment are required',
