@@ -115,9 +115,9 @@ class GroupsList extends React.PureComponent {
     const { currentUser } = this.props;
 
     const futureGroupsAllowed = futureGroups.filter((group) => {
-      if (group.isPrivate) {
-        console.log(group, 'filtered out - private');
-        return false;
+      if (!group.isPrivate && currentUser) {
+        console.log(group, 'filtered in - private');
+        return true;
       }
       const currentUserId = currentUser._id;
       console.log(group.title, group.adminId === currentUserId);
