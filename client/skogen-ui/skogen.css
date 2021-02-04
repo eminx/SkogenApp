@@ -1,13 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i');
 
-::selection {
-  background-color: #ea3924 !important;
-}
-
-::-moz-selection {
-  background-color: #ea3924 !important;
-}
-
 *,
 html,
 #render-target,
@@ -16,6 +8,7 @@ body .ant-input,
 .tags-container .ant-tag {
   font-family: 'Roboto', sans-serif;
   word-break: break-word;
+  cursor: 'pointer';
 }
 
 .main-viewport .layout.ant-layout {
@@ -42,7 +35,6 @@ body .ant-input,
 .ant-modal-body .ant-confirm-body .ant-confirm-title,
 .ant-modal-title {
   text-transform: uppercase;
-  font-weight: 700;
 }
 
 /* button.ant-btn,
@@ -220,9 +212,9 @@ body {
   margin: 0 auto;
 }
 
-.skogen-menu-layout > a > b {
+/* .skogen-menu-layout > a > b {
   color: #ea3924;
-}
+} */
 
 .skogen-menu-layout > a {
   padding: 6px 12px;
@@ -236,10 +228,8 @@ body {
 
 .thumb-cover-container {
   position: relative;
-  flex: 288px 0 0;
+  flex: 288px 1 0;
   height: 288px;
-  width: 288px;
-  max-width: 288px;
   background-color: #ea3924;
 }
 
