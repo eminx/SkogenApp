@@ -3,6 +3,7 @@ accounts-password@1.7.0
 accounts-ui@1.3.2
 accounts-ui-unstyled@1.4.3
 allow-deny@1.1.0
+appcache@1.2.7
 autoupdate@1.7.0
 babel-compiler@7.6.0
 babel-runtime@1.5.0
