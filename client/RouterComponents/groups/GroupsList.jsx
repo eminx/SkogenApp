@@ -1,8 +1,8 @@
-import React from 'react';
 import { Meteor } from 'meteor/meteor';
+import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Card, Radio, Button, message } from 'antd/lib';
+import { Radio, Button, message } from 'antd/lib';
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 import SexyThumb from '../../UIComponents/SexyThumb';
@@ -26,13 +26,18 @@ const groupFilterOptions = [
   },
 ];
 
-class GroupsList extends React.PureComponent {
+class GroupsList extends PureComponent {
   state = {
     filterOption: 'active',
     groups: [],
+    loading: true,
   };
 
   componentDidMount() {
+    this.getGroups();
+  }
+
+  getGroups = () => {
     Meteor.call('getGroups', (error, respond) => {
       if (error) {
         message.error(error.reason);
@@ -41,9 +46,10 @@ class GroupsList extends React.PureComponent {
       }
       this.setState({
         groups: respond,
+        loading: false,
       });
     });
-  }
+  };
 
   getTitle = (group) => {
     return (
@@ -136,10 +142,10 @@ class GroupsList extends React.PureComponent {
   };
 
   render() {
-    const { isLoading, currentUser } = this.props;
-    const { filterOption } = this.state;
+    const { currentUser } = this.props;
+    const { filterOption, loading } = this.state;
 
-    if (isLoading) {
+    if (loading) {
       return <Loader />;
     }
 
