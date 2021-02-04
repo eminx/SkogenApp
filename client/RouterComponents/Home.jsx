@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { Row } from 'antd/lib';
 import Loader from '../UIComponents/Loader';
-import PublicActivityThumb from '../UIComponents/PublicActivityThumb';
+import SexyThumb from '../UIComponents/SexyThumb';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -122,7 +122,7 @@ class Home extends PureComponent {
                   }}
                 >
                   {allSortedActivities.map((activity) => (
-                    <PublicActivityThumb key={activity.title} item={activity} />
+                    <SexyThumb key={activity.title} item={activity} isHome />
                   ))}
                 </div>
               </div>

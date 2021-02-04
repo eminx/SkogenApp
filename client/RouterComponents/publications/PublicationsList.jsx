@@ -1,17 +1,13 @@
 import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Row, Col, List, Card, Radio, Button, Divider } from 'antd/lib';
-import Loader from '../../UIComponents/Loader';
+import { List, Card, Radio, Button } from 'antd/lib';
 
 const ListItem = List.Item;
-const { Meta } = Card;
 const RadioGroup = Radio.Group;
-const RadioButton = Radio.Button;
 
-function shortenDescription(str) {
-  return str.split(/\s+/).slice(0, 20).join(' ');
-}
+import Loader from '../../UIComponents/Loader';
+import SexyThumb from '../../UIComponents/SexyThumb';
 
 const compareByPublishDate = (a, b) => {
   const dateA = new Date(a.publishDate);
@@ -104,20 +100,19 @@ class PublicationsList extends React.PureComponent {
           />
         </div>
 
-        <List
-          dataSource={publicationsFiltered}
-          renderItem={(publication) => (
-            <ListItem style={{ paddingBottom: 0 }}>
-              <Card
-                title={this.getTitle(publication)}
-                bordered
-                extra={this.getExtra(publication)}
-                style={{ width: '100%', marginBottom: 0 }}
-                className="empty-card-body"
-              />
-            </ListItem>
-          )}
-        />
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}
+        >
+          {publicationsFiltered &&
+            publicationsFiltered.length > 0 &&
+            publicationsFiltered.map((pub) => (
+              <SexyThumb key={pub._id} item={pub} isPub />
+            ))}
+        </div>
       </div>
     );
   }

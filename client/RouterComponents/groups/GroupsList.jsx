@@ -2,9 +2,10 @@ import React from 'react';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { List, Card, Radio, Button, message } from 'antd/lib';
+import { Card, Radio, Button, message } from 'antd/lib';
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
+import SexyThumb from '../../UIComponents/SexyThumb';
 
 const RadioGroup = Radio.Group;
 
@@ -203,7 +204,21 @@ class GroupsList extends React.PureComponent {
           />
         </div>
 
-        {groupsList && groupsList.length > 0 && (
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}
+        >
+          {groupsList &&
+            groupsList.length > 0 &&
+            groupsList.map((group) => (
+              <SexyThumb key={group._id} item={group} />
+            ))}
+        </div>
+
+        {/* {groupsList && groupsList.length > 0 && (
           <NiceList
             list={groupsList.reverse()}
             actionsDisabled={!currentUser || !currentUser.isRegisteredMember}
@@ -218,7 +233,7 @@ class GroupsList extends React.PureComponent {
               />
             )}
           </NiceList>
-        )}
+        )} */}
       </div>
     );
   }
