@@ -277,7 +277,7 @@ class CreateBookingForm extends Component {
                 message: 'Enter the Title',
               },
             ]}
-            initialValue={bookingData ? bookingData.title : null}
+            initialValue={bookingData ? bookingData.title : ''}
           >
             <Input placeholder="Title" />
           </FormItem>
@@ -306,7 +306,7 @@ class CreateBookingForm extends Component {
                 message: 'Please enter a detailed description (optional)',
               },
             ]}
-            initialValue={bookingData ? bookingData.longDescription : null}
+            initialValue={bookingData ? bookingData.longDescription : ''}
           >
             <ReactQuill modules={editorModules} formats={editorFormats} />
           </FormItem>
