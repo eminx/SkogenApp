@@ -22,7 +22,7 @@ class Page extends PureComponent {
     return (
       <div style={{ padding: 24 }}>
         <Row gutter={24}>
-          <Col md={8}>
+          <Col xs={24} sm={24} md={8}>
             {currentUser && currentUser.isSuperAdmin && (
               <div style={{ marginBottom: 12 }}>
                 <Link to="/new-page" key="new-page">
@@ -32,8 +32,8 @@ class Page extends PureComponent {
             )}
             <PagesList
               pageTitles={pageTitles}
-              onChange={this.handlePageClick}
               activePageTitle={pageId}
+              history={history}
             />
           </Col>
 
@@ -41,6 +41,7 @@ class Page extends PureComponent {
             <div
               style={{
                 marginBottom: 24,
+                width: '100%',
               }}
             >
               <h2>{page && page.title}</h2>

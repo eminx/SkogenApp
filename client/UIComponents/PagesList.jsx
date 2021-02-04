@@ -1,8 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Row, Col } from 'antd/lib';
+import React, { useState, useEffect } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import { Select } from 'antd/lib';
+const { Option } = Select;
 
 import { parseTitle } from '../functions';
+import MediaQuery from 'react-responsive';
 
 const activeStyle = {
   fontWeight: 700,
@@ -13,15 +15,27 @@ const linkStyle = {
   padding: '6px 0',
 };
 
-const PagesList = (props) => (
-  <div style={{ display: 'flex', flexDirection: 'column', marginBottom: 24 }}>
-    <Row>
-      <Col md={24}>
-        {props.pageTitles.map((title, index) => (
+function PagesList({ pageTitles, activePageTitle, history }) {
+  const [selected, setSelected] = useState(null);
+
+  if (selected) {
+    return <Redirect to={`/page/${selected.value}`} />;
+  }
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        marginBottom: 24,
+        width: '100%',
+      }}
+    >
+      <MediaQuery query="(min-width: 768px)">
+        {pageTitles.map((title, index) => (
           <div
             key={title + index}
             style={
-              parseTitle(props.activePageTitle) === parseTitle(title)
+              parseTitle(activePageTitle) === parseTitle(title)
                 ? { ...activeStyle, ...linkStyle }
                 : linkStyle
             }
@@ -29,9 +43,26 @@ const PagesList = (props) => (
             <Link to={`/page/${parseTitle(title)}`}>{title}</Link>
           </div>
         ))}
-      </Col>
-    </Row>
-  </div>
-);
+      </MediaQuery>
+      <MediaQuery query="(max-width: 767px)">
+        <div
+          style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+        >
+          <Select
+            defaultValue={activePageTitle}
+            onChange={(value) => history.push(`/page/${value}`)}
+            style={{ width: 180 }}
+          >
+            {pageTitles.map((title, index) => (
+              <Option key={title} value={parseTitle(title)}>
+                {title}
+              </Option>
+            ))}
+          </Select>
+        </div>
+      </MediaQuery>
+    </div>
+  );
+}
 
 export default PagesList;
