@@ -51,8 +51,6 @@ Meteor.publish('groups', function () {
         imageUrl: 1,
         meetings: 1,
         adminUsername: 1,
-        isArchived: 1,
-        members: 1,
       },
       sort: { creationDate: 1 },
     }
