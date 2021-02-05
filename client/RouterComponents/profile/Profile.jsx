@@ -54,8 +54,6 @@ class Profile extends React.Component {
     const { currentUser } = this.props;
     const { isDeleteModalOn } = this.state;
 
-    console.log(currentUser);
-
     return (
       <div style={{ padding: 24, minHeight: '80vh' }}>
         <Row gutter={24}>

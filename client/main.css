@@ -113,11 +113,6 @@ textarea#longDescription.ant-input {
   min-height: 240px;
 }
 
-.login-link-and-dropdown-list > #login-dropdown-list {
-  right: -1px;
-  left: auto;
-}
-
 #login-username-or-email-label-and-input,
 #login-password-label-and-input,
 #login-username-label-and-input,
