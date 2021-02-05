@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Row, Col, Divider, Card, Button } from 'antd/lib';
-import { LeftOutlined } from '@ant-design/icons';
+import { LeftOutlined } from '@ant-design/icons/lib';
 
 import Loader from '../../UIComponents/Loader';
 

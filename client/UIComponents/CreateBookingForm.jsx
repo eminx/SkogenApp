@@ -24,7 +24,7 @@ import {
   CheckCircleOutlined,
   UploadOutlined,
   DeleteOutlined,
-} from '@ant-design/icons';
+} from '@ant-design/icons/lib';
 
 import moment from 'moment';
 

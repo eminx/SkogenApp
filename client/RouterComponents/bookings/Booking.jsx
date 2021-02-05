@@ -17,7 +17,7 @@ import {
   message,
   Modal,
 } from 'antd/lib';
-import { LeftOutlined, CaretRightOutlined } from '@ant-design/icons';
+import { LeftOutlined, CaretRightOutlined } from '@ant-design/icons/lib';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 

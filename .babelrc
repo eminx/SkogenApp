@@ -1,10 +1,10 @@
 {
   "plugins": [
-    ["import", { "libraryName": "antd", "style": true }, "antd"],
+    ["import", { "libraryName": "antd", "style": true }, "ant"],
     [
       "import",
       {
-        "libraryName": "@ant-design/icons",
+        "libraryName": "@ant-design/icons/lib",
         "libraryDirectory": "es/icons",
         "camel2DashComponentName": false
       },

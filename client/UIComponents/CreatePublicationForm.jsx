@@ -19,7 +19,7 @@ import {
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
-import { CheckCircleOutlined, UploadOutlined } from '@ant-design/icons';
+import { CheckCircleOutlined, UploadOutlined } from '@ant-design/icons/lib';
 
 class CreatePublicationForm extends React.Component {
   handleSubmit = (fieldsValue) => {

@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Row, Col, message, Alert, Modal, Button, Affix } from 'antd/lib';
-import { LeftOutlined } from '@ant-design/icons';
+import { LeftOutlined } from '@ant-design/icons/lib';
 import Resizer from 'react-image-file-resizer';
 
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';
