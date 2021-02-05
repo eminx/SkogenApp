@@ -14,4 +14,12 @@ Meteor.startup(() => {
     smtp.port;
   Accounts.emailTemplates.resetPassword.from = () => smtp.fromEmail;
   Accounts.emailTemplates.from = () => smtp.fromEmail;
+
+  Gatherings._ensureIndex({ isPublished: 1 });
+  Groups._ensureIndex({ isPublished: 1 });
+  Pages._ensureIndex({ isPublished: 1 });
+  Publications._ensureIndex({
+    isPublished: 1,
+  });
+  Places._ensureIndex({ isPublished: 1 });
 });

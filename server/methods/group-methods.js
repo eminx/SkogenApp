@@ -45,7 +45,6 @@ Meteor.methods({
   getGroups() {
     const user = Meteor.user();
     const allGroups = Groups.find().fetch();
-    Groups._ensureIndex();
     const groupsFiltered = allGroups.filter((group) => {
       if (!group.isPrivate) {
         return true;

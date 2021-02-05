@@ -34,7 +34,6 @@ Meteor.publish('gatherings', function (onlyPublic = false) {
       { fields: publicFields }
     );
   } else {
-    Gatherings._ensureIndex({}, { fields });
     return Gatherings.find({}, { fields });
   }
 });
@@ -66,9 +65,6 @@ Meteor.publish('manuals', function () {
 });
 
 Meteor.publish('publications', function () {
-  Publications._ensureIndex({
-    isPublished: true,
-  });
   return Publications.find(
     {
       isPublished: true,
@@ -102,12 +98,6 @@ Meteor.publish('gathering', function (id) {
       isPublished: true,
     });
   }
-  /*, {
-    fields: {
-    	isSentForReview: 0,
-    	phoneNumber: 0
-    }
-  })*/
 });
 
 Meteor.publish('group', function (id) {
@@ -123,7 +113,6 @@ Meteor.publish('publication', function (id) {
 });
 
 Meteor.publish('pages', function () {
-  Pages._ensureIndex();
   return Pages.find({}, { sort: { creationDate: 1 } });
 });
 
@@ -138,7 +127,6 @@ Meteor.publish('work', function (id) {
 });
 
 Meteor.publish('works', function () {
-  Works._ensureIndex();
   return Works.find({}, { sort: { creationDate: 1 } });
 });
 
@@ -162,7 +150,6 @@ Meteor.publish('chat', function (contextId) {
 });
 
 Meteor.publish('places', function () {
-  Places._ensureIndex();
   return Places.find({}, { sort: { roomIndex: 1 } });
 });
 
@@ -171,7 +158,6 @@ Meteor.publish('documents', function () {
 });
 
 Meteor.publish('users', function () {
-  Meteor.users._ensureIndex();
   const user = Meteor.user();
   if (!user || !user.isSuperAdmin) {
     return null;
