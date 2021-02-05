@@ -17,6 +17,7 @@ ecmascript@0.15.0              # Enable ECMAScript2015+ syntax in app code
 shell-server@0.5.0            # Server-side component of the `meteor shell` command
 hot-module-replacement
 
+maestroqadev:pub-sub-lite
 react-meteor-data
 blaze
 gadicc:blaze-react-component

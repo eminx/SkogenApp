@@ -1,9 +1,9 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import Page from './Page';
 
-export default (PageContainer = withTracker(props => {
+export default PageContainer = withTracker((props) => {
   const pageId = props.match.params.id;
-  const pagesSubscription = Meteor.subscribe('pages');
+  const pagesSubscription = Meteor.subscribeLite('pages');
   const isLoading = !pagesSubscription.ready();
   const pages = Pages ? Pages.find().fetch() : null;
   const currentUser = Meteor.user();
@@ -12,6 +12,6 @@ export default (PageContainer = withTracker(props => {
     isLoading,
     currentUser,
     pages,
-    pageId
+    pageId,
   };
-})(Page));
+})(Page);

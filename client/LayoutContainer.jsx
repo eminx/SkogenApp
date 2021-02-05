@@ -291,7 +291,7 @@ const SkogenInfo = () => (
 );
 
 export default LayoutContainer = withTracker((props) => {
-  const meSub = Meteor.subscribe('me');
+  const meSub = Meteor.subscribeLite('me');
   const currentUser = Meteor.user();
 
   return {

@@ -1,9 +1,9 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import Publication from './Publication';
 
-export default (PublicationContainer = withTracker(props => {
+export default PublicationContainer = withTracker((props) => {
   const publicationId = props.match.params.id;
-  const publicationSubscription = Meteor.subscribe(
+  const publicationSubscription = Meteor.subscribeLite(
     'publication',
     publicationId
   );
@@ -13,13 +13,13 @@ export default (PublicationContainer = withTracker(props => {
     : null;
   const currentUser = Meteor.user();
 
-  const chatSubscription = Meteor.subscribe('chat', publicationId);
+  const chatSubscription = Meteor.subscribeLite('chat', publicationId);
   const chatData = Chats ? Chats.findOne({ contextId: publicationId }) : null;
 
   return {
     isLoading,
     publication,
     currentUser,
-    chatData
+    chatData,
   };
-})(Publication));
+})(Publication);

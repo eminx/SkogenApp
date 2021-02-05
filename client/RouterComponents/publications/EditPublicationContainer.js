@@ -1,9 +1,9 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import EditPublication from './EditPublication';
 
-export default (EditPublicationContainer = withTracker(props => {
+export default EditPublicationContainer = withTracker((props) => {
   const publicationId = props.match.params.id;
-  const publicationSubscription = Meteor.subscribe(
+  const publicationSubscription = Meteor.subscribeLite(
     'publication',
     publicationId
   );
@@ -16,6 +16,6 @@ export default (EditPublicationContainer = withTracker(props => {
   return {
     isLoading,
     publicationData,
-    currentUser
+    currentUser,
   };
-})(EditPublication));
+})(EditPublication);

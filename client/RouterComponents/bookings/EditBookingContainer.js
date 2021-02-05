@@ -1,10 +1,10 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import EditBooking from './EditBooking';
 
-export default (EditBookingContainer = withTracker(props => {
+export default EditBookingContainer = withTracker((props) => {
   const gatheringId = props.match.params.id;
-  const gathering = Meteor.subscribe('gathering', gatheringId);
-  const placesSub = Meteor.subscribe('places');
+  const gathering = Meteor.subscribeLite('gathering', gatheringId);
+  const placesSub = Meteor.subscribeLite('places');
   const places = Places ? Places.find().fetch() : null;
   const gatheringData = Gatherings
     ? Gatherings.findOne({ _id: gatheringId })
@@ -16,6 +16,6 @@ export default (EditBookingContainer = withTracker(props => {
     isLoading,
     gatheringData,
     currentUser,
-    places
+    places,
   };
-})(EditBooking));
+})(EditBooking);

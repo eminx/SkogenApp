@@ -1,8 +1,8 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import DocumentsList from './DocumentsList';
 
-export default (DocumentsListContainer = withTracker(props => {
-  const documentsSubscription = Meteor.subscribe('documents');
+export default DocumentsListContainer = withTracker((props) => {
+  const documentsSubscription = Meteor.subscribeLite('documents');
   const documentsData = Documents ? Documents.find().fetch() : null;
   const isLoading = !documentsSubscription.ready();
   const currentUser = Meteor.user();
@@ -10,6 +10,6 @@ export default (DocumentsListContainer = withTracker(props => {
   return {
     isLoading,
     currentUser,
-    documentsData
+    documentsData,
   };
-})(DocumentsList));
+})(DocumentsList);

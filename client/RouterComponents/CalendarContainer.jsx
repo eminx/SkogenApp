@@ -2,29 +2,29 @@ import { withTracker } from 'meteor/react-meteor-data';
 import Calendar from './Calendar';
 import moment from 'moment';
 
-export default (CalendarContainer = withTracker(props => {
+export default CalendarContainer = withTracker((props) => {
   // here we can pull out the props.subID and change our Meteor subscription based on it
   // this is handled on the publication side of things
 
-  // const handle = Meteor.subscribe('myDataSub', props.subID);
+  // const handle = Meteor.subscribeLite('myDataSub', props.subID);
 
-  const bookings = Meteor.subscribe('gatherings');
+  const bookings = Meteor.subscribeLite('gatherings');
   const isLoading = !bookings.ready();
   const bookingsList = Gatherings ? Gatherings.find().fetch() : null;
   const currentUser = Meteor.user();
-  const placesSub = Meteor.subscribe('places');
+  const placesSub = Meteor.subscribeLite('places');
   const placesList = Places ? Places.find().fetch() : null;
-  const groupsSubscription = Meteor.subscribe('groups');
+  const groupsSubscription = Meteor.subscribeLite('groups');
   const groupsList = Groups ? Groups.find().fetch() : null;
 
-  const manualsSubscription = Meteor.subscribe('manuals');
+  const manualsSubscription = Meteor.subscribeLite('manuals');
   const manuals = Documents ? Documents.find().fetch() : null;
 
   const allActivities = [];
   if (bookingsList) {
-    bookingsList.forEach(booking => {
+    bookingsList.forEach((booking) => {
       if (booking.datesAndTimes) {
-        booking.datesAndTimes.forEach(recurrence => {
+        booking.datesAndTimes.forEach((recurrence) => {
           allActivities.push({
             title: booking.title,
             start: moment(
@@ -48,7 +48,7 @@ export default (CalendarContainer = withTracker(props => {
             roomIndex: booking.roomIndex,
             isPublicActivity: booking.isPublicActivity,
             imageUrl: booking.imageUrl,
-            _id: booking._id
+            _id: booking._id,
           });
         });
       }
@@ -56,9 +56,9 @@ export default (CalendarContainer = withTracker(props => {
   }
 
   if (groupsList) {
-    groupsList.forEach(group => {
+    groupsList.forEach((group) => {
       if (group.meetings) {
-        group.meetings.forEach(meeting => {
+        group.meetings.forEach((meeting) => {
           allActivities.push({
             title: group.title,
             start: moment(
@@ -82,7 +82,7 @@ export default (CalendarContainer = withTracker(props => {
             imageUrl: group.imageUrl,
             _id: group._id,
             isGroup: true,
-            isPrivateGroup: group.isPrivate
+            isPrivateGroup: group.isPrivate,
           });
         });
       }
@@ -94,6 +94,6 @@ export default (CalendarContainer = withTracker(props => {
     allActivities,
     currentUser,
     placesList,
-    manuals
+    manuals,
   };
-})(Calendar));
+})(Calendar);
