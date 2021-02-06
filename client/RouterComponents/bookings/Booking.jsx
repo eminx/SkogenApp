@@ -17,9 +17,10 @@ import {
   message,
   Modal,
 } from 'antd';
-import { LeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import LeftOutlined from '@ant-design/icons/lib/icons/LeftOutlined';
+import CaretRightOutlined from '@ant-design/icons/lib/icons/CaretRightOutlined';
 
 import CardArticle from '../../UIComponents/CardArticle';
 import Loader from '../../UIComponents/Loader';

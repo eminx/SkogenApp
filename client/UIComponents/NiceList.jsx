@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Menu, List, Dropdown } from 'antd';
-import { EllipsisOutlined } from '@ant-design/icons';
+import EllipsisOutlined from '@ant-design/icons/lib/icons/EllipsisOutlined';
 
 const MenuItem = Menu.Item;
 const ListItem = List.Item;

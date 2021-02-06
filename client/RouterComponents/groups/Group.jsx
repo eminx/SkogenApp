@@ -29,7 +29,8 @@ const { Option } = Select;
 const Panel = Collapse.Panel;
 const { TextArea } = Input;
 const { TabPane } = Tabs;
-import { CheckOutlined, LeftOutlined } from '@ant-design/icons';
+import CheckOutlined from '@ant-design/icons/lib/icons/CheckOutlined';
+import LeftOutlined from '@ant-design/icons/lib/icons/LeftOutlined';
 
 import Chattery from '../../chattery';
 import Loader from '../../UIComponents/Loader';

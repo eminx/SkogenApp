@@ -18,12 +18,10 @@ const { TextArea } = Input;
 const FormItem = Form.Item;
 const { RangePicker } = DatePicker;
 
-import {
-  PlusCircleOutlined,
-  CheckCircleOutlined,
-  UploadOutlined,
-  DeleteOutlined,
-} from '@ant-design/icons';
+import PlusCircleOutlined from '@ant-design/icons/lib/icons/PlusCircleOutlined';
+import CheckCircleOutlined from '@ant-design/icons/lib/icons/CheckCircleOutlined';
+import UploadOutlined from '@ant-design/icons/lib/icons/UploadOutlined';
+import DeleteOutlined from '@ant-design/icons/lib/icons/DeleteOutlined';
 
 import moment from 'moment';
 

@@ -12,7 +12,7 @@ import {
   Modal,
 } from 'antd';
 const FormItem = Form.Item;
-import { CheckCircleOutlined } from '@ant-design/icons';
+import CheckCircleOutlined from '@ant-design/icons/lib/icons/CheckCircleOutlined';
 
 class CreateGroupForm extends React.Component {
   handleSubmit = (fieldsValue) => {

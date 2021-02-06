@@ -13,7 +13,7 @@ import {
   Switch,
   Divider,
 } from 'antd';
-import { LeftOutlined } from '@ant-design/icons';
+import LeftOutlined from '@ant-design/icons/lib/icons/LeftOutlined';
 
 import { dataURLtoFile } from '../../functions';
 import CreateBookingForm from '../../UIComponents/CreateBookingForm';

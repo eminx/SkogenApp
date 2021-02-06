@@ -15,7 +15,7 @@ import {
   Col,
 } from 'antd';
 const { Content } = Layout;
-import { BellOutlined } from '@ant-design/icons';
+import BellOutlined from '@ant-design/icons/lib/icons/BellOutlined';
 
 const menu = [
   {

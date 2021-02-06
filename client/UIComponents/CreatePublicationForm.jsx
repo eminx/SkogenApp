@@ -6,20 +6,16 @@ import {
   Form,
   Input,
   DatePicker,
-  TimePicker,
   Button,
-  Select,
-  InputNumber,
-  Switch,
   Upload,
   Divider,
   Modal,
   message,
 } from 'antd';
-const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
-import { CheckCircleOutlined, UploadOutlined } from '@ant-design/icons';
+import CheckCircleOutlined from '@ant-design/icons/lib/icons/CheckCircleOutlined';
+import UploadOutlined from '@ant-design/icons/lib/icons/UploadOutlined';
 
 class CreatePublicationForm extends React.Component {
   handleSubmit = (fieldsValue) => {
