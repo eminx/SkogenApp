@@ -16,8 +16,8 @@ import {
   InputNumber,
   message,
   Modal,
-} from 'antd/lib';
-import { LeftOutlined, CaretRightOutlined } from '@ant-design/icons/lib';
+} from 'antd';
+import { LeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 

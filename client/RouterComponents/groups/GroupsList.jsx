@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Radio, Button, message } from 'antd/lib';
+import { Radio, Button, message } from 'antd';
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 import SexyThumb from '../../UIComponents/SexyThumb';

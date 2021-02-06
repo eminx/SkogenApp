@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Row, Col, message, Alert, Affix } from 'antd/lib';
+import { Row, Col, message, Alert, Affix } from 'antd';
 
 import CreatePublicationForm from '../../UIComponents/CreatePublicationForm';
 import ModalArticle from '../../UIComponents/ModalArticle';

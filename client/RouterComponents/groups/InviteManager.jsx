@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Divider, Input, Button, Tag, message } from 'antd/lib';
+import { Row, Col, Divider, Input, Button, Tag, message } from 'antd';
 
 import { emailIsValid, includesSpecialCharacters } from '../../functions';
 

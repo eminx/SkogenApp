@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import MediaQuery from 'react-responsive';
 import ReactDropzone from 'react-dropzone';
-import { Row, Col, Card, Divider, Tag, Button, Modal, message } from 'antd/lib';
+import { Row, Col, Card, Divider, Tag, Button, Modal, message } from 'antd';
 import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
 import NiceList from '../UIComponents/NiceList';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Tag } from 'antd/lib';
+import { Avatar, Tag } from 'antd';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const commonStyle = {

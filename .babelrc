@@ -1,14 +1,15 @@
 {
-  "plugins": [
-    ["import", { "libraryName": "antd", "style": true }, "ant"],
-    [
-      "import",
-      {
-        "libraryName": "@ant-design/icons/lib",
-        "libraryDirectory": "es/icons",
-        "camel2DashComponentName": false
-      },
-      "ant-design-icons"
-    ]
-  ]
+  "presets": ["meteor"]
+  // "plugins": [
+  //   ["import", { "libraryName": "antd", "style": true }, "antd"],
+  //   [
+  //     "import",
+  //     {
+  //       "libraryName": "@ant-design/icons",
+  //       "libraryDirectory": "lib/icons",
+  //       "camel2DashComponentName": false
+  //     },
+  //     "@ant-design/icons"
+  //   ]
+  // ]
 }

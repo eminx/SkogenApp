@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Row, Radio, Col, Alert, Input, message, Divider } from 'antd/lib';
+import { Row, Radio, Col, Alert, Input, message, Divider } from 'antd';
 import Loader from '../../UIComponents/Loader';
 import AdminMenu from '../../UIComponents/AdminMenu';
 

@@ -4,16 +4,7 @@ import Blaze from 'meteor/gadicc:blaze-react-component';
 import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../../themes/skogen';
 
-import {
-  Row,
-  Col,
-  Form,
-  Input,
-  Button,
-  message,
-  Divider,
-  Modal,
-} from 'antd/lib';
+import { Row, Col, Form, Input, Button, message, Divider, Modal } from 'antd';
 
 import SkogenTerms from '../../UIComponents/SkogenTerms';
 import UploadAvatar from '../../UIComponents/UploadAvatar';

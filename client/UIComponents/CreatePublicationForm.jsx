@@ -15,11 +15,11 @@ import {
   Divider,
   Modal,
   message,
-} from 'antd/lib';
+} from 'antd';
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
-import { CheckCircleOutlined, UploadOutlined } from '@ant-design/icons/lib';
+import { CheckCircleOutlined, UploadOutlined } from '@ant-design/icons';
 
 class CreatePublicationForm extends React.Component {
   handleSubmit = (fieldsValue) => {

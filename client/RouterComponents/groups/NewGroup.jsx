@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Row, Col, message, Alert, Switch, Divider } from 'antd/lib';
+import { Row, Col, message, Alert, Switch, Divider } from 'antd';
 import Resizer from 'react-image-file-resizer';
 
 import CreateGroupForm from '../../UIComponents/CreateGroupForm';

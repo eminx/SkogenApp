@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Avatar, Button, message } from 'antd/lib';
+import { Avatar, Button, message } from 'antd';
 
 import FileDropper from './FileDropper';
 import Loader from './Loader';

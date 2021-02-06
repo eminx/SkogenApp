@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import arrayMove from 'array-move';
-import { Alert, Button, Col, Modal, message, Row } from 'antd/lib';
+import { Alert, Button, Col, Modal, message, Row } from 'antd';
 
 import WorkForm from '../../UIComponents/WorkForm';
 import { call, resizeImage, uploadImage } from '../../functions';

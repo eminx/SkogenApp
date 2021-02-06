@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
-import { Avatar, Col, Row, Tag, message } from 'antd/lib';
+import { Avatar, Col, Row, Tag, message } from 'antd';
 import Slider from 'react-slick';
 import MediaQuery from 'react-responsive';
 

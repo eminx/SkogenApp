@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Select } from 'antd/lib';
+import { Select } from 'antd';
 const { Option } = Select;
 
 import { parseTitle } from '../functions';

@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { List, Card, Radio, Button } from 'antd/lib';
+import { List, Card, Radio, Button } from 'antd';
 
 const ListItem = List.Item;
 const RadioGroup = Radio.Group;

@@ -6,14 +6,13 @@ import {
   Form,
   Input,
   DatePicker,
-  TimePicker,
   Button,
   Select,
   InputNumber,
   Upload,
   Divider,
   Modal,
-} from 'antd/lib';
+} from 'antd';
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -24,7 +23,7 @@ import {
   CheckCircleOutlined,
   UploadOutlined,
   DeleteOutlined,
-} from '@ant-design/icons/lib';
+} from '@ant-design/icons';
 
 import moment from 'moment';
 

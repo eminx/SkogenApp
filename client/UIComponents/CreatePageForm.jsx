@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../themes/skogen';
-import { Form, Input, Button, Divider } from 'antd/lib';
+import { Form, Input, Button, Divider } from 'antd';
 const FormItem = Form.Item;
 
 class CreatePageForm extends React.Component {

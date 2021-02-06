@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Card, Avatar } from 'antd/lib';
+import { Modal, Card, Avatar } from 'antd';
 import Loader from './Loader';
 const { Meta } = Card;
 

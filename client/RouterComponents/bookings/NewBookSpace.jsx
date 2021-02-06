@@ -1,7 +1,7 @@
 import React from 'react';
 import CreateBookingForm from '../../UIComponents/CreateBookingForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
-import { Row, Col, message, Alert, Switch, Divider, Affix } from 'antd/lib';
+import { Row, Col, message, Alert, Switch, Divider, Affix } from 'antd';
 import { Redirect } from 'react-router-dom';
 import Resizer from 'react-image-file-resizer';
 import { dataURLtoFile } from '../../functions';

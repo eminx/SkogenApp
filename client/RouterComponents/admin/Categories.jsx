@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Input, message, Tag } from 'antd/lib';
+import { Row, Col, Input, message, Tag } from 'antd';
 import AdminMenu from '../../UIComponents/AdminMenu';
 import { call } from '../../functions';
 import Loader from '../../UIComponents/Loader';

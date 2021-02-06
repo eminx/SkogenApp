@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Icon, Avatar, Row, Col, Button, Divider } from 'antd/lib';
+import { Card, Icon, Avatar, Row, Col, Button, Divider } from 'antd';
 const { Meta } = Card;
 import moment from 'moment';
 

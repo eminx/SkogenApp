@@ -22,14 +22,14 @@ import {
   Switch,
   Tooltip,
   message,
-} from 'antd/lib';
+} from 'antd';
 const ListItem = List.Item;
 const { Meta } = Card;
 const { Option } = Select;
 const Panel = Collapse.Panel;
 const { TextArea } = Input;
 const { TabPane } = Tabs;
-import { CheckOutlined, LeftOutlined } from '@ant-design/icons/lib';
+import { CheckOutlined, LeftOutlined } from '@ant-design/icons';
 
 import Chattery from '../../chattery';
 import Loader from '../../UIComponents/Loader';

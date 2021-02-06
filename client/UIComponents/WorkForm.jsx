@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Icon, Input, message, Select } from 'antd/lib';
+import { Button, Form, Icon, Input, message, Select } from 'antd';
 const FormItem = Form.Item;
 import ReactQuill from 'react-quill';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';

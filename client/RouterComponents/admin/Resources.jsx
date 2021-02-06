@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Modal, Input, Button, message } from 'antd/lib';
+import { Row, Col, Modal, Input, Button, message } from 'antd';
 import AdminMenu from '../../UIComponents/AdminMenu';
 import { call } from '../../functions';
 import NiceList from '../../UIComponents/NiceList';

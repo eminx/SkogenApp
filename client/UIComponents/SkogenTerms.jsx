@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider } from 'antd/lib';
+import { Divider } from 'antd';
 
 const SkogenTerms = () => {
   return (

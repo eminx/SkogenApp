@@ -12,8 +12,8 @@ import {
   Button,
   Switch,
   Divider,
-} from 'antd/lib';
-import { LeftOutlined } from '@ant-design/icons/lib';
+} from 'antd';
+import { LeftOutlined } from '@ant-design/icons';
 
 import { dataURLtoFile } from '../../functions';
 import CreateBookingForm from '../../UIComponents/CreateBookingForm';

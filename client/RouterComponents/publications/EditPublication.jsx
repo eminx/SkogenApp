@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Row, Col, message, Alert, Modal, Button, Affix } from 'antd/lib';
-import { LeftOutlined } from '@ant-design/icons/lib';
+import { Row, Col, message, Alert, Modal, Button, Affix } from 'antd';
+import { LeftOutlined } from '@ant-design/icons';
 import CreatePublicationForm from '../../UIComponents/CreatePublicationForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
 

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Col, Row, message } from 'antd/lib';
+import { Col, Row, message } from 'antd';
 import arrayMove from 'array-move';
 
 import WorkForm from '../../UIComponents/WorkForm';
