@@ -40,22 +40,28 @@ Meteor.publishLite('gatherings', function (onlyPublic = false) {
 
 Meteor.publishLite('groups', function () {
   const userId = Meteor.userId();
+
+  const fields = {
+    title: 1,
+    readingMaterial: 1,
+    imageUrl: 1,
+    meetings: 1,
+    adminUsername: 1,
+    adminId: 1,
+  };
+  if (userId) {
+    (fields.members = 1), (fields.peopleInvited = 1);
+  }
+
   return Groups.find(
     {
       isPublished: true,
     },
     {
-      fields: {
-        title: 1,
-        readingMaterial: 1,
-        imageUrl: 1,
-        meetings: 1,
-        adminUsername: 1,
-      },
+      fields,
       sort: { creationDate: 1 },
     }
   );
-  // }
 });
 
 Meteor.publishLite('manuals', function () {
