@@ -2,6 +2,12 @@ import React from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 
+moment.locale('en-GB', {
+  week: {
+    dow: 1, //Monday is the first day of the week.
+  },
+});
+
 const localizer = momentLocalizer(moment);
 
 const CalendarView = (props) => {
@@ -22,7 +28,6 @@ const CalendarView = (props) => {
       popup
       popupOffset={30}
       allDayAccessor="isMultipleDay"
-      culture="en-GB"
     />
   );
 };
