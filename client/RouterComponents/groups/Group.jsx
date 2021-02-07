@@ -233,14 +233,16 @@ class Group extends Component {
 
   removeNotification = (messageIndex) => {
     const { group, currentUser } = this.props;
-    const shouldRun = currentUser.notifications.find((notification) => {
-      if (!notification.unSeenIndexes) {
-        return false;
-      }
-      return notification.unSeenIndexes.some((unSeenIndex) => {
-        return unSeenIndex === messageIndex;
+    const shouldRun =
+      currentUser.notifications &&
+      currentUser.notifications.find((notification) => {
+        if (!notification.unSeenIndexes) {
+          return false;
+        }
+        return notification.unSeenIndexes.some((unSeenIndex) => {
+          return unSeenIndex === messageIndex;
+        });
       });
-    });
     if (!shouldRun) {
       return;
     }
