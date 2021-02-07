@@ -23,7 +23,7 @@
     "metro-babel7-plugin-react-transform": "^0.51.0",
     "node-s3-public-url": "^1.0.2",
     "react": "^16.13.1",
-    "react-big-calendar": "^0.28.0",
+    "react-big-calendar": "^0.31.0",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.2.4",
     "react-image-file-resizer": "^0.2.1",
