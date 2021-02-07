@@ -146,7 +146,7 @@ Meteor.publishLite('myworks', function () {
   );
 });
 
-Meteor.publishLite('chat', function (contextId) {
+Meteor.publish('chat', function (contextId) {
   const user = Meteor.user();
   if (user) {
     return Chats.find({

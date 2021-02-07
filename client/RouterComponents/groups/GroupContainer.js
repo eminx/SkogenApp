@@ -10,7 +10,7 @@ export default GroupContainer = withTracker((props) => {
   const placesSub = Meteor.subscribeLite('places');
   const places = Places ? Places.find().fetch() : null;
 
-  const chatSubscription = Meteor.subscribeLite('chat', groupId);
+  const chatSubscription = Meteor.subscribe('chat', groupId);
   const chatData = Chats ? Chats.findOne({ contextId: groupId }) : null;
   return {
     isLoading,

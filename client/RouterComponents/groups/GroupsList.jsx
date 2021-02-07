@@ -29,26 +29,6 @@ const groupFilterOptions = [
 class GroupsList extends PureComponent {
   state = {
     filterOption: 'active',
-    groups: [],
-    loading: true,
-  };
-
-  componentDidMount() {
-    this.getGroups();
-  }
-
-  getGroups = () => {
-    Meteor.call('getGroups', (error, respond) => {
-      if (error) {
-        message.error(error.reason);
-        console.log(error);
-        return;
-      }
-      this.setState({
-        groups: respond,
-        loading: false,
-      });
-    });
   };
 
   getTitle = (group) => {
@@ -106,8 +86,8 @@ class GroupsList extends PureComponent {
   };
 
   getFilteredGroups = () => {
-    const { currentUser } = this.props;
-    const { groups, filterOption } = this.state;
+    const { currentUser, groups } = this.props;
+    const { filterOption } = this.state;
 
     if (!groups) {
       return [];
@@ -142,8 +122,8 @@ class GroupsList extends PureComponent {
   };
 
   render() {
-    const { currentUser } = this.props;
-    const { filterOption, loading } = this.state;
+    const { currentUser, loading } = this.props;
+    const { filterOption } = this.state;
 
     if (loading) {
       return <Loader />;
