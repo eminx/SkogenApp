@@ -196,7 +196,7 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
                 {thumbs &&
                   thumbs.map((activity) => (
                     <SexyThumb
-                      key={activity.title}
+                      key={activity._id}
                       item={activity}
                       isHome
                       showPast={showPast}
