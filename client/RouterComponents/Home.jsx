@@ -1,12 +1,12 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, useEffect, useState } from 'react';
 import { parse, stringify } from 'query-string';
 import moment from 'moment';
 import { Row, Radio } from 'antd';
 import Loader from '../UIComponents/Loader';
 import SexyThumb from '../UIComponents/SexyThumb';
 
-const yesterday = moment(new Date()).add(-1, 'days');
-const today = moment(new Date());
+const yesterday = moment().add(-1, 'days');
+const today = moment();
 
 const RadioGroup = Radio.Group;
 
@@ -47,167 +47,170 @@ const compareForSortReverse = (a, b) => {
   return dateB - dateA;
 };
 
-class Home extends PureComponent {
-  state = {
-    isUploading: false,
-  };
-
-  getPublicActivities = () => {
-    const { bookingsList } = this.props;
-    if (!bookingsList) {
-      return null;
-    }
-
-    const publicActivities = bookingsList.filter(
-      (activity) => activity.isPublicActivity === true
-    );
-
-    const futurePublicActivities = publicActivities.filter((activity) =>
-      activity.datesAndTimes.some((date) =>
-        moment(date.endDate).isAfter(yesterday)
-      )
-    );
-
-    return futurePublicActivities;
-  };
-
-  getPastPublicActivities = () => {
-    const { bookingsList } = this.props;
-    if (!bookingsList) {
-      return null;
-    }
-
-    const publicActivities = bookingsList.filter(
-      (activity) => activity.isPublicActivity === true
-    );
-
-    const pastPublicActivities = publicActivities.filter((activity) =>
-      activity.datesAndTimes.some((date) =>
-        moment(date.endDate).isBefore(today)
-      )
-    );
-
-    return pastPublicActivities;
-  };
-
-  parseOnlyAllowedGroups = (futureGroups) => {
-    const { currentUser } = this.props;
-
-    const futureGroupsAllowed = futureGroups.filter((group) => {
-      if (!group.isPrivate) {
-        return true;
-      } else {
-        if (!currentUser) {
-          return false;
-        }
-        const currentUserId = currentUser._id;
-        return (
-          group.adminId === currentUserId ||
-          group.members.some((member) => member.memberId === currentUserId) ||
-          group.peopleInvited.some(
-            (person) => person.email === currentUser.emails[0].address
-          )
-        );
+const parseOnlyAllowedGroups = (futureGroups, currentUserId) => {
+  return futureGroups.filter((group) => {
+    if (!group.isPrivate) {
+      return true;
+    } else {
+      if (!currentUser) {
+        return false;
       }
-    });
-
-    return futureGroupsAllowed;
-  };
-
-  getGroupMeetings = () => {
-    const { groupsList } = this.props;
-    if (!groupsList) {
-      return null;
+      return (
+        group.adminId === currentUserId ||
+        group.members.some((member) => member.memberId === currentUserId) ||
+        group.peopleInvited.some(
+          (person) => person.email === currentUser.emails[0].address
+        )
+      );
     }
+  });
+};
 
-    const futureGroups = groupsList.filter((group) =>
-      group.meetings.some((meeting) =>
-        moment(meeting.startDate).isAfter(yesterday)
-      )
-    );
+const getGroupMeetings = (groupsList, currentUser) => {
+  if (!groupsList) {
+    return null;
+  }
 
-    const futureGroupsWithAccessFilter = this.parseOnlyAllowedGroups(
-      futureGroups
-    );
+  const futureGroups = groupsList.filter((group) =>
+    group.meetings.some((meeting) =>
+      moment(meeting.startDate).isAfter(yesterday)
+    )
+  );
 
-    return futureGroupsWithAccessFilter.map((group) => ({
+  if (!currentUser) {
+    return futureGroups.map((group) => ({
       ...group,
       datesAndTimes: group.meetings,
       isGroup: true,
     }));
-  };
+  }
 
-  getAllSorted = () => {
+  const futureGroupsWithAccessFilter = parseOnlyAllowedGroups(
+    futureGroups,
+    currentUser._id
+  );
+
+  return futureGroupsWithAccessFilter.map((group) => ({
+    ...group,
+    datesAndTimes: group.meetings,
+    isGroup: true,
+  }));
+};
+
+const getPublicActivities = (bookingsList) => {
+  if (!bookingsList) {
+    return null;
+  }
+
+  const publicActivities = bookingsList.filter(
+    (activity) => activity.isPublicActivity === true
+  );
+
+  return publicActivities.filter((activity) =>
+    activity.datesAndTimes.some((date) =>
+      moment(date.endDate).isAfter(yesterday)
+    )
+  );
+};
+
+const getPastPublicActivities = (bookingsList) => {
+  if (!bookingsList) {
+    return null;
+  }
+
+  const publicActivities = bookingsList.filter(
+    (activity) => activity.isPublicActivity === true
+  );
+
+  return publicActivities.filter((activity) =>
+    activity.datesAndTimes.some((date) =>
+      moment(date.startDate).isBefore(today)
+    )
+  );
+};
+
+function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
+  const [past, setPast] = useState(null);
+  const [upcoming, setUpcoming] = useState(null);
+  const {
+    location: { search },
+  } = history;
+  const { showPast } = parse(search, { parseBooleans: true });
+
+  useEffect(() => {
+    const pastShows = getPastActivities();
+    setPast(pastShows);
+    const upcomingShows = getAllUpcoming();
+    setUpcoming(upcomingShows);
+  }, [search, bookingsList, groupsList, currentUser]);
+
+  const getAllUpcoming = () => {
+    console.log('future acts');
     const allActivities = [
-      ...this.getPublicActivities(),
-      ...this.getGroupMeetings(),
+      ...getPublicActivities(bookingsList),
+      ...getGroupMeetings(groupsList, currentUser),
     ];
     return allActivities.sort(compareForSort);
   };
 
-  getPastActivitiesSorted = () => {
-    return this.getPastPublicActivities().sort(compareForSortReverse);
+  const getPastActivities = () => {
+    console.log('past acts');
+    return getPastPublicActivities(bookingsList).sort(compareForSortReverse);
   };
 
-  handlePastChange = ({ target: { value } }) => {
-    const { history } = this.props;
+  const handlePastChange = ({ target: { value } }) => {
     const showPast = value === 'Past';
     history.push({ search: stringify({ showPast }) });
   };
 
-  render() {
-    const { history, isLoading } = this.props;
+  let thumbs;
+  if (showPast) {
+    thumbs = past;
+  } else {
+    thumbs = upcoming;
+  }
 
-    const {
-      location: { search },
-    } = history;
-    const { showPast } = parse(search, { parseBooleans: true });
-
-    const allSortedActivities = showPast
-      ? this.getPastActivitiesSorted()
-      : this.getAllSorted();
-
-    return (
-      <div style={{ marginBottom: 48 }}>
-        <Row gutter={24}>
-          <div style={{ width: '100%' }}>
-            {isLoading ? (
-              <Loader />
-            ) : (
-              <div>
-                <CovidInfo />
-                <div style={centerStyle}>
-                  <RadioGroup
-                    value={showPast ? 'Past' : 'Upcoming'}
-                    options={['Past', 'Upcoming']}
-                    onChange={this.handlePastChange}
-                    optionType="button"
-                    buttonStyle="solid"
-                  />
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {allSortedActivities.map((activity) => (
+  return (
+    <div style={{ marginBottom: 48 }}>
+      <Row gutter={24}>
+        <div style={{ width: '100%' }}>
+          {!thumbs ? (
+            <Loader />
+          ) : (
+            <div>
+              <CovidInfo />
+              <div style={centerStyle}>
+                <RadioGroup
+                  value={showPast ? 'Past' : 'Upcoming'}
+                  options={['Past', 'Upcoming']}
+                  onChange={handlePastChange}
+                  optionType="button"
+                  buttonStyle="solid"
+                />
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  justifyContent: 'center',
+                }}
+              >
+                {thumbs &&
+                  thumbs.map((activity) => (
                     <SexyThumb
                       key={activity.title}
                       item={activity}
                       isHome
-                      showPast
+                      showPast={showPast}
                     />
                   ))}
-                </div>
               </div>
-            )}
-          </div>
-        </Row>
-      </div>
-    );
-  }
+            </div>
+          )}
+        </div>
+      </Row>
+    </div>
+  );
 }
 
 // const covidInfo = [
