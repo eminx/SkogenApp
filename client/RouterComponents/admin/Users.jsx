@@ -70,10 +70,6 @@ class Users extends React.PureComponent {
       );
     }
 
-    if (isLoading) {
-      return <Loader />;
-    }
-
     const usersFiltered =
       users &&
       users.filter((user) => {
@@ -150,60 +146,64 @@ class Users extends React.PureComponent {
     const currentPath = history && history.location.pathname;
 
     return (
-      <Row gutter={24}>
-        <Col md={8}>
-          <AdminMenu currentPath={currentPath} />
-        </Col>
+      <Loader isContainer spinning={isLoading}>
+        <Row gutter={24}>
+          <Col md={8}>
+            <AdminMenu currentPath={currentPath} />
+          </Col>
 
-        <Col md={8} style={{ padding: 24 }}>
-          <h2 style={{ textAlign: 'center' }}>
-            {filter} Users ({usersSorted.length}){' '}
-          </h2>
+          <Col md={8} style={{ padding: 24 }}>
+            <h2 style={{ textAlign: 'center' }}>
+              {filter} Users ({usersSorted.length}){' '}
+            </h2>
 
-          <div style={{ background: '#f8f8f8', padding: 12 }}>
-            <span style={{ marginRight: 12 }}>filtered by </span>
-            <RadioGroup
-              options={filterOptions}
-              onChange={this.handleFilterChange}
-              value={filter}
-              style={{ marginBottom: 12 }}
-            />
-            <Input
-              placeholder="filter by username or email address..."
-              value={filterWord}
-              onChange={(e) => this.setState({ filterWord: e.target.value })}
-            />
+            <div style={{ background: '#f8f8f8', padding: 12 }}>
+              <span style={{ marginRight: 12 }}>filtered by </span>
+              <RadioGroup
+                options={filterOptions}
+                onChange={this.handleFilterChange}
+                value={filter}
+                style={{ marginBottom: 12 }}
+              />
+              <Input
+                placeholder="filter by username or email address..."
+                value={filterWord}
+                onChange={(e) => this.setState({ filterWord: e.target.value })}
+              />
 
-            <Divider />
+              <Divider />
 
-            <span style={{ marginRight: 12 }}>sorted by </span>
-            <RadioGroup
-              options={sortOptions}
-              onChange={this.handleSortChange}
-              value={sortBy}
-              style={{ marginBottom: 12 }}
-            />
-          </div>
+              <span style={{ marginRight: 12 }}>sorted by </span>
+              <RadioGroup
+                options={sortOptions}
+                onChange={this.handleSortChange}
+                value={sortBy}
+                style={{ marginBottom: 12 }}
+              />
+            </div>
 
-          <NiceList list={usersSorted}>
-            {(user) => (
-              <div key={user.username}>
-                <div>
-                  <b>{user.username}</b>
+            <NiceList list={usersSorted}>
+              {(user) => (
+                <div key={user.username}>
+                  <div>
+                    <b>{user.username}</b>
+                  </div>
+                  <p style={{ fontSize: 12 }}>
+                    <em>
+                      {user && user.emails ? user.emails[0].address : null}
+                    </em>
+                  </p>
+                  <div style={{ fontSize: 10, color: '#aaa' }}>
+                    joined {moment(user.createdAt).format('Do MMM YYYY')}
+                  </div>
                 </div>
-                <p style={{ fontSize: 12 }}>
-                  <em>{user && user.emails ? user.emails[0].address : null}</em>
-                </p>
-                <div style={{ fontSize: 10, color: '#aaa' }}>
-                  joined {moment(user.createdAt).format('Do MMM YYYY')}
-                </div>
-              </div>
-            )}
-          </NiceList>
-        </Col>
+              )}
+            </NiceList>
+          </Col>
 
-        <Col md={8} />
-      </Row>
+          <Col md={8} />
+        </Row>
+      </Loader>
     );
   }
 }

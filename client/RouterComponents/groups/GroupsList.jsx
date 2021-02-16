@@ -115,10 +115,6 @@ class GroupsList extends PureComponent {
     const { currentUser } = this.props;
     const { filterOption, loading } = this.state;
 
-    if (loading) {
-      return <Loader />;
-    }
-
     const groupsFilteredAndSorted = this.getFilteredGroups().sort(
       compareForSort
     );
@@ -140,41 +136,42 @@ class GroupsList extends PureComponent {
 
     return (
       <div>
-        <h2 style={{ textAlign: 'center', marginTop: 12 }}>Groups</h2>
+        <Loader isContainer spinning={loading}>
+          <h2 style={{ textAlign: 'center', marginTop: 12 }}>Groups</h2>
 
-        {currentUser && currentUser.isRegisteredMember && (
+          {currentUser && currentUser.isRegisteredMember && (
+            <div style={centerStyle}>
+              <Link to="/new-group">
+                <Button component="span">New Group</Button>
+              </Link>
+            </div>
+          )}
+
           <div style={centerStyle}>
-            <Link to="/new-group">
-              <Button component="span">New Group</Button>
-            </Link>
+            <RadioGroup
+              value={filterOption}
+              options={groupFilterOptions}
+              onChange={this.handleSelectedFilter}
+              optionType="button"
+              buttonStyle="solid"
+            />
           </div>
-        )}
 
-        <div style={centerStyle}>
-          <RadioGroup
-            value={filterOption}
-            options={groupFilterOptions}
-            onChange={this.handleSelectedFilter}
-            optionType="button"
-            buttonStyle="solid"
-          />
-        </div>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+            }}
+          >
+            {groupsFilteredAndSorted &&
+              groupsFilteredAndSorted.length > 0 &&
+              groupsFilteredAndSorted.map((group) => (
+                <SexyThumb key={group._id} item={group} />
+              ))}
+          </div>
 
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-          }}
-        >
-          {groupsFilteredAndSorted &&
-            groupsFilteredAndSorted.length > 0 &&
-            groupsFilteredAndSorted.map((group) => (
-              <SexyThumb key={group._id} item={group} />
-            ))}
-        </div>
-
-        {/* {groupsList && groupsList.length > 0 && (
+          {/* {groupsList && groupsList.length > 0 && (
           <NiceList
             list={groupsList.reverse()}
             actionsDisabled={!currentUser || !currentUser.isRegisteredMember}
@@ -190,6 +187,7 @@ class GroupsList extends PureComponent {
             )}
           </NiceList>
         )} */}
+        </Loader>
       </div>
     );
   }

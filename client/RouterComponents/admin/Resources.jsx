@@ -91,32 +91,34 @@ const Resources = ({ history }) => {
 
   return (
     <div>
-      <Row gutter={24}>
-        <Col md={8}>
-          <AdminMenu currentPath={currentPath} />
-        </Col>
+      <Loader isContainer spinning={!resources || resources.length === 0}>
+        <Row gutter={24}>
+          <Col md={8}>
+            <AdminMenu currentPath={currentPath} />
+          </Col>
 
-        <Col md={8} style={{ padding: 24 }}>
-          <h2 style={{ textAlign: 'center' }}>Shared Resources</h2>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: 12,
-            }}
-          >
-            <Button onClick={() => setAddModal(true)}>Add</Button>
-          </div>
-          {resources && (
-            <NiceList list={resourcesWithActions}>
-              {(resource) => <h4>{resource.name}</h4>}
-            </NiceList>
-          )}
-        </Col>
+          <Col md={8} style={{ padding: 24 }}>
+            <h2 style={{ textAlign: 'center' }}>Shared Resources</h2>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                padding: 12,
+              }}
+            >
+              <Button onClick={() => setAddModal(true)}>Add</Button>
+            </div>
+            {resources && (
+              <NiceList list={resourcesWithActions}>
+                {(resource) => <h4>{resource.name}</h4>}
+              </NiceList>
+            )}
+          </Col>
 
-        <Col md={8} />
-      </Row>
+          <Col md={8} />
+        </Row>
+      </Loader>
 
       <Modal
         destroyOnClose

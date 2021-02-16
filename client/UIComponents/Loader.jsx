@@ -7,10 +7,16 @@ const loaderStyle = {
   margin: 24,
 };
 
-const Loader = () => (
-  <div style={loaderStyle}>
-    <Spin />
-  </div>
-);
+function Loader({ isContainer = false, ...otherProps }) {
+  if (!isContainer) {
+    return (
+      <div style={loaderStyle}>
+        <Spin {...otherProps} />
+      </div>
+    );
+  }
+
+  return <Spin wrapperClassName="spin-container" {...otherProps} />;
+}
 
 export default Loader;

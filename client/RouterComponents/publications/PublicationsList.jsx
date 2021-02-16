@@ -57,10 +57,6 @@ class PublicationsList extends React.PureComponent {
     const { isLoading, currentUser, publicationsData } = this.props;
     const { filterType } = this.state;
 
-    if (isLoading) {
-      return <Loader />;
-    }
-
     const publicationsSorted = publicationsData.sort(compareByPublishDate);
 
     const centerStyle = {
@@ -80,39 +76,41 @@ class PublicationsList extends React.PureComponent {
 
     return (
       <div>
-        <h2 style={{ textAlign: 'center', marginTop: 12 }}>Publications</h2>
-        {currentUser && currentUser.isRegisteredMember && (
+        <Loader isContainer spinning={isLoading}>
+          <h2 style={{ textAlign: 'center', marginTop: 12 }}>Publications</h2>
+          {currentUser && currentUser.isRegisteredMember && (
+            <div style={centerStyle}>
+              <Link to="/new-publication">
+                <Button component="span">New Publication</Button>
+              </Link>
+            </div>
+          )}
+
           <div style={centerStyle}>
-            <Link to="/new-publication">
-              <Button component="span">New Publication</Button>
-            </Link>
+            <RadioGroup
+              options={publicationTypes}
+              onChange={this.handleFilter}
+              value={filterType}
+              optionType="button"
+              buttonStyle="solid"
+              style={{ marginBottom: 12 }}
+            />
           </div>
-        )}
 
-        <div style={centerStyle}>
-          <RadioGroup
-            options={publicationTypes}
-            onChange={this.handleFilter}
-            value={filterType}
-            optionType="button"
-            buttonStyle="solid"
-            style={{ marginBottom: 12 }}
-          />
-        </div>
-
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-          }}
-        >
-          {publicationsFiltered &&
-            publicationsFiltered.length > 0 &&
-            publicationsFiltered.map((pub) => (
-              <SexyThumb key={pub._id} item={pub} isPub />
-            ))}
-        </div>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+            }}
+          >
+            {publicationsFiltered &&
+              publicationsFiltered.length > 0 &&
+              publicationsFiltered.map((pub) => (
+                <SexyThumb key={pub._id} item={pub} isPub />
+              ))}
+          </div>
+        </Loader>
       </div>
     );
   }

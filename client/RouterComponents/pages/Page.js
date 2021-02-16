@@ -19,68 +19,66 @@ class Page extends PureComponent {
         ? pages.find((page) => parseTitle(page.title) === parseTitle(pageId))
         : null;
 
-    if (isLoading) {
-      return <Loader />;
-    }
-
     return (
       <div style={{ padding: 24 }}>
-        <Row gutter={24}>
-          <Col xs={24} sm={24} md={8}>
-            {currentUser && currentUser.isSuperAdmin && (
-              <div style={{ marginBottom: 12 }}>
-                <Link to="/new-page" key="new-page">
-                  <Button type="primary">New Page</Button>
-                </Link>
-              </div>
-            )}
-            <PagesList
-              pageTitles={pageTitles}
-              activePageTitle={pageId}
-              history={history}
-            />
-          </Col>
+        <Loader isContainer spinning={isLoading}>
+          <Row gutter={24}>
+            <Col xs={24} sm={24} md={8}>
+              {currentUser && currentUser.isSuperAdmin && (
+                <div style={{ marginBottom: 12 }}>
+                  <Link to="/new-page" key="new-page">
+                    <Button type="primary">New Page</Button>
+                  </Link>
+                </div>
+              )}
+              <PagesList
+                pageTitles={pageTitles}
+                activePageTitle={pageId}
+                history={history}
+              />
+            </Col>
 
-          <Col md={10}>
-            <div
-              style={{
-                marginBottom: 24,
-                width: '100%',
-              }}
-            >
-              <h2>{page && page.title}</h2>
-              {page &&
-                (page.longDescriptionSV ? (
-                  <Tabs type="line" animated={false}>
-                    <TabPane tab="English" key="1">
-                      <div style={{ color: '#030303' }}>
-                        {page && renderHTML(page.longDescription)}
-                      </div>
-                    </TabPane>
-                    {page && page.longDescriptionSV && (
-                      <TabPane tab="Svenska" key="2">
+            <Col md={10}>
+              <div
+                style={{
+                  marginBottom: 24,
+                  width: '100%',
+                }}
+              >
+                <h2>{page && page.title}</h2>
+                {page &&
+                  (page.longDescriptionSV ? (
+                    <Tabs type="line" animated={false}>
+                      <TabPane tab="English" key="1">
                         <div style={{ color: '#030303' }}>
-                          {renderHTML(page.longDescriptionSV)}
+                          {page && renderHTML(page.longDescription)}
                         </div>
                       </TabPane>
-                    )}
-                  </Tabs>
-                ) : (
-                  <div style={{ color: '#030303' }}>
-                    {renderHTML(page.longDescription)}
-                  </div>
-                ))}
-            </div>
-          </Col>
-          <Col md={4}>
-            {page && currentUser && currentUser.isSuperAdmin && (
-              <Link to={`/edit-page/${parseTitle(page.title)}`}>
-                {' '}
-                <Button>Edit</Button>
-              </Link>
-            )}
-          </Col>
-        </Row>
+                      {page && page.longDescriptionSV && (
+                        <TabPane tab="Svenska" key="2">
+                          <div style={{ color: '#030303' }}>
+                            {renderHTML(page.longDescriptionSV)}
+                          </div>
+                        </TabPane>
+                      )}
+                    </Tabs>
+                  ) : (
+                    <div style={{ color: '#030303' }}>
+                      {renderHTML(page.longDescription)}
+                    </div>
+                  ))}
+              </div>
+            </Col>
+            <Col md={4}>
+              {page && currentUser && currentUser.isSuperAdmin && (
+                <Link to={`/edit-page/${parseTitle(page.title)}`}>
+                  {' '}
+                  <Button>Edit</Button>
+                </Link>
+              )}
+            </Col>
+          </Row>
+        </Loader>
       </div>
     );
   }

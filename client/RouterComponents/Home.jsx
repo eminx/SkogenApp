@@ -172,9 +172,7 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
     <div style={{ marginBottom: 48 }}>
       <Row gutter={24}>
         <div style={{ width: '100%' }}>
-          {!thumbs || thumbs.length === 0 ? (
-            <Loader />
-          ) : (
+          <Loader isContainer spinning={!thumbs || thumbs.length === 0}>
             <div>
               <CovidInfo />
               <div style={centerStyle}>
@@ -204,7 +202,7 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
                   ))}
               </div>
             </div>
-          )}
+          </Loader>
         </div>
       </Row>
     </div>

@@ -37,12 +37,7 @@ function Works({ history }) {
     }
   };
 
-  if (loading || !works) {
-    return <Loader />;
-  }
-
   const sortedWorks = works.sort(compareByDate);
-
   const filteredWorks = categoryFilter
     ? sortedWorks.filter(
         (work) => work.category && work.category.label === categoryFilter
@@ -52,53 +47,59 @@ function Works({ history }) {
   const categoriesAssignedToWorks = getCategories(works);
 
   return (
-    <Row gutter={24}>
-      <div style={{ display: 'flex', justifyContent: 'center', padding: 12 }}>
-        <Link to="/new-work">
-          <Button type="primary" component="span">
-            New Work
-          </Button>
-        </Link>
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexWrap: 'wrap',
-          padding: 12,
-        }}
-      >
-        <Tag
-          value="ALL"
-          onClick={() => setCategoryFilter(null)}
-          style={{ borderRadius: 0 }}
+    <Loader isContainer spinning={loading || !works}>
+      <Row gutter={24}>
+        <div style={{ display: 'flex', justifyContent: 'center', padding: 12 }}>
+          <Link to="/new-work">
+            <Button type="primary" component="span">
+              New Work
+            </Button>
+          </Link>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            padding: 12,
+          }}
         >
-          <b>ALL</b>
-        </Tag>
-        {categoriesAssignedToWorks.map((cat) => (
           <Tag
-            key={cat.label}
-            value={cat.label}
-            onClick={() => setCategoryFilter(cat.label)}
-            color={cat.color}
-            style={{ marginBottom: 'small', zIndex: 2, borderRadius: 0 }}
+            value="ALL"
+            onClick={() => setCategoryFilter(null)}
+            style={{ borderRadius: 0 }}
           >
-            <b>{cat.label && cat.label.toUpperCase()}</b>
+            <b>ALL</b>
           </Tag>
-        ))}
-      </div>
-      <div
-        style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
-      >
-        {filteredWorks.map((work) => (
-          <div key={work._id} style={{ margin: 12 }}>
-            <Link to={`/${work.authorUsername}/work/${work._id}`}>
-              <WorkThumb work={work} />
-            </Link>
-          </div>
-        ))}
-      </div>
-    </Row>
+          {categoriesAssignedToWorks.map((cat) => (
+            <Tag
+              key={cat.label}
+              value={cat.label}
+              onClick={() => setCategoryFilter(cat.label)}
+              color={cat.color}
+              style={{ marginBottom: 'small', zIndex: 2, borderRadius: 0 }}
+            >
+              <b>{cat.label && cat.label.toUpperCase()}</b>
+            </Tag>
+          ))}
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}
+        >
+          {filteredWorks.map((work) => (
+            <div key={work._id} style={{ margin: 12 }}>
+              <Link to={`/${work.authorUsername}/work/${work._id}`}>
+                <WorkThumb work={work} />
+              </Link>
+            </div>
+          ))}
+        </div>
+      </Row>
+    </Loader>
   );
 }
 
