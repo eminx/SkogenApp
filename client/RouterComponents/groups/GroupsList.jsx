@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Radio, Button, message } from 'antd';
 import Loader from '../../UIComponents/Loader';
 import NiceList from '../../UIComponents/NiceList';
 import SexyThumb from '../../UIComponents/SexyThumb';
+import { call } from '../../functions';
 
 const RadioGroup = Radio.Group;
 
@@ -29,40 +29,23 @@ const groupFilterOptions = [
 class GroupsList extends PureComponent {
   state = {
     filterOption: 'active',
+    groups: [],
+    loading: true,
   };
 
-  getTitle = (group) => {
-    return (
-      <div>
-        <div>
-          <h3 style={{ overflowWrap: 'anywhere' }}>
-            <Link to={`/group/${group._id}`}>{group.title}</Link>
-          </h3>
-          <h5>
-            <b>{group.readingMaterial}</b>
-          </h5>
-        </div>
-        <div style={{ textAlign: 'right', lineHeight: '16px' }}>
-          <span style={{ fontSize: 12 }}>{group.adminUsername}</span>
-          <br />
-          <span style={{ fontSize: 10 }}>
-            {moment(group.creationDate).format('Do MMM YYYY')}
-          </span>
-        </div>
-      </div>
-    );
-  };
+  componentDidMount() {
+    this.getGroups();
+  }
 
-  getExtra = (group) => {
-    return (
-      <div>
-        {group.adminUsername}
-        <br />
-        <span style={{ fontSize: 10 }}>
-          {moment(group.creationDate).format('Do MMM YYYY')}
-        </span>
-      </div>
-    );
+  getGroups = async () => {
+    try {
+      const groups = await call('getGroups');
+      this.setState({ groups, loading: false });
+    } catch (error) {
+      this.setState({ loading: false });
+      console.log(error);
+      message.error(error.reason);
+    }
   };
 
   archiveGroup = (groupId) => {
@@ -86,8 +69,8 @@ class GroupsList extends PureComponent {
   };
 
   getFilteredGroups = () => {
-    const { currentUser, groups } = this.props;
-    const { filterOption } = this.state;
+    const { currentUser } = this.props;
+    const { filterOption, groups } = this.state;
 
     if (!groups) {
       return [];
@@ -122,8 +105,8 @@ class GroupsList extends PureComponent {
   };
 
   render() {
-    const { currentUser, loading } = this.props;
-    const { filterOption } = this.state;
+    const { currentUser } = this.props;
+    const { filterOption, loading } = this.state;
 
     if (loading) {
       return <Loader />;
@@ -140,20 +123,20 @@ class GroupsList extends PureComponent {
       padding: 6,
     };
 
-    const groupsList = groupsFilteredAndSorted.map((group) => ({
-      ...group,
-      actions: [
-        {
-          content: group.isArchived ? 'Unarchive' : 'Archive',
-          handleClick: group.isArchived
-            ? () => this.unarchiveGroup(group._id)
-            : () => this.archiveGroup(group._id),
-          isDisabled:
-            !currentUser ||
-            (group.adminId !== currentUser._id && !currentUser.isSuperAdmin),
-        },
-      ],
-    }));
+    // const groupsList = groupsFilteredAndSorted.map((group) => ({
+    //   ...group,
+    //   actions: [
+    //     {
+    //       content: group.isArchived ? 'Unarchive' : 'Archive',
+    //       handleClick: group.isArchived
+    //         ? () => this.unarchiveGroup(group._id)
+    //         : () => this.archiveGroup(group._id),
+    //       isDisabled:
+    //         !currentUser ||
+    //         (group.adminId !== currentUser._id && !currentUser.isSuperAdmin),
+    //     },
+    //   ],
+    // }));
 
     return (
       <div>
