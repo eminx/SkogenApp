@@ -234,7 +234,7 @@ class Calendar extends React.PureComponent {
               ))}
             </div>
 
-            {filteredBookings ? (
+            {!filteredBookings ? (
               <Loader />
             ) : (
               <CalendarView
