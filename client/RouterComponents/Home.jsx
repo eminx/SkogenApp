@@ -1,11 +1,21 @@
 import React, { PureComponent } from 'react';
+import { parse, stringify } from 'query-string';
 import moment from 'moment';
-import { Row } from 'antd';
+import { Row, Radio } from 'antd';
 import Loader from '../UIComponents/Loader';
 import SexyThumb from '../UIComponents/SexyThumb';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 const today = moment(new Date());
+
+const RadioGroup = Radio.Group;
+
+const centerStyle = {
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  padding: 6,
+};
 
 const getFirstFutureOccurence = (occurence) =>
   moment(occurence.endDate).isAfter(yesterday);
@@ -139,10 +149,23 @@ class Home extends PureComponent {
     return this.getPastPublicActivities().sort(compareForSortReverse);
   };
 
-  render() {
-    const { isLoading } = this.props;
+  handlePastChange = ({ target: { value } }) => {
+    const { history } = this.props;
+    const showPast = value === 'Past';
+    history.push({ search: stringify({ showPast }) });
+  };
 
-    const allSortedActivities = this.getPastActivitiesSorted();
+  render() {
+    const { history, isLoading } = this.props;
+
+    const {
+      location: { search },
+    } = history;
+    const { showPast } = parse(search, { parseBooleans: true });
+
+    const allSortedActivities = showPast
+      ? this.getPastActivitiesSorted()
+      : this.getAllSorted();
 
     return (
       <div style={{ marginBottom: 48 }}>
@@ -153,6 +176,15 @@ class Home extends PureComponent {
             ) : (
               <div>
                 <CovidInfo />
+                <div style={centerStyle}>
+                  <RadioGroup
+                    value={showPast ? 'Past' : 'Upcoming'}
+                    options={['Past', 'Upcoming']}
+                    onChange={this.handlePastChange}
+                    optionType="button"
+                    buttonStyle="solid"
+                  />
+                </div>
                 <div
                   style={{
                     display: 'flex',

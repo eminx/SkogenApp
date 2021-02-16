@@ -16,5 +16,6 @@ export default HomeContainer = withTracker((props) => {
     bookingsList,
     currentUser,
     groupsList,
+    history: props.history,
   };
 })(Home);

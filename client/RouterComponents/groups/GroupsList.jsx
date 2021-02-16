@@ -11,6 +11,13 @@ const RadioGroup = Radio.Group;
 
 import { compareForSort } from '../../functions';
 
+const centerStyle = {
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  padding: 6,
+};
+
 const groupFilterOptions = [
   {
     label: 'Active',
@@ -115,13 +122,6 @@ class GroupsList extends PureComponent {
     const groupsFilteredAndSorted = this.getFilteredGroups().sort(
       compareForSort
     );
-
-    const centerStyle = {
-      width: '100%',
-      display: 'flex',
-      justifyContent: 'center',
-      padding: 6,
-    };
 
     // const groupsList = groupsFilteredAndSorted.map((group) => ({
     //   ...group,
