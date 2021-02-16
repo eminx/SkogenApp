@@ -39,6 +39,10 @@ class CreatePageForm extends React.Component {
       wrapperCol: { span: 14 },
     };
 
+    if (!pageData) {
+      return null;
+    }
+
     return (
       <div className="create-gathering-form">
         <h3>Please enter the details below</h3>
@@ -56,7 +60,7 @@ class CreatePageForm extends React.Component {
               },
               { validator: this.validateTitle },
             ]}
-            initialValue={pageData ? pageData.title : null}
+            initialValue={pageData.title && ''}
           >
             <Input placeholder="Page title" />
           </FormItem>
@@ -71,7 +75,7 @@ class CreatePageForm extends React.Component {
                 message: 'Please enter a detailed description',
               },
             ]}
-            initialValue={pageData ? pageData.longDescription : null}
+            initialValue={pageData.longDescription && ''}
           >
             <ReactQuill modules={editorModules} formats={editorFormats} />
           </FormItem>
@@ -85,7 +89,7 @@ class CreatePageForm extends React.Component {
                 message: 'Please enter a detailed description in Swedish',
               },
             ]}
-            initialValue={pageData ? pageData.longDescriptionSV : null}
+            initialValue={pageData.longDescriptionSV && ''}
           >
             <ReactQuill modules={editorModules} formats={editorFormats} />
           </FormItem>
