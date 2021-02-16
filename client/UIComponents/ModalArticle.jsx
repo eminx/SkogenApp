@@ -15,35 +15,31 @@ const getInitials = (string) => {
 
 class ModalArticle extends React.Component {
   render() {
-    const { isLoading, item, imageSrc } = this.props;
+    const { item, imageSrc, ...otherProps } = this.props;
 
     return (
-      <Modal {...this.props} style={{ top: 20 }}>
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <Card
-            title={
-              <div>
-                <h1>{item.title}</h1>
-              </div>
+      <Modal {...otherProps} style={{ top: 20 }}>
+        <Card
+          title={
+            <div>
+              <h1>{item.title}</h1>
+            </div>
+          }
+          bordered={false}
+          cover={imageSrc ? <img alt="image" src={imageSrc} /> : null}
+        >
+          <Meta
+            avatar={<Avatar>{getInitials(item.authorName || 'ad')}</Avatar>}
+            title={item.room || item.readingMaterial}
+            description={
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: item.longDescription || item.description,
+                }}
+              />
             }
-            bordered={false}
-            cover={imageSrc ? <img alt="image" src={imageSrc} /> : null}
-          >
-            <Meta
-              avatar={<Avatar>{getInitials(item.authorName || 'ad')}</Avatar>}
-              title={item.room || item.readingMaterial}
-              description={
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: item.longDescription || item.description,
-                  }}
-                />
-              }
-            />
-          </Card>
-        )}
+          />
+        </Card>
       </Modal>
     );
   }

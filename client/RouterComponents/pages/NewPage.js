@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { Row, Col, Radio, message, Alert, Affix } from 'antd';
+import { Redirect } from 'react-router-dom';
+import { Row, Col, message, Alert } from 'antd';
 
 import CreatePageForm from '../../UIComponents/CreatePageForm';
 import ModalArticle from '../../UIComponents/ModalArticle';
@@ -33,65 +33,30 @@ class NewPage extends React.Component {
     });
   };
 
-  setUploadableImage = (e) => {
-    const theImageFile = e.file.originFileObj;
-    const reader = new FileReader();
-    reader.readAsDataURL(theImageFile);
-    reader.addEventListener(
-      'load',
-      () => {
-        this.setState({
-          uploadableImage: theImageFile,
-          uploadableImageLocal: reader.result,
-        });
-      },
-      false
-    );
-  };
-
-  uploadImage = () => {
-    this.setState({ isLoading: true });
-    const { uploadableImage } = this.state;
-
-    const upload = new Slingshot.Upload('pageImageUpload');
-
-    upload.send(uploadableImage, (error, imageUrl) => {
-      if (error) {
-        console.error('Error uploading:', error);
-      } else {
-        this.setState(
-          {
-            uploadedImageUrl: imageUrl,
-            isLoading: false,
-          },
-          () => this.createPage()
-        );
-      }
-    });
-  };
-
   createPage = () => {
     const { currentUser } = this.props;
     if (!currentUser || !currentUser.isSuperAdmin) {
       message.error('This is not allowed');
       return false;
     }
-    const { values, uploadedImageUrl } = this.state;
+    this.setState({ isLoading: true });
 
-    Meteor.call('createPage', values, uploadedImageUrl, (error, result) => {
+    const { values } = this.state;
+
+    Meteor.call('createPage', values, (error, result) => {
       if (error) {
         console.log('error', error);
         this.setState({
           isLoading: false,
           isError: true,
         });
-      } else {
-        this.setState({
-          isLoading: false,
-          newPageId: parseTitle(result),
-          isSuccess: true,
-        });
+        return;
       }
+      this.setState({
+        isLoading: false,
+        newPageId: parseTitle(result),
+        isSuccess: true,
+      });
     });
   };
 
@@ -157,6 +122,10 @@ class NewPage extends React.Component {
             onCancel={this.hideModal}
             okText="Confirm"
             cancelText="Go back and edit"
+            maskClosable={false}
+            closable={!isLoading}
+            okButtonProps={{ loading: isLoading }}
+            cancelButtonProps={{ disabled: isLoading }}
           />
         ) : null}
 
