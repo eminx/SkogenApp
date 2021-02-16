@@ -1,4 +1,4 @@
-Meteor.publishLite('attendingEvents', function () {
+Meteor.publish('attendingEvents', function () {
   return Meteor.users.find(this.userId, {
     fields: {
       attending: 1,
@@ -8,7 +8,7 @@ Meteor.publishLite('attendingEvents', function () {
   });
 });
 
-Meteor.publishLite('gatherings', function (onlyPublic = false) {
+Meteor.publish('gatherings', function (onlyPublic = false) {
   const fields = {
     title: 1,
     datesAndTimes: 1,
@@ -38,7 +38,7 @@ Meteor.publishLite('gatherings', function (onlyPublic = false) {
   }
 });
 
-Meteor.publishLite('groups', function () {
+Meteor.publish('groups', function () {
   const userId = Meteor.userId();
 
   const fields = {
@@ -64,13 +64,13 @@ Meteor.publishLite('groups', function () {
   );
 });
 
-Meteor.publishLite('manuals', function () {
+Meteor.publish('manuals', function () {
   return Documents.find({
     contextType: 'manual',
   });
 });
 
-Meteor.publishLite('publications', function () {
+Meteor.publish('publications', function () {
   return Publications.find(
     {
       isPublished: true,
@@ -80,7 +80,7 @@ Meteor.publishLite('publications', function () {
   // }
 });
 
-Meteor.publishLite('gathering', function (id) {
+Meteor.publish('gathering', function (id) {
   const user = Meteor.user();
   if (user && user.isSuperAdmin) {
     return Gatherings.find({
@@ -106,37 +106,37 @@ Meteor.publishLite('gathering', function (id) {
   }
 });
 
-Meteor.publishLite('group', function (id) {
+Meteor.publish('group', function (id) {
   return Groups.find({
     _id: id,
   });
 });
 
-Meteor.publishLite('publication', function (id) {
+Meteor.publish('publication', function (id) {
   return Publications.find({
     _id: id,
   });
 });
 
-Meteor.publishLite('pages', function () {
+Meteor.publish('pages', function () {
   return Pages.find({}, { sort: { creationDate: 1 } });
 });
 
-Meteor.publishLite('page', function (title) {
+Meteor.publish('page', function (title) {
   return Pages.find({ title });
 });
 
-Meteor.publishLite('work', function (id) {
+Meteor.publish('work', function (id) {
   return Works.find({
     _id: id,
   });
 });
 
-Meteor.publishLite('works', function () {
+Meteor.publish('works', function () {
   return Works.find({}, { sort: { creationDate: 1 } });
 });
 
-Meteor.publishLite('myworks', function () {
+Meteor.publish('myworks', function () {
   const currentUserId = Meteor.userId();
   return Works.find(
     {
@@ -155,15 +155,15 @@ Meteor.publish('chat', function (contextId) {
   }
 });
 
-Meteor.publishLite('places', function () {
+Meteor.publish('places', function () {
   return Places.find({}, { sort: { roomIndex: 1 } });
 });
 
-Meteor.publishLite('documents', function () {
+Meteor.publish('documents', function () {
   return Documents.find();
 });
 
-Meteor.publishLite('users', function () {
+Meteor.publish('users', function () {
   const user = Meteor.user();
   if (!user || !user.isSuperAdmin) {
     return null;
@@ -171,7 +171,7 @@ Meteor.publishLite('users', function () {
   return Meteor.users.find();
 });
 
-Meteor.publishLite('me', function () {
+Meteor.publish('me', function () {
   const userId = Meteor.userId();
   if (userId) {
     return Meteor.users.find(userId);

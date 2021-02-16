@@ -3,7 +3,7 @@ import EditPublication from './EditPublication';
 
 export default EditPublicationContainer = withTracker((props) => {
   const publicationId = props.match.params.id;
-  const publicationSubscription = Meteor.subscribeLite(
+  const publicationSubscription = Meteor.subscribe(
     'publication',
     publicationId
   );

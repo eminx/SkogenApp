@@ -3,7 +3,7 @@ import Publication from './Publication';
 
 export default PublicationContainer = withTracker((props) => {
   const publicationId = props.match.params.id;
-  const publicationSubscription = Meteor.subscribeLite(
+  const publicationSubscription = Meteor.subscribe(
     'publication',
     publicationId
   );
@@ -13,7 +13,7 @@ export default PublicationContainer = withTracker((props) => {
     : null;
   const currentUser = Meteor.user();
 
-  const chatSubscription = Meteor.subscribeLite('chat', publicationId);
+  const chatSubscription = Meteor.subscribe('chat', publicationId);
   const chatData = Chats ? Chats.findOne({ contextId: publicationId }) : null;
 
   return {

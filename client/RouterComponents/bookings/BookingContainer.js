@@ -3,7 +3,7 @@ import Booking from './Booking';
 
 export default BookingContainer = withTracker((props) => {
   const bookingId = props.match.params.id;
-  const booking = Meteor.subscribeLite('gathering', bookingId);
+  const booking = Meteor.subscribe('gathering', bookingId);
 
   const isLoading = !booking.ready();
   const bookingData = Gatherings
@@ -11,7 +11,7 @@ export default BookingContainer = withTracker((props) => {
     : null;
   const currentUser = Meteor.user();
 
-  const chatSubscription = Meteor.subscribeLite('chat', bookingId);
+  const chatSubscription = Meteor.subscribe('chat', bookingId);
   const chatData = Chats ? Chats.findOne({ contextId: bookingId }) : null;
 
   return {

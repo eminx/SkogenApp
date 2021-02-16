@@ -3,7 +3,7 @@ import Users from './Users';
 
 export default UsersContainer = withTracker((props) => {
   const currentUser = Meteor.user();
-  const usersSubscription = Meteor.subscribeLite('users');
+  const usersSubscription = Meteor.subscribe('users');
   const isLoading = !usersSubscription.ready();
   const users = Meteor.users ? Meteor.users.find().fetch() : null;
 

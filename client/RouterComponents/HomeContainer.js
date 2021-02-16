@@ -2,10 +2,10 @@ import { withTracker } from 'meteor/react-meteor-data';
 import Home from './Home';
 
 export default HomeContainer = withTracker((props) => {
-  const groupsSubscription = Meteor.subscribeLite('groups');
+  const groupsSubscription = Meteor.subscribe('groups');
   const groupsList = Groups ? Groups.find().fetch() : null;
 
-  const bookingsSubscription = Meteor.subscribeLite('gatherings', true);
+  const bookingsSubscription = Meteor.subscribe('gatherings', true);
   const isLoading =
     !bookingsSubscription.ready() || !groupsSubscription.ready();
   const bookingsList = Gatherings ? Gatherings.find().fetch() : null;
