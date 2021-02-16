@@ -124,7 +124,9 @@ class Group extends Component {
 
   getChatMessages = () => {
     const { chatData, currentUser } = this.props;
-
+    if (!currentUser) {
+      return [];
+    }
     let messages = [];
 
     if (chatData) {
