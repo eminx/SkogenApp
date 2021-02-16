@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
-import MediaQuery from 'react-responsive';
 import ReactDropzone from 'react-dropzone';
 import { Row, Col, Card, Divider, Tag, Button, Modal, message } from 'antd';
 import Loader from '../UIComponents/Loader';
@@ -343,16 +342,6 @@ class Calendar extends React.PureComponent {
           </Row>
           <Row style={{ paddingTop: 12 }}>
             <Row span={24}>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html:
-                    selectedBooking &&
-                    selectedBooking.longDescription &&
-                    (selectedBooking.isPrivateGroup
-                      ? ''
-                      : selectedBooking.longDescription.slice(0, 120) + '...'),
-                }}
-              />
               {selectedBooking && selectedBooking.isPublicActivity && (
                 <Link
                   to={

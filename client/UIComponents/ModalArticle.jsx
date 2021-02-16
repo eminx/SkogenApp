@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Card, Avatar } from 'antd';
-import Loader from './Loader';
+import renderHTML from 'react-render-html';
 const { Meta } = Card;
 
 const getInitials = (string) => {
@@ -38,13 +38,7 @@ class ModalArticle extends React.Component {
           <Meta
             avatar={<Avatar>{getInitials(item.authorName || 'ad')}</Avatar>}
             title={item.room || item.readingMaterial}
-            description={
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: item.longDescription || item.description,
-                }}
-              />
-            }
+            description={renderHTML(item.longDescription || item.description)}
           />
         </Card>
       </Modal>

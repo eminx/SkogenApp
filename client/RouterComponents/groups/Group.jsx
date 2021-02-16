@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
 import MediaQuery from 'react-responsive';
-
+import renderHTML from 'react-render-html';
 import {
   Row,
   Col,
@@ -756,15 +756,7 @@ class Group extends Component {
                 ) : null
               }
             >
-              <Meta
-                description={
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: group.description,
-                    }}
-                  />
-                }
-              />
+              <Meta description={renderHTML(group.description)} />
             </Card>
           </TabPane>
           <TabPane tab="Discussion" key="2">

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Card, Icon, Avatar, Row, Col, Button, Divider } from 'antd';
-const { Meta } = Card;
 import moment from 'moment';
+import renderHTML from 'react-render-html';
 
 const getInitials = (string) => {
   var names = string.split(' '),
@@ -64,10 +63,9 @@ class CardArticle extends React.Component {
             whiteSpace: 'pre-line',
             color: 'rgba(0,0,0, .85)',
           }}
-          dangerouslySetInnerHTML={{
-            __html: item.longDescription,
-          }}
-        />
+        >
+          {renderHTML(item.longDescription)}
+        </div>
 
         {item.practicalInfo && item.practicalInfo.length > 0 && (
           <div style={{ ...sectionStyle, textAlign: 'left' }}>
