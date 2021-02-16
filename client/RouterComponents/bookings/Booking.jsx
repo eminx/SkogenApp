@@ -66,9 +66,11 @@ class Booking extends React.Component {
 
   getChatMessages = () => {
     const { chatData, currentUser } = this.props;
+    if (!currentUser) {
+      return [];
+    }
 
     let messages = [];
-
     if (chatData) {
       messages = [...chatData.messages];
       messages.forEach((message) => {

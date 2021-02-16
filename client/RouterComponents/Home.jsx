@@ -145,7 +145,6 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
   }, [search, bookingsList, groupsList, currentUser]);
 
   const getAllUpcoming = () => {
-    console.log('future acts');
     const allActivities = [
       ...getPublicActivities(bookingsList),
       ...getGroupMeetings(groupsList, currentUser),
@@ -154,7 +153,6 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
   };
 
   const getPastActivities = () => {
-    console.log('past acts');
     return getPastPublicActivities(bookingsList).sort(compareForSortReverse);
   };
 
@@ -174,7 +172,7 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
     <div style={{ marginBottom: 48 }}>
       <Row gutter={24}>
         <div style={{ width: '100%' }}>
-          {!thumbs ? (
+          {!thumbs || thumbs.length === 0 ? (
             <Loader />
           ) : (
             <div>
