@@ -7,16 +7,17 @@ Meteor.methods({
 
     check(formValues.title, String);
     check(formValues.longDescription, String);
+    check(formValues.longDescriptionSV, String);
 
     try {
-      const newPageId = Pages.insert({
+      Pages.insert({
         authorId: user._id,
         authorName: user.username,
         title: formValues.title,
-        // imageUrl,
         longDescription: formValues.longDescription,
+        longDescriptionSV: formValues.longDescriptionSV,
         isPublished: true,
-        creationDate: new Date()
+        creationDate: new Date(),
       });
       return formValues.title;
     } catch (error) {
@@ -32,16 +33,16 @@ Meteor.methods({
 
     check(formValues.title, String);
     check(formValues.longDescription, String);
-    // check(imageUrl, String);
+    check(formValues.longDescriptionSV, String);
 
     try {
       Pages.update(pageId, {
         $set: {
           title: formValues.title,
           longDescription: formValues.longDescription,
-          // imageUrl,
-          latestUpdate: new Date()
-        }
+          longDescriptionSV: formValues.longDescriptionSV,
+          latestUpdate: new Date(),
+        },
       });
       return formValues.title;
     } catch (error) {
@@ -60,5 +61,5 @@ Meteor.methods({
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }
-  }
+  },
 });

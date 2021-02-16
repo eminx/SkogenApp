@@ -77,6 +77,20 @@ class CreatePageForm extends React.Component {
           </FormItem>
 
           <FormItem
+            {...formItemLayout}
+            label="Description in Swedish"
+            name="longDescriptionSV"
+            rules={[
+              {
+                message: 'Please enter a detailed description in Swedish',
+              },
+            ]}
+            initialValue={pageData ? pageData.longDescriptionSV : null}
+          >
+            <ReactQuill modules={editorModules} formats={editorFormats} />
+          </FormItem>
+
+          <FormItem
             wrapperCol={{
               xs: { span: 24, offset: 0 },
               sm: { span: 16, offset: 8 },

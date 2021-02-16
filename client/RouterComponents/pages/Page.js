@@ -1,10 +1,14 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Button } from 'antd';
+import { Row, Col, Button, Tabs } from 'antd';
+import renderHTML from 'react-render-html';
+
 import PagesList from '../../UIComponents/PagesList';
 import Loader from '../../UIComponents/Loader';
 
 import { parseTitle } from '../../functions';
+
+const { TabPane } = Tabs;
 
 class Page extends PureComponent {
   render() {
@@ -45,15 +49,27 @@ class Page extends PureComponent {
               }}
             >
               <h2>{page && page.title}</h2>
-              <div style={{ color: '#030303' }}>
-                {page && (
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: page.longDescription,
-                    }}
-                  />
-                )}
-              </div>
+              {page &&
+                (page.longDescriptionSV ? (
+                  <Tabs type="line" animated={false}>
+                    <TabPane tab="English" key="1">
+                      <div style={{ color: '#030303' }}>
+                        {page && renderHTML(page.longDescription)}
+                      </div>
+                    </TabPane>
+                    {page && page.longDescriptionSV && (
+                      <TabPane tab="Svenska" key="2">
+                        <div style={{ color: '#030303' }}>
+                          {renderHTML(page.longDescriptionSV)}
+                        </div>
+                      </TabPane>
+                    )}
+                  </Tabs>
+                ) : (
+                  <div style={{ color: '#030303' }}>
+                    {renderHTML(page.longDescription)}
+                  </div>
+                ))}
             </div>
           </Col>
           <Col md={4}>
