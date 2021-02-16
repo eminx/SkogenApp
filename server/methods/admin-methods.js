@@ -1,4 +1,4 @@
-const getVerifiedEmailText = username => {
+const getVerifiedEmailText = (username) => {
   return `Hi ${username},\n\nWe're very happy to inform you that you are now a verified member at Skogen.\n\nThis means that from now on you're welcome to create your own study groups and book spaces & tools either for your own projects or to make a public event. We would like to encourage you to use this tool and wish you to keep a good collaboration with your team.\n\nKind regards,\nSkogen Team`;
 };
 
@@ -12,7 +12,7 @@ const catColors = [
   'hsla(226, 62%, 40%, 0.9)',
   'hsla(262, 62%, 40%, 0.9)',
   'hsla(298, 62%, 40%, 0.9)',
-  'hsla(334, 62%, 40%, 0.9)'
+  'hsla(334, 62%, 40%, 0.9)',
 ];
 
 Meteor.methods({
@@ -27,8 +27,8 @@ Meteor.methods({
     try {
       Meteor.users.update(memberId, {
         $set: {
-          isRegisteredMember: true
-        }
+          isRegisteredMember: true,
+        },
       });
       Meteor.call(
         'sendEmail',
@@ -55,8 +55,8 @@ Meteor.methods({
     try {
       Meteor.users.update(memberId, {
         $set: {
-          isRegisteredMember: false
-        }
+          isRegisteredMember: false,
+        },
       });
       Meteor.call(
         'sendEmail',
@@ -69,7 +69,7 @@ Meteor.methods({
     }
   },
 
-  getPlaces() {
+  getResources() {
     const user = Meteor.user();
     if (!user || !user.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed');
@@ -82,7 +82,7 @@ Meteor.methods({
     }
   },
 
-  addPlace(name) {
+  addResource(values) {
     const user = Meteor.user();
     if (!user || !user.isSuperAdmin) {
       throw new Meteor.Error('Not allowed!');
@@ -90,31 +90,50 @@ Meteor.methods({
 
     const placesCounter = Places.find().count();
 
-    if (Places.findOne({ name: name })) {
+    if (Places.findOne({ name: values.name })) {
       throw new Meteor.Error('That place already exists!');
-    } else {
-      try {
-        Places.insert({
-          name: name,
-          addedBy: Meteor.user().username,
-          roomIndex: placesCounter,
-          creationDate: new Date()
-        });
-        return true;
-      } catch (err) {
-        throw new Meteor.Error(err, "Couldn't add the place : /");
-      }
+    }
+    try {
+      Places.insert({
+        name: values.name,
+        description: values.description || '',
+        addedBy: Meteor.user().username,
+        roomIndex: placesCounter,
+        creationDate: new Date(),
+      });
+      return true;
+    } catch (err) {
+      throw new Meteor.Error(err, "Couldn't add the place : /");
     }
   },
 
-  removePlace(placeId) {
+  editResource(values, resourceId) {
+    const user = Meteor.user();
+    if (!user || !user.isSuperAdmin) {
+      throw new Meteor.Error('Not allowed!');
+    }
+    try {
+      Places.update(resourceId, {
+        $set: {
+          name: values.name,
+          description: values.description || '',
+          lastUpdate: new Date(),
+        },
+      });
+      return true;
+    } catch (err) {
+      throw new Meteor.Error(err, "Couldn't add the place : /");
+    }
+  },
+
+  removeResource(resourceId) {
     const user = Meteor.user();
     if (!user || !user.isSuperAdmin) {
       throw new Meteor.Error('Not allowed!');
     }
 
     try {
-      Places.remove(placeId);
+      Places.remove(resourceId);
     } catch (error) {
       throw new Meteor.Error(error);
     }
@@ -140,7 +159,7 @@ Meteor.methods({
         color: catColors[catLength],
         addedBy: user._id,
         addedUsername: user.username,
-        addedDate: new Date()
+        addedDate: new Date(),
       });
     } catch (error) {
       throw new Meteor.Error(error);
@@ -159,5 +178,5 @@ Meteor.methods({
     } catch (error) {
       throw new Meteor.Error(error);
     }
-  }
+  },
 });

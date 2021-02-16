@@ -1,46 +1,60 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Modal, Input, Button, message } from 'antd';
+import { Row, Col, Form, Modal, Input, Button, message } from 'antd';
+
 import AdminMenu from '../../UIComponents/AdminMenu';
 import { call } from '../../functions';
 import NiceList from '../../UIComponents/NiceList';
 import Loader from '../../UIComponents/Loader';
 
+const FormItem = Form.Item;
+const { TextArea } = Input;
+
 const Resources = ({ history }) => {
-  const [places, setPlaces] = useState([]);
+  const [resources, setResources] = useState([]);
   const [addModal, setAddModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [editableResource, setEditableResource] = useState(null);
 
   useEffect(() => {
-    getPlaces();
+    getResources();
   }, []);
 
-  // if (!places || (places && places.length === 0)) {
-  //   return <Loader />;
-  // }
-
-  const getPlaces = async () => {
+  const getResources = async () => {
     try {
-      const response = await call('getPlaces');
-      setPlaces(response);
+      const response = await call('getResources');
+      setResources(response);
+      setEditableResource(null);
     } catch (error) {
       message.error(error.reason);
     }
   };
 
-  const removePlace = async (place) => {
+  const editResource = async (values) => {
     try {
-      await call('removePlace', place._id);
-      message.success('Place is successfully removed');
-      getPlaces();
+      await call('editResource', values, editableResource._id);
+      message.success(`${values.name} is successfully updated`);
+      getResources();
+      setEditModal(false);
     } catch (error) {
       message.error(error.reason);
     }
   };
 
-  const addPlace = async (name) => {
+  const removeResource = async (resource) => {
     try {
-      await call('addPlace', name);
-      message.success('Your place succesfully added to the list');
-      getPlaces();
+      await call('removeResource', resource._id);
+      message.success(`${resource.name} is successfully removed`);
+      getResources();
+    } catch (error) {
+      message.error(error.reason);
+    }
+  };
+
+  const addResource = async (values) => {
+    try {
+      await call('addResource', values);
+      message.success('Your resource succesfully added to the list');
+      getResources();
       setAddModal(false);
     } catch (error) {
       message.error(error.reason);
@@ -49,12 +63,27 @@ const Resources = ({ history }) => {
 
   const currentPath = history && history.location.pathname;
 
-  const placesWithActions = places.map((place) => ({
-    ...place,
+  const openEditResource = (resource) => {
+    setEditModal(true);
+    setEditableResource(resource);
+  };
+
+  const closeEditResource = () => {
+    setEditModal(false);
+    setEditableResource(null);
+  };
+
+  const resourcesWithActions = resources.map((resource) => ({
+    ...resource,
     actions: [
       {
+        content: 'Edit',
+        handleClick: () => openEditResource(resource),
+        isDisabled: false,
+      },
+      {
         content: 'Remove',
-        handleClick: () => removePlace(place),
+        handleClick: () => removeResource(resource),
         isDisabled: false,
       },
     ],
@@ -79,9 +108,9 @@ const Resources = ({ history }) => {
           >
             <Button onClick={() => setAddModal(true)}>Add</Button>
           </div>
-          {places && (
-            <NiceList list={placesWithActions}>
-              {(place) => <h4>{place.name}</h4>}
+          {resources && (
+            <NiceList list={resourcesWithActions}>
+              {(resource) => <h4>{resource.name}</h4>}
             </NiceList>
           )}
         </Col>
@@ -90,25 +119,61 @@ const Resources = ({ history }) => {
       </Row>
 
       <Modal
+        destroyOnClose
         className="addSpace-modal"
-        title="Add a space/equipment for booking"
+        title="Add a Resource"
         visible={addModal}
-        onOk={() => setAddModal(false)}
         onCancel={() => setAddModal(false)}
       >
-        <h3>
-          Please enter the name of the space or equipment to be added to the
-          list
-        </h3>
-        <Input.Search
-          placeholder="type and press enter"
-          enterButton="Add"
-          size="large"
-          onSearch={(value) => addPlace(value)}
+        <ResourceWidget onFinish={(values) => addResource(values)} />
+      </Modal>
+
+      <Modal
+        destroyOnClose
+        className="addSpace-modal"
+        title="Edit the Resource"
+        visible={editModal}
+        onCancel={() => closeEditResource()}
+      >
+        <ResourceWidget
+          resource={editableResource}
+          onFinish={(values) => editResource(values)}
         />
       </Modal>
     </div>
   );
 };
+
+const formItemLayout = {
+  labelCol: { span: 6 },
+  wrapperCol: { span: 14 },
+};
+
+function ResourceWidget({ resource, onFinish }) {
+  return (
+    <Form initialValues={resource} onFinish={onFinish}>
+      <FormItem
+        {...formItemLayout}
+        label="Name"
+        name="name"
+        rules={[
+          { required: true, message: 'Please input title of the resource!' },
+        ]}
+      >
+        <Input />
+      </FormItem>
+
+      <FormItem {...formItemLayout} label="Description" name="description">
+        <TextArea />
+      </FormItem>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Button type="primary" htmlType="submit">
+          Confirm
+        </Button>
+      </div>
+    </Form>
+  );
+}
 
 export default Resources;
