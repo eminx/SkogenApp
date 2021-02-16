@@ -363,3 +363,7 @@ body {
 .ant-avatar > img {
   object-fit: cover;
 }
+
+.spin-container {
+  width: 100%;
+}

@@ -2,7 +2,17 @@ import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
-import { Row, Col, Card, Divider, Tag, Button, Modal, message } from 'antd';
+import {
+  Row,
+  Col,
+  Card,
+  Divider,
+  Tag,
+  Button,
+  Modal,
+  Spin,
+  message,
+} from 'antd';
 import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
 import NiceList from '../UIComponents/NiceList';
@@ -206,43 +216,45 @@ class Calendar extends React.PureComponent {
         )}
 
         <Row gutter={24} justify="center">
-          <div style={{ width: '100%' }}>
-            <div
-              className="tags-container"
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                flexWrap: 'wrap',
-              }}
-            >
-              <Tag.CheckableTag
-                checked={calendarFilter === 'All rooms'}
-                onChange={() => this.handleCalendarFilterChange('All rooms')}
-                key={'All rooms'}
+          <Spin
+            spinning={isLoading}
+            tip="loading all bookings..."
+            wrapperClassName="spin-container"
+          >
+            <div style={{ width: '100%' }}>
+              <div
+                className="tags-container"
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  flexWrap: 'wrap',
+                }}
               >
-                {'All rooms'}
-              </Tag.CheckableTag>
-              {placesList.map((room, i) => (
-                <Tag
-                  color={colors[i]}
-                  className={calendarFilter === room.name ? 'checked' : null}
-                  onClick={() => this.handleCalendarFilterChange(room.name)}
-                  key={room.name}
+                <Tag.CheckableTag
+                  checked={calendarFilter === 'All rooms'}
+                  onChange={() => this.handleCalendarFilterChange('All rooms')}
+                  key={'All rooms'}
                 >
-                  {room.name}
-                </Tag>
-              ))}
-            </div>
+                  {'All rooms'}
+                </Tag.CheckableTag>
+                {placesList.map((room, i) => (
+                  <Tag
+                    color={colors[i]}
+                    className={calendarFilter === room.name ? 'checked' : null}
+                    onClick={() => this.handleCalendarFilterChange(room.name)}
+                    key={room.name}
+                  >
+                    {room.name}
+                  </Tag>
+                ))}
+              </div>
 
-            {!filteredBookings ? (
-              <Loader />
-            ) : (
               <CalendarView
                 bookings={filteredBookings}
                 onSelect={this.handleSelectBooking}
               />
-            )}
-          </div>
+            </div>
+          </Spin>
         </Row>
 
         <Divider />

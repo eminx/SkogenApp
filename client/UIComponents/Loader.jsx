@@ -1,15 +1,15 @@
 import React from 'react';
-import { PulseLoader } from 'react-spinners';
+import { Spin } from 'antd';
 
 const loaderStyle = {
   display: 'flex',
   justifyContent: 'center',
-  margin: 24
+  margin: 24,
 };
 
 const Loader = () => (
   <div style={loaderStyle}>
-    <PulseLoader color="#ea3924" loading />
+    <Spin />
   </div>
 );
 
