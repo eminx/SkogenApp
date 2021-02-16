@@ -5,9 +5,13 @@ import Loader from '../UIComponents/Loader';
 import SexyThumb from '../UIComponents/SexyThumb';
 
 const yesterday = moment(new Date()).add(-1, 'days');
+const today = moment(new Date());
 
 const getFirstFutureOccurence = (occurence) =>
   moment(occurence.endDate).isAfter(yesterday);
+
+const getFirstPastOccurence = (occurence) =>
+  moment(occurence.endDate).isBefore(today);
 
 const compareForSort = (a, b) => {
   const firstOccurenceA = a.datesAndTimes.find(getFirstFutureOccurence);
@@ -19,6 +23,18 @@ const compareForSort = (a, b) => {
     firstOccurenceB.startDate + 'T' + firstOccurenceB.startTime + ':00Z'
   );
   return dateA - dateB;
+};
+
+const compareForSortReverse = (a, b) => {
+  const firstOccurenceA = a.datesAndTimes.find(getFirstPastOccurence);
+  const firstOccurenceB = b.datesAndTimes.find(getFirstPastOccurence);
+  const dateA = new Date(
+    firstOccurenceA.startDate + 'T' + firstOccurenceA.startTime + ':00Z'
+  );
+  const dateB = new Date(
+    firstOccurenceB.startDate + 'T' + firstOccurenceB.startTime + ':00Z'
+  );
+  return dateB - dateA;
 };
 
 class Home extends PureComponent {
@@ -43,6 +59,25 @@ class Home extends PureComponent {
     );
 
     return futurePublicActivities;
+  };
+
+  getPastPublicActivities = () => {
+    const { bookingsList } = this.props;
+    if (!bookingsList) {
+      return null;
+    }
+
+    const publicActivities = bookingsList.filter(
+      (activity) => activity.isPublicActivity === true
+    );
+
+    const pastPublicActivities = publicActivities.filter((activity) =>
+      activity.datesAndTimes.some((date) =>
+        moment(date.endDate).isBefore(today)
+      )
+    );
+
+    return pastPublicActivities;
   };
 
   parseOnlyAllowedGroups = (futureGroups) => {
@@ -100,10 +135,14 @@ class Home extends PureComponent {
     return allActivities.sort(compareForSort);
   };
 
+  getPastActivitiesSorted = () => {
+    return this.getPastPublicActivities().sort(compareForSortReverse);
+  };
+
   render() {
     const { isLoading } = this.props;
 
-    const allSortedActivities = this.getAllSorted();
+    const allSortedActivities = this.getPastActivitiesSorted();
 
     return (
       <div style={{ marginBottom: 48 }}>
@@ -122,7 +161,12 @@ class Home extends PureComponent {
                   }}
                 >
                   {allSortedActivities.map((activity) => (
-                    <SexyThumb key={activity.title} item={activity} isHome />
+                    <SexyThumb
+                      key={activity.title}
+                      item={activity}
+                      isHome
+                      showPast
+                    />
                   ))}
                 </div>
               </div>

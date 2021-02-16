@@ -6,6 +6,7 @@ import { Avatar, Image } from 'antd';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
 const yesterday = moment(new Date()).add(-1, 'days');
+const today = moment(new Date());
 
 const dateStyle = {
   color: '#fff',
@@ -53,12 +54,16 @@ function ThumbDate({ date }) {
   );
 }
 
-function SexyThumb({ item, isHome, isPub }) {
+function SexyThumb({ item, isHome, isPub, showPast }) {
   const datesAndTimes = item.datesAndTimes || item.meetings;
   const futureDates =
     datesAndTimes &&
     datesAndTimes.filter((date) => moment(date.startDate).isAfter(yesterday));
   const remaining = futureDates && futureDates.length - 3;
+
+  const pastDates =
+    datesAndTimes &&
+    datesAndTimes.filter((date) => moment(date.startDate).isBefore(today));
 
   const isGroup = !isPub && Boolean(item.meetings);
   const clickLink = isGroup
@@ -99,6 +104,15 @@ function SexyThumb({ item, isHome, isPub }) {
                   + {remaining}
                 </div>
               )}
+              {showPast &&
+                pastDates
+                  .slice(0, 3)
+                  .map((date) => (
+                    <ThumbDate
+                      key={date.startDate + date.startTime}
+                      date={date}
+                    />
+                  ))}
             </div>
           )}
           <h3
