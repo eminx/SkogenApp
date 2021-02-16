@@ -185,12 +185,6 @@ class Calendar extends React.PureComponent {
 
     const isSuperAdmin = currentUser && currentUser.isSuperAdmin;
 
-    const centerStyle = {
-      display: 'flex',
-      justifyContent: 'center',
-      marginBottom: 24,
-    };
-
     const manualsList = manuals.map((manual) => ({
       ...manual,
       actions: [
@@ -240,7 +234,7 @@ class Calendar extends React.PureComponent {
               ))}
             </div>
 
-            {isLoading ? (
+            {filteredBookings ? (
               <Loader />
             ) : (
               <CalendarView
