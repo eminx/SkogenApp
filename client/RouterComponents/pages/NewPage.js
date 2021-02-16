@@ -122,10 +122,6 @@ class NewPage extends React.Component {
             onCancel={this.hideModal}
             okText="Confirm"
             cancelText="Go back and edit"
-            maskClosable={false}
-            closable={!isLoading}
-            okButtonProps={{ loading: isLoading }}
-            cancelButtonProps={{ disabled: isLoading }}
           />
         ) : null}
 

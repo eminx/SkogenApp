@@ -80,6 +80,7 @@ class NewBookSpace extends React.Component {
   };
 
   createBooking = () => {
+    this.setState({ isLoading: true });
     const {
       values,
       isPublicActivity,
@@ -97,13 +98,13 @@ class NewBookSpace extends React.Component {
           isLoading: false,
           isError: true,
         });
-      } else {
-        this.setState({
-          isLoading: false,
-          newBookingId: result,
-          isSuccess: true,
-        });
+        return;
       }
+      this.setState({
+        isLoading: false,
+        newBookingId: result,
+        isSuccess: true,
+      });
     });
   };
 
@@ -151,9 +152,6 @@ class NewBookSpace extends React.Component {
       values,
       isLoading,
       isSuccess,
-      newBookingId,
-      uploadedImage,
-      uploadableImage,
       uploadableImageLocal,
       isPublicActivity,
       isBookingsDisabled,

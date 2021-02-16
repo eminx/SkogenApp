@@ -89,13 +89,13 @@ class NewGroup extends React.Component {
             isLoading: false,
             isError: true,
           });
-        } else {
-          this.setState({
-            isLoading: false,
-            newGroupId: result,
-            isSuccess: true,
-          });
+          return;
         }
+        this.setState({
+          isLoading: false,
+          newGroupId: result,
+          isSuccess: true,
+        });
       }
     );
   };

@@ -15,10 +15,17 @@ const getInitials = (string) => {
 
 class ModalArticle extends React.Component {
   render() {
-    const { item, imageSrc, ...otherProps } = this.props;
+    const { item, imageSrc, isLoading, ...otherProps } = this.props;
 
     return (
-      <Modal {...otherProps} style={{ top: 20 }}>
+      <Modal
+        maskClosable={false}
+        closable={!isLoading}
+        okButtonProps={{ loading: isLoading }}
+        cancelButtonProps={{ disabled: isLoading }}
+        style={{ top: 20 }}
+        {...otherProps}
+      >
         <Card
           title={
             <div>
