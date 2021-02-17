@@ -48,41 +48,41 @@ function Works({ history }) {
 
   return (
     <Loader isContainer spinning={loading || !works}>
-      <Row gutter={24}>
-        <div style={{ display: 'flex', justifyContent: 'center', padding: 12 }}>
-          <Link to="/new-work">
-            <Button type="primary" component="span">
-              New Work
-            </Button>
-          </Link>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
-            padding: 12,
-          }}
+      <div style={{ display: 'flex', justifyContent: 'center', padding: 12 }}>
+        <Link to="/new-work">
+          <Button type="primary" component="span">
+            New Work
+          </Button>
+        </Link>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          padding: 12,
+        }}
+      >
+        <Tag
+          value="ALL"
+          onClick={() => setCategoryFilter(null)}
+          style={{ borderRadius: 0 }}
         >
+          <b>ALL</b>
+        </Tag>
+        {categoriesAssignedToWorks.map((cat) => (
           <Tag
-            value="ALL"
-            onClick={() => setCategoryFilter(null)}
-            style={{ borderRadius: 0 }}
+            key={cat.label}
+            value={cat.label}
+            onClick={() => setCategoryFilter(cat.label)}
+            color={cat.color}
+            style={{ marginBottom: 'small', zIndex: 2, borderRadius: 0 }}
           >
-            <b>ALL</b>
+            <b>{cat.label && cat.label.toUpperCase()}</b>
           </Tag>
-          {categoriesAssignedToWorks.map((cat) => (
-            <Tag
-              key={cat.label}
-              value={cat.label}
-              onClick={() => setCategoryFilter(cat.label)}
-              color={cat.color}
-              style={{ marginBottom: 'small', zIndex: 2, borderRadius: 0 }}
-            >
-              <b>{cat.label && cat.label.toUpperCase()}</b>
-            </Tag>
-          ))}
-        </div>
+        ))}
+      </div>
+      <Row gutter={24}>
         <div
           style={{
             display: 'flex',

@@ -47,7 +47,6 @@ export const renderRoutes = () => (
     <Switch>
       <LayoutContainer history={browserHistory}>
         <ScrollToTop>
-          {/* <Switch> */}
           <Route exact path="/" component={HomeContainer} />
           <Route exact path="/calendar" component={CalendarContainer} />
 
@@ -89,15 +88,12 @@ export const renderRoutes = () => (
           <Route path="/admin/resources" component={Resources} />
           <Route path="/admin/categories" component={Categories} />
 
-          <Route path="/user/:id" component={UserContainer} />
+          <Route exact path="/:username" component={UserContainer} />
 
           <Route path="/works" component={Works} />
-          <Route path="/:username/work/:id" component={Work} />
+          <Route exact path="/:username/work/:id" component={Work} />
           <Route path="/:username/edit-work/:id" component={EditWork} />
           <Route path="/new-work" component={NewWork} />
-
-          {/*<Route path="*" component={NotFoundPage}/>*/}
-          {/* </Switch> */}
         </ScrollToTop>
       </LayoutContainer>
     </Switch>

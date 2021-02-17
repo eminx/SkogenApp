@@ -177,3 +177,9 @@ Meteor.publish('me', function () {
     return Meteor.users.find(userId);
   }
 });
+
+Meteor.publish('userWorks', function (username) {
+  return Works.find({
+    authorUsername: username,
+  });
+});

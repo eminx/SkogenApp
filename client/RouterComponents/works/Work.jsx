@@ -136,7 +136,9 @@ function Work({ history, match }) {
             <h4 style={{ flexGrow: 1, marginLeft: 12, marginTop: 24 }}>
               {work.additionalInfo}
             </h4>
-            <AvatarHolder work={work} />
+            <Link to={`/${work.authorUsername}`}>
+              <AvatarHolder work={work} />
+            </Link>
           </div>
         </MediaQuery>
 

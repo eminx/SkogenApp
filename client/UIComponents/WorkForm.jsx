@@ -136,7 +136,7 @@ function WorkForm({
                 }}
               >
                 <img
-                  alt={form.title}
+                  alt={formValues.title}
                   src={image}
                   style={{ margin: '0 auto', height: 180 }}
                 />
