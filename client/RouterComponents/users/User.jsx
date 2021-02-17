@@ -17,16 +17,19 @@ const getFullName = (user) => {
   }
 };
 
-function User({ user, userWorks, currentUser, isLoading }) {
+function User({ user, userWorks }) {
   if (!user) {
     return null;
   }
+
+  const noWork = !userWorks || userWorks.length === 0;
+  const workOnlyOne = userWorks && userWorks.length === 1;
 
   return (
     <div>
       <Loader isContainer spinning={!user}>
         <Row gutter={36} style={{ padding: 24 }}>
-          <Col lg={8} md={24} sm={24}>
+          <Col lg={noWork ? 24 : workOnlyOne ? 12 : 8} md={24} sm={24}>
             <Row justify="center">
               <Space align="center">
                 <Avatar
@@ -62,11 +65,10 @@ function User({ user, userWorks, currentUser, isLoading }) {
             </Link> */}
           </Col>
 
-          <Col lg={16} md={24} sm={24}>
+          <Col lg={noWork ? 0 : workOnlyOne ? 12 : 16} md={24} sm={24}>
             <Row justify="center" style={{}}>
               <Space align="center">
-                {userWorks &&
-                  userWorks.length > 0 &&
+                {!noWork &&
                   userWorks.map((work) => (
                     <div key={work._id} style={{ margin: 12 }}>
                       <Link to={`/${work.authorUsername}/work/${work._id}`}>
