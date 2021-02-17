@@ -178,6 +178,21 @@ Meteor.publish('me', function () {
   }
 });
 
+Meteor.publish('user', function (username) {
+  return Meteor.users.find(
+    { username },
+    {
+      fields: {
+        username: 1,
+        firstName: 1,
+        lastName: 1,
+        bio: 1,
+        avatar: 1,
+      },
+    }
+  );
+});
+
 Meteor.publish('userWorks', function (username) {
   return Works.find({
     authorUsername: username,
