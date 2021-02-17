@@ -24,27 +24,29 @@ function User({ user, userWorks, currentUser, isLoading }) {
 
   return (
     <div>
-      <Row gutter={36} style={{ padding: 24 }}>
-        <Col lg={8}>
-          <Space direction="vertical" align="center">
-            <Avatar
-              src={user.avatar && user.avatar.src}
-              size={80}
-              // onClick={avatarExists ? () => setAvatarModal(true) : null}
-              // style={{ cursor: avatarExists ? 'pointer' : 'default' }}
-            >
-              {user.username[0]}
-            </Avatar>
-            <Title
-              level={4}
-              style={{ textAlign: 'center', textTransform: 'lowercase' }}
-            >
-              {user.username}
-            </Title>
-            <Text strong style={{ textAlign: 'center' }}>
-              {getFullName(user)}
-            </Text>
-
+      <Loader isContainer spinning={!user}>
+        <Row gutter={36} style={{ padding: 24 }}>
+          <Col lg={8}>
+            <Space align="center">
+              <Avatar
+                src={user.avatar && user.avatar.src}
+                size={80}
+                // onClick={avatarExists ? () => setAvatarModal(true) : null}
+                // style={{ cursor: avatarExists ? 'pointer' : 'default' }}
+              >
+                {user.username[0]}
+              </Avatar>
+              <div style={{ paddingLeft: 12 }}>
+                <Title
+                  level={4}
+                  style={{ textTransform: 'lowercase', marginTop: 24 }}
+                >
+                  {user.username}
+                </Title>
+                <Text strong>{getFullName(user)}</Text>
+              </div>
+            </Space>
+            <Divider />
             {user.bio && (
               <Paragraph margin={{ top: 'small' }}>
                 {renderHTML(user.bio)}
@@ -54,21 +56,23 @@ function User({ user, userWorks, currentUser, isLoading }) {
             {/* <Link onClick={onOpen} as="button" margin={{ top: 'medium' }}>
               Contact
             </Link> */}
-          </Space>
-        </Col>
+          </Col>
 
-        <Col lg={16}>
-          {userWorks &&
-            userWorks.length > 0 &&
-            userWorks.map((work) => (
-              <div key={work._id} style={{ margin: 12 }}>
-                <Link to={`/${work.authorUsername}/work/${work._id}`}>
-                  <WorkThumb work={work} />
-                </Link>
-              </div>
-            ))}
-        </Col>
-      </Row>
+          <Col lg={16}>
+            <Space align="center">
+              {userWorks &&
+                userWorks.length > 0 &&
+                userWorks.map((work) => (
+                  <div key={work._id} style={{ margin: 12 }}>
+                    <Link to={`/${work.authorUsername}/work/${work._id}`}>
+                      <WorkThumb work={work} />
+                    </Link>
+                  </div>
+                ))}
+            </Space>
+          </Col>
+        </Row>
+      </Loader>
     </div>
   );
 }
