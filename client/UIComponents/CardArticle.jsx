@@ -58,14 +58,16 @@ class CardArticle extends React.Component {
           />
         </div>
 
-        <div
-          style={{
-            whiteSpace: 'pre-line',
-            color: 'rgba(0,0,0, .85)',
-          }}
-        >
-          {renderHTML(item.longDescription)}
-        </div>
+        {item.longDescription && (
+          <div
+            style={{
+              whiteSpace: 'pre-line',
+              color: 'rgba(0,0,0, .85)',
+            }}
+          >
+            {renderHTML(item.longDescription)}
+          </div>
+        )}
 
         {item.practicalInfo && item.practicalInfo.length > 0 && (
           <div style={{ ...sectionStyle, textAlign: 'left' }}>
