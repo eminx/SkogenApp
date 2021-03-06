@@ -51,8 +51,6 @@ const parseOnlyAllowedGroups = (futureGroups, currentUser) => {
   return futureGroups.filter((group) => {
     if (!group.isPrivate) {
       return true;
-    } else if (!currentUser) {
-      return false;
     } else {
       const currentUserId = currentUser._id;
       return (
