@@ -47,14 +47,14 @@ const compareForSortReverse = (a, b) => {
   return dateB - dateA;
 };
 
-const parseOnlyAllowedGroups = (futureGroups, currentUserId) => {
+const parseOnlyAllowedGroups = (futureGroups, currentUser) => {
   return futureGroups.filter((group) => {
     if (!group.isPrivate) {
       return true;
+    } else if (!currentUser) {
+      return false;
     } else {
-      if (!currentUser) {
-        return false;
-      }
+      const currentUserId = currentUser._id;
       return (
         group.adminId === currentUserId ||
         group.members.some((member) => member.memberId === currentUserId) ||
@@ -87,7 +87,7 @@ const getGroupMeetings = (groupsList, currentUser) => {
 
   const futureGroupsWithAccessFilter = parseOnlyAllowedGroups(
     futureGroups,
-    currentUser._id
+    currentUser
   );
 
   return futureGroupsWithAccessFilter.map((group) => ({
