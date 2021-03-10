@@ -3,16 +3,17 @@ import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../themes/skogen';
 
 import {
+  Button,
+  DatePicker,
+  Divider,
   Form,
   Input,
-  DatePicker,
-  Button,
-  Select,
   InputNumber,
-  Upload,
-  Divider,
   Modal,
+  Select,
+  Upload,
 } from 'antd';
+
 const Option = Select.Option;
 const { TextArea } = Input;
 const FormItem = Form.Item;
@@ -22,8 +23,6 @@ import PlusCircleOutlined from '@ant-design/icons/lib/icons/PlusCircleOutlined';
 import CheckCircleOutlined from '@ant-design/icons/lib/icons/CheckCircleOutlined';
 import UploadOutlined from '@ant-design/icons/lib/icons/UploadOutlined';
 import DeleteOutlined from '@ant-design/icons/lib/icons/DeleteOutlined';
-
-import moment from 'moment';
 
 const compareForSort = (a, b) => {
   const dateA = moment(a.startDate, 'YYYY-MM-DD');

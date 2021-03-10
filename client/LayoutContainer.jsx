@@ -3,17 +3,23 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
-  Layout,
-  Divider,
+  Badge,
   Button,
+  Col,
+  Divider,
   Form,
   Input,
-  Badge,
-  Popover,
+  Layout,
   List,
+  ConfigProvider,
+  Popover,
   Row,
-  Col,
 } from 'antd';
+import en_GB from 'antd/lib/locale-provider/en_GB';
+import moment from 'moment';
+import 'moment/locale/en-gb'; // important!
+moment.locale('en-gb'); // important!
+
 const { Content } = Layout;
 import BellOutlined from '@ant-design/icons/lib/icons/BellOutlined';
 
@@ -180,9 +186,10 @@ class LayoutPage extends React.Component {
               </Link>
             ))}
         </div>
-
         <Layout className="layout">
-          <Content>{children}</Content>
+          <ConfigProvider locale={en_GB}>
+            <Content>{children}</Content>
+          </ConfigProvider>
         </Layout>
         <FancyFooter />
       </div>

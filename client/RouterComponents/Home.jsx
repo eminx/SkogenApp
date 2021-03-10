@@ -1,4 +1,4 @@
-import React, { PureComponent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { parse, stringify } from 'query-string';
 import moment from 'moment';
 import { Row, Radio } from 'antd';
