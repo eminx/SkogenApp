@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { Radio, Button, message } from 'antd';
 import Loader from '../../UIComponents/Loader';
-import NiceList from '../../UIComponents/NiceList';
 import SexyThumb from '../../UIComponents/SexyThumb';
 import { call } from '../../functions';
 

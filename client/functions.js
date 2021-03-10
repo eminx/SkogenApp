@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import Resizer from 'react-image-file-resizer';
 
-const getInitials = string => {
+const getInitials = (string) => {
   var names = string.split(' '),
     initials = names[0].substring(0, 1).toUpperCase();
 
@@ -11,7 +11,7 @@ const getInitials = string => {
   return initials;
 };
 
-const removeSpace = str => {
+const removeSpace = (str) => {
   str = str.replace(/\s+/g, '');
   return str;
 };
@@ -19,10 +19,10 @@ const removeSpace = str => {
 const compareForSort = (a, b) => {
   const dateA = new Date(a.creationDate);
   const dateB = new Date(b.creationDate);
-  return dateA - dateB;
+  return dateB - dateA;
 };
 
-const parseTitle = title => title.replace(/\s+/g, '-').toLowerCase();
+const parseTitle = (title) => title.replace(/\s+/g, '-').toLowerCase();
 
 function emailIsValid(email) {
   return /\S+@\S+\.\S+/.test(email);
@@ -67,7 +67,7 @@ const resizeImage = (image, desiredImageWidth) =>
       'JPEG',
       95,
       0,
-      uri => {
+      (uri) => {
         if (!uri) {
           reject({ reason: 'image cannot be resized' });
         }
@@ -89,7 +89,7 @@ const uploadImage = (image, directory) =>
     });
   });
 
-const slingshotUpload = directory => new Slingshot.Upload(directory);
+const slingshotUpload = (directory) => new Slingshot.Upload(directory);
 
 export {
   getInitials,
@@ -102,5 +102,5 @@ export {
   call,
   resizeImage,
   uploadImage,
-  slingshotUpload
+  slingshotUpload,
 };

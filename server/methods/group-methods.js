@@ -71,6 +71,7 @@ Meteor.methods({
       adminUsername: group.adminUsername,
       isArchived: group.isArchived,
       members: user ? group.members : null,
+      creationDate: group.creationDate,
     }));
   },
 
