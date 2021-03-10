@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
-import { Menu, List, Dropdown } from 'antd';
-import EllipsisOutlined from '@ant-design/icons/lib/icons/EllipsisOutlined';
-
-const MenuItem = Menu.Item;
+import { List } from 'antd';
 const ListItem = List.Item;
+
+import EllipsisMenu from './EllipsisMenu';
 
 class NiceList extends PureComponent {
   render() {
@@ -19,45 +18,7 @@ class NiceList extends PureComponent {
             actions={
               actionsDisabled
                 ? []
-                : [
-                    <Dropdown
-                      trigger={['click']}
-                      placement="bottomRight"
-                      overlay={
-                        <Menu>
-                          {listItem.actions.map((action) => (
-                            <MenuItem key={action.content}>
-                              <a
-                                onClick={
-                                  action.isDisabled ? null : action.handleClick
-                                }
-                                style={
-                                  action.isDisabled
-                                    ? {
-                                        color: '#ccc',
-                                        cursor: 'not-allowed',
-                                      }
-                                    : null
-                                }
-                              >
-                                {action.content}
-                              </a>
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      }
-                    >
-                      <div>
-                        <EllipsisOutlined
-                          style={{
-                            fontSize: 24,
-                            marginTop: 6,
-                            transform: 'rotate(90deg)',
-                          }}
-                        />
-                      </div>
-                    </Dropdown>,
-                  ]
+                : [<EllipsisMenu actions={listItem.actions} />]
             }
           >
             {children(listItem)}
