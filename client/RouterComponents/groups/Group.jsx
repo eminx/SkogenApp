@@ -37,6 +37,7 @@ import Loader from '../../UIComponents/Loader';
 import FancyDate from '../../UIComponents/FancyDate';
 import NiceList from '../../UIComponents/NiceList';
 import InviteManager from './InviteManager';
+import EllipsisMenu from '../../UIComponents/EllipsisMenu';
 
 const defaultMeetingRoom = 'Office';
 
@@ -84,7 +85,8 @@ class Group extends Component {
       return false;
     }
 
-    const isAdmin = group && group.adminId === currentUser._id;
+    const isAdmin =
+      currentUser.isSuperAdmin || (group && group.adminId === currentUser._id);
 
     return Boolean(isAdmin);
   };
@@ -141,7 +143,51 @@ class Group extends Component {
     return messages;
   };
 
+  archiveGroup = () => {
+    const { group } = this.props;
+    const groupId = group._id;
+    Meteor.call('archiveGroup', groupId, (error, respond) => {
+      if (error) {
+        message.error(error.error);
+      } else {
+        message.success('Group is successfully archived');
+      }
+    });
+  };
+
+  unarchiveGroup = () => {
+    const { group } = this.props;
+    const groupId = group._id;
+    Meteor.call('unarchiveGroup', groupId, (error, respond) => {
+      if (error) {
+        message.error(error.reason);
+      } else {
+        message.success('Group is successfully unarchived');
+      }
+    });
+  };
+
   getTitle = (group, isAdmin) => {
+    const { history } = this.props;
+    const actions = [];
+
+    if (isAdmin) {
+      if (group.isPrivate) {
+        actions.push({
+          content: 'Manage Access',
+          handleClick: this.handleOpenInviteManager,
+        });
+      }
+      actions.push({
+        content: 'Edit',
+        handleClick: () => history.push(`/edit-group/${group._id}`),
+      });
+      actions.push({
+        content: group.isArchived ? 'Unarchive Group' : 'Archive Group',
+        handleClick: group.isArchived ? this.unarchiveGroup : this.archiveGroup,
+      });
+    }
+
     return (
       <div style={{ paddingLeft: 12, paddingRight: 12 }}>
         {group.isPrivate && (
@@ -171,15 +217,7 @@ class Group extends Component {
         >
           {isAdmin ? (
             <div>
-              <Link to={`/edit-group/${group._id}`}>Edit</Link>
-              {group.isPrivate && (
-                <a
-                  onClick={this.handleOpenInviteManager}
-                  style={{ marginLeft: 12 }}
-                >
-                  Manage Access
-                </a>
-              )}
+              <EllipsisMenu actions={actions} />
             </div>
           ) : (
             <div>{group.adminUsername}</div>
