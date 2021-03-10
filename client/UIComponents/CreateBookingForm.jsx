@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactQuill from 'react-quill';
-import { editorFormats, editorModules } from '../themes/skogen';
+import moment from 'moment';
 
 import {
   Button,
@@ -23,6 +23,8 @@ import PlusCircleOutlined from '@ant-design/icons/lib/icons/PlusCircleOutlined';
 import CheckCircleOutlined from '@ant-design/icons/lib/icons/CheckCircleOutlined';
 import UploadOutlined from '@ant-design/icons/lib/icons/UploadOutlined';
 import DeleteOutlined from '@ant-design/icons/lib/icons/DeleteOutlined';
+
+import { editorFormats, editorModules } from '../themes/skogen';
 
 const compareForSort = (a, b) => {
   const dateA = moment(a.startDate, 'YYYY-MM-DD');
