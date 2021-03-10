@@ -54,26 +54,6 @@ class GroupsList extends PureComponent {
     }
   };
 
-  archiveGroup = (groupId) => {
-    Meteor.call('archiveGroup', groupId, (error, respond) => {
-      if (error) {
-        message.error(error.error);
-      } else {
-        message.success('Group is successfully archived');
-      }
-    });
-  };
-
-  unarchiveGroup = (groupId) => {
-    Meteor.call('unarchiveGroup', groupId, (error, respond) => {
-      if (error) {
-        message.error(error.reason);
-      } else {
-        message.success('Group is successfully unarchived');
-      }
-    });
-  };
-
   getFilteredGroups = () => {
     const { currentUser } = this.props;
     const { filterOption, groups } = this.state;
@@ -118,21 +98,6 @@ class GroupsList extends PureComponent {
       compareForSort
     );
 
-    // const groupsList = groupsFilteredAndSorted.map((group) => ({
-    //   ...group,
-    //   actions: [
-    //     {
-    //       content: group.isArchived ? 'Unarchive' : 'Archive',
-    //       handleClick: group.isArchived
-    //         ? () => this.unarchiveGroup(group._id)
-    //         : () => this.archiveGroup(group._id),
-    //       isDisabled:
-    //         !currentUser ||
-    //         (group.adminId !== currentUser._id && !currentUser.isSuperAdmin),
-    //     },
-    //   ],
-    // }));
-
     return (
       <div>
         <Loader isContainer spinning={loading}>
@@ -169,23 +134,6 @@ class GroupsList extends PureComponent {
                 <SexyThumb key={group._id} item={group} />
               ))}
           </div>
-
-          {/* {groupsList && groupsList.length > 0 && (
-          <NiceList
-            list={groupsList.reverse()}
-            actionsDisabled={!currentUser || !currentUser.isRegisteredMember}
-          >
-            {(group) => (
-              <Card
-                title={this.getTitle(group)}
-                bordered={false}
-                // extra={this.getExtra(group)}
-                style={{ width: '100%', marginBottom: 0 }}
-                className="empty-card-body"
-              />
-            )}
-          </NiceList>
-        )} */}
         </Loader>
       </div>
     );
