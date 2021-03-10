@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Card, Avatar } from 'antd';
+import { Modal, Card } from 'antd';
 import renderHTML from 'react-render-html';
 const { Meta } = Card;
 
@@ -21,8 +21,8 @@ class ModalArticle extends React.Component {
       <Modal
         maskClosable={false}
         closable={!isLoading}
-        okButtonProps={{ loading: isLoading }}
         cancelButtonProps={{ disabled: isLoading }}
+        okButtonProps={{ loading: isLoading, disabled: isLoading }}
         style={{ top: 20 }}
         {...otherProps}
       >
@@ -37,7 +37,9 @@ class ModalArticle extends React.Component {
         >
           <Meta
             title={item.room || item.readingMaterial}
-            description={renderHTML(item.longDescription || item.description)}
+            description={renderHTML(
+              item.longDescription || item.description || ''
+            )}
           />
         </Card>
       </Modal>
