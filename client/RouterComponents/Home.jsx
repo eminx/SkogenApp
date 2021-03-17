@@ -48,11 +48,29 @@ const compareForSortReverse = (a, b) => {
 };
 
 const parseOnlyAllowedGroups = (futureGroups, currentUser) => {
+  if (!currentUser) {
+    return futureGroups
+      .filter((group) => !group.isPrivate)
+      .map((group) => ({
+        ...group,
+        datesAndTimes: group.meetings,
+        isGroup: true,
+      }));
+  }
+
   return futureGroups.filter((group) => {
     if (!group.isPrivate) {
       return true;
     } else {
       const currentUserId = currentUser._id;
+      console.log(
+        group,
+        group.adminId === currentUserId,
+        group.members.some((member) => member.memberId === currentUserId),
+        group.peopleInvited.some(
+          (person) => person.email === currentUser.emails[0].address
+        )
+      );
       return (
         group.adminId === currentUserId ||
         group.members.some((member) => member.memberId === currentUserId) ||
@@ -74,14 +92,6 @@ const getGroupMeetings = (groupsList, currentUser) => {
       moment(meeting.startDate).isAfter(yesterday)
     )
   );
-
-  if (!currentUser) {
-    return futureGroups.map((group) => ({
-      ...group,
-      datesAndTimes: group.meetings,
-      isGroup: true,
-    }));
-  }
 
   const futureGroupsWithAccessFilter = parseOnlyAllowedGroups(
     futureGroups,
