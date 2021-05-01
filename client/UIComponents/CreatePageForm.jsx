@@ -39,10 +39,6 @@ class CreatePageForm extends React.Component {
       wrapperCol: { span: 14 },
     };
 
-    if (!pageData) {
-      return null;
-    }
-
     return (
       <div className="create-gathering-form">
         <h3>Please enter the details below</h3>

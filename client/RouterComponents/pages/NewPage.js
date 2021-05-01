@@ -105,7 +105,6 @@ class NewPage extends React.Component {
               pageTitles={pageTitles}
               values={values}
               registerPageLocally={this.registerPageLocally}
-              setUploadableImage={this.setUploadableImage}
               uploadableImage={uploadableImage}
             />
           </Col>

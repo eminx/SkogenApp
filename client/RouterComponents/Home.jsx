@@ -182,7 +182,7 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
         <div style={{ width: '100%' }}>
           <Loader isContainer spinning={!thumbs || thumbs.length === 0}>
             <div>
-              <CovidInfo />
+              {/* <CovidInfo /> */}
               <div style={centerStyle}>
                 <RadioGroup
                   value={showPast ? 'Past' : 'Upcoming'}
