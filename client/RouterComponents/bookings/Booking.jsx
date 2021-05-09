@@ -43,6 +43,17 @@ function registrationAlreadyMade() {
   });
 }
 
+function capacityExceedsError(capacityLeft) {
+  Modal.error({
+    title: 'Not enough seats',
+    content: `Unfortunately there are not sufficient seats left to host your entire party. There ${
+      capacityLeft === 1 ? 'is' : 'are'
+    } only ${capacityLeft} seat${
+      capacityLeft === 1 ? '' : 's'
+    } left. Please make your booking accordingly.`,
+  });
+}
+
 class Booking extends React.Component {
   state = {
     isRsvpCancelModalOn: false,
@@ -86,19 +97,32 @@ class Booking extends React.Component {
   handleRSVPSubmit = (values, occurenceIndex) => {
     const { bookingData } = this.props;
     let isAlreadyRegistered = false;
-    bookingData.datesAndTimes[occurenceIndex].attendees.forEach(
-      (attendee, attendeeIndex) => {
-        if (
-          attendee.lastName === values.lastName &&
-          attendee.email === values.email
-        ) {
-          registrationAlreadyMade();
-          isAlreadyRegistered = true;
-          return;
-        }
+    const occurence = bookingData.datesAndTimes[occurenceIndex];
+    occurence.attendees.forEach((attendee, attendeeIndex) => {
+      if (
+        attendee.lastName === values.lastName &&
+        attendee.email === values.email
+      ) {
+        registrationAlreadyMade();
+        isAlreadyRegistered = true;
+        return;
       }
-    );
+    });
     if (isAlreadyRegistered) {
+      return;
+    }
+
+    let registeredNumberOfAttendees = 0;
+    occurence.attendees.forEach((attendee) => {
+      registeredNumberOfAttendees += attendee.numberOfPeople;
+    });
+
+    if (
+      occurence.capacity <
+      registeredNumberOfAttendees + values.numberOfPeople
+    ) {
+      const capacityLeft = occurence.capacity - registeredNumberOfAttendees;
+      capacityExceedsError(capacityLeft);
       return;
     }
 
