@@ -38,7 +38,7 @@ function User({ user, userWorks }) {
                   // onClick={avatarExists ? () => setAvatarModal(true) : null}
                   // style={{ cursor: avatarExists ? 'pointer' : 'default' }}
                 >
-                  {user.username[0].toUpperCase()}
+                  {user.username[0].toLowerCase()}
                 </Avatar>
                 <div style={{ paddingLeft: 12 }}>
                   <Title

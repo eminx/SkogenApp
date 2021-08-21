@@ -20,9 +20,9 @@ const FileDropper = ({
               width: 120,
               height: 80,
               margin: 8,
-              backgroundColor: isDragActive ? '#ea3924' : '#fbd5d0',
+              backgroundColor: isDragActive ? '#921bef' : '#fbd5d0',
               borderStyle: 'dashed',
-              borderColor: '#ea3924',
+              borderColor: '#921bef',
               cursor: 'hover',
               textAlign: 'center',
             }}

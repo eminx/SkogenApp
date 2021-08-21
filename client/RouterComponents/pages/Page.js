@@ -50,20 +50,20 @@ class Page extends PureComponent {
                   (page.longDescriptionSV ? (
                     <Tabs type="line" animated={false}>
                       <TabPane tab="English" key="1">
-                        <div style={{ color: '#030303' }}>
+                        <div style={{ color: '#401159' }}>
                           {page && renderHTML(page.longDescription)}
                         </div>
                       </TabPane>
                       {page && page.longDescriptionSV && (
                         <TabPane tab="Svenska" key="2">
-                          <div style={{ color: '#030303' }}>
+                          <div style={{ color: '#401159' }}>
                             {renderHTML(page.longDescriptionSV)}
                           </div>
                         </TabPane>
                       )}
                     </Tabs>
                   ) : (
-                    <div style={{ color: '#030303' }}>
+                    <div style={{ color: '#401159' }}>
                       {renderHTML(page.longDescription)}
                     </div>
                   ))}

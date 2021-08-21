@@ -68,7 +68,7 @@ function Work({ history, match }) {
                 value={work.category.label}
                 color={work.category.color}
               >
-                <b>{work.category.label.toUpperCase()}</b>
+                <b>{work.category.label}</b>
               </Tag>
             )}
             <p style={{ ...noCapitalsHeader }}>{work.shortDescription}</p>
@@ -188,7 +188,7 @@ function AvatarHolder({ work }) {
       <Avatar
         size={60}
         src={work.authorAvatar && work.authorAvatar.src}
-        style={{ backgroundColor: '#ea3924' }}
+        style={{ backgroundColor: '#921bef' }}
       >
         {initials}
       </Avatar>

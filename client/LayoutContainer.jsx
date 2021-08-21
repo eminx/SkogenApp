@@ -138,7 +138,7 @@ class LayoutPage extends React.Component {
                   backgroundColor: 'rgba(255, 255, 255, .7)',
                 }}
               >
-                <Link to="/my-profile" style={{ color: '#030303' }}>
+                <Link to="/my-profile" style={{ color: '#401159' }}>
                   {currentUser ? currentUser.username : 'LOGIN'}
                 </Link>
               </span>
@@ -199,7 +199,7 @@ class LayoutPage extends React.Component {
 
 const widgetBgrstyle = {
   textAlign: 'center',
-  backgroundColor: 'rgba(255, 245, 244, .8)',
+  backgroundColor: 'rgba(204, 255, 255, .8)',
   padding: 24,
   margin: 12,
   marginTop: 32,
@@ -223,16 +223,16 @@ const FancyFooter = () => {
       <div style={widgetBgrstyle}>
         <EmailSignupForm />
 
-        <Divider style={{ background: '#030303' }} />
+        <Divider style={{ background: '#401159' }} />
 
         <SkogenInfo />
 
-        <Divider style={{ background: '#030303' }} />
+        <Divider style={{ background: '#401159' }} />
 
         <h4>Swish for donations:</h4>
         <h3 style={{ ...boldBabe }}>123 388 4772</h3>
 
-        <Divider style={{ background: '#030303' }} />
+        <Divider style={{ background: '#401159' }} />
 
         <p style={{ marginTop: 24 }}>
           Crafted with ∞♥︎ at{' '}

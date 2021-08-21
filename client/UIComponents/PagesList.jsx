@@ -11,7 +11,6 @@ const activeStyle = {
 };
 
 const linkStyle = {
-  textTransform: 'uppercase',
   padding: '6px 0',
 };
 

@@ -723,9 +723,9 @@ class Group extends Component {
                 style={{
                   width: '100%',
                   height: 200,
-                  background: isDragActive ? '#ea3924' : '#fff5f4cc',
+                  background: isDragActive ? '#921bef' : '#fff5f4cc',
                   padding: 24,
-                  border: '1px dashed #ea3924',
+                  border: '1px dashed #921bef',
                   textAlign: 'center',
                 }}
               >
@@ -880,7 +880,7 @@ class Group extends Component {
       marginBottom: 24,
       backgroundColor: '#fff',
       borderRadius: 0,
-      borderColor: '#030303',
+      borderColor: '#401159',
     };
 
     if (group && group.isPrivate && this.isNoAccess()) {

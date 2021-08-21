@@ -147,7 +147,7 @@ function SexyThumb({ item, isHome, isPub, showPast }) {
               <Fragment>
                 <Avatar
                   size={48}
-                  style={{ color: '#ea3924', backgroundColor: '#fbd5d0' }}
+                  style={{ color: '#921bef', backgroundColor: '#fbd5d0' }}
                 >
                   {item.adminUsername[0].toUpperCase()}
                 </Avatar>

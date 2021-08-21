@@ -159,19 +159,10 @@ class Calendar extends React.PureComponent {
   };
 
   render() {
-    const {
-      isLoading,
-      currentUser,
-      placesList,
-      allActivities,
-      manuals,
-    } = this.props;
-    const {
-      editBooking,
-      calendarFilter,
-      selectedBooking,
-      isUploading,
-    } = this.state;
+    const { isLoading, currentUser, placesList, allActivities, manuals } =
+      this.props;
+    const { editBooking, calendarFilter, selectedBooking, isUploading } =
+      this.state;
 
     const futureBookings = [];
 
@@ -270,9 +261,9 @@ class Calendar extends React.PureComponent {
                     style={{
                       width: '100%',
                       height: 200,
-                      background: isDragActive ? '#ea3924' : '#fff5f4cc',
+                      background: isDragActive ? '#921bef' : '#fff5f4cc',
                       padding: 24,
-                      border: '1px dashed #ea3924',
+                      border: '1px dashed #921bef',
                       textAlign: 'center',
                     }}
                   >
@@ -323,7 +314,7 @@ class Calendar extends React.PureComponent {
             <Card
               key={resource._id}
               size="small"
-              title={<h3>{resource.name.toUpperCase()}</h3>}
+              title={<h3>{resource.name}</h3>}
               style={{ width: 300, margin: 12 }}
             >
               <p>{resource.description}</p>

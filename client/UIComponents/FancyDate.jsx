@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 const fancyDateStyle = {
-  color: '#030303',
+  color: '#401159',
   fontWeight: 700,
   lineHeight: 1,
 };

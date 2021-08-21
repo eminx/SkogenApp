@@ -66,7 +66,7 @@
 }
 
 .tags-container .ant-tag-checkable-checked {
-  background-color: #ea3924;
+  background-color: #921bef;
 }
 
 .rbc-calendar .rbc-event.category-1,
@@ -209,13 +209,13 @@
 .rbc-calendar .rbc-row-bg .rbc-day-bg.rbc-today,
 .rbc-calendar .rbc-today {
   background-color: #fff;
-  border: 1px solid #ea3924;
+  border: 1px solid #921bef;
 }
 .rbc-calendar .rbc-time-content > * + * > * {
-  border-left: 1px dashed #030303;
+  border-left: 1px dashed #401159;
 }
 .rbc-calendar .rbc-timeslot-group {
-  border-bottom: 1px solid #030303;
+  border-bottom: 1px solid #401159;
 }
 .rbc-calendar .rbc-time-content {
   border-top: none;
@@ -229,7 +229,7 @@
 .rbc-toolbar .rbc-btn-group button.rbc-active:active {
   outline: none;
   background-color: #fbd5d0;
-  color: #ea3924;
+  color: #921bef;
   border: none;
   box-shadow: none;
   border-radius: 0;
@@ -237,7 +237,7 @@
 
 .rbc-toolbar .rbc-btn-group button {
   cursor: pointer;
-  color: #ea3924;
+  color: #921bef;
   background-color: #fff;
   text-transform: uppercase;
   font-style: italic;
@@ -246,7 +246,7 @@
 
 .rbc-toolbar .rbc-btn-group + .rbc-toolbar-label {
   text-transform: uppercase;
-  color: #ea3924;
+  color: #921bef;
   font-weight: 700;
   font-size: 16px;
 }

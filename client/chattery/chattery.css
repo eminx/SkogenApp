@@ -361,7 +361,7 @@
 
 .chattery-window {
   margin: 12px;
-  border: 1px solid #030303;
+  border: 1px solid #401159;
   background-color: #fff5f4;
 }
 
@@ -373,24 +373,24 @@
 
 .tri-right.right-in:after {
   border: 6px solid;
-  border-color: #030303 transparent transparent #030303;
+  border-color: #401159 transparent transparent #401159;
 }
 
 .tri-right.left-in:after {
   border: 6px solid;
-  border-color: #030303 #030303 transparent transparent;
+  border-color: #401159 #401159 transparent transparent;
 }
 
 .chattery-input {
   border-radius: 0;
-  border: 1px solid #030303;
+  border: 1px solid #401159;
   /* border-right: none; */
-  color: #030303;
+  color: #401159;
 }
 
 .chattery-submitbutton {
   border-radius: 0;
-  border: 1px solid #030303;
+  border: 1px solid #401159;
   background-color: #fbd5d0;
   text-transform: uppercase;
   font-style: italic;
@@ -398,5 +398,5 @@
 }
 
 .chattery-input:focus {
-  border-color: #030303;
+  border-color: #401159;
 }

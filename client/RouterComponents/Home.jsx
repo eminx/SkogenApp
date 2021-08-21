@@ -226,7 +226,7 @@ const innerBoxStyle = {
   margin: 12,
   padding: 12,
   maxWidth: 576,
-  border: '1px solid #ea3924',
+  border: '1px solid #921bef',
 };
 
 function CovidInfo() {

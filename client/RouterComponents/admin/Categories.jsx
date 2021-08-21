@@ -41,9 +41,7 @@ const Categories = ({ history, currentUser }) => {
     try {
       await call('removeCategory', category._id);
       getCategories();
-      message.success(
-        `${category.label.toUpperCase()} is successfully removed`
-      );
+      message.success(`${category.label} is successfully removed`);
     } catch (error) {
       message.error(error.reason);
       console.log(error);
@@ -55,7 +53,7 @@ const Categories = ({ history, currentUser }) => {
       message.destroy();
       message.error('Special characters, except dash (-), are not allowed');
     } else {
-      setCategoryInput(value.toUpperCase());
+      setCategoryInput(value);
     }
   };
 
