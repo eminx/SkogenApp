@@ -56,7 +56,7 @@ class CreatePageForm extends React.Component {
               },
               { validator: this.validateTitle },
             ]}
-            initialValue={pageData.title || ''}
+            initialValue={(pageData && pageData.title) || ''}
           >
             <Input placeholder="Page title" />
           </FormItem>
@@ -71,7 +71,7 @@ class CreatePageForm extends React.Component {
                 message: 'Please enter a detailed description',
               },
             ]}
-            initialValue={pageData.longDescription || ''}
+            initialValue={(pageData && pageData.longDescription) || ''}
           >
             <ReactQuill modules={editorModules} formats={editorFormats} />
           </FormItem>
@@ -85,7 +85,7 @@ class CreatePageForm extends React.Component {
                 message: 'Please enter a detailed description in Swedish',
               },
             ]}
-            initialValue={pageData.longDescriptionSV || ''}
+            initialValue={(pageData && pageData.longDescriptionSV) || ''}
           >
             <ReactQuill modules={editorModules} formats={editorFormats} />
           </FormItem>
