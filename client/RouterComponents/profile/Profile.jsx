@@ -1,34 +1,47 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Meteor } from 'meteor/meteor';
+import React, { useState } from 'react';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../../themes/skogen';
 
-import { Row, Col, Form, Input, Button, message, Divider, Modal } from 'antd';
+import {
+  Row,
+  Col,
+  Form,
+  Input,
+  Button,
+  message,
+  Divider,
+  Modal,
+  Switch,
+} from 'antd';
 
 import SkogenTerms from '../../UIComponents/SkogenTerms';
 import UploadAvatar from '../../UIComponents/UploadAvatar';
 
 const FormItem = Form.Item;
-import Loader from '../../UIComponents/Loader';
 
-class Profile extends React.Component {
-  state = {
-    isDeleteModalOn: false,
-  };
+const h3Style = {
+  textAlign: 'center',
+  marginBottom: 12,
+};
 
-  handleSubmit = (fieldsValue) => {
+function Profile(props) {
+  const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
+
+  const handleSubmit = (fieldsValue) => {
     Meteor.call('saveUserInfo', fieldsValue, (error, respond) => {
       if (error) {
         console.log(error);
         message.error(error.reason);
         return;
+      } else {
+        message.success('Your data is successfully saved');
       }
-      message.success('Your data is successfully saved');
     });
   };
 
-  deleteAccount = () => {
+  const deleteAccount = () => {
     Meteor.call('deleteAccount', (error, respond) => {
       if (error) {
         console.log(error);
@@ -41,25 +54,29 @@ class Profile extends React.Component {
     }, 400);
   };
 
-  render() {
-    const { currentUser } = this.props;
-    const { isDeleteModalOn } = this.state;
+  const { currentUser } = props;
 
-    return (
-      <div style={{ padding: 24, minHeight: '80vh' }}>
-        <Row gutter={24}>
-          <Col md={8}>
-            <Blaze template="loginButtons" />
-          </Col>
-        </Row>
-        <Divider />
-        <h2>Profile</h2>
+  return (
+    <div style={{ padding: 24, minHeight: '80vh' }}>
+      <Row gutter={24}>
+        <Col md={8}>
+          <Blaze template="loginButtons" />
+        </Col>
+      </Row>
+      <Divider />
+      {currentUser && <h2>Profile</h2>}
+      {currentUser && (
         <Row>
+          <Col md={8} />
           <Col md={8}>
-            <h3>Personal Info</h3>
+            <h3 style={h3Style}>Avatar</h3>
+            <UploadAvatar currentUser={currentUser} />
+            <Divider />
+            <h3 style={h3Style}>Personal Info</h3>
             {currentUser && (
-              <Form onFinish={this.handleSubmit}>
+              <Form layout="vertical" onFinish={handleSubmit}>
                 <FormItem
+                  label="First name"
                   name="firstName"
                   rules={[
                     {
@@ -67,12 +84,13 @@ class Profile extends React.Component {
                       message: 'Please enter your first name',
                     },
                   ]}
-                  initialValue={currentUser ? currentUser.firstName : null}
+                  initialValue={currentUser.firstName || null}
                 >
                   <Input placeholder="first name" />
                 </FormItem>
 
                 <FormItem
+                  label="Last name"
                   name="lastName"
                   rules={[
                     {
@@ -80,12 +98,13 @@ class Profile extends React.Component {
                       message: 'Please enter your last name',
                     },
                   ]}
-                  initialValue={currentUser ? currentUser.lastName : null}
+                  initialValue={currentUser.lastName || null}
                 >
                   <Input placeholder="last name" />
                 </FormItem>
 
                 <FormItem
+                  label="Bio"
                   name="bio"
                   rules={[
                     {
@@ -93,67 +112,118 @@ class Profile extends React.Component {
                       message: 'Enter your bio',
                     },
                   ]}
-                  initialValue={(currentUser && currentUser.bio) || ''}
+                  initialValue={currentUser.bio || ''}
                 >
                   <ReactQuill modules={editorModules} formats={editorFormats} />
                 </FormItem>
 
                 <FormItem
-                  wrapperCol={{
-                    xs: { span: 24, offset: 0 },
-                    sm: { span: 16, offset: 0 },
-                  }}
+                  label="Make my profile public"
+                  name="isPublic"
+                  initialValue={false}
                 >
-                  <Button type="primary" htmlType="submit">
-                    Save
-                  </Button>
+                  <Switch />
+                </FormItem>
+
+                <FormItem
+                  label="Contact info"
+                  name="contactInfo"
+                  rules={[
+                    {
+                      required: false,
+                    },
+                  ]}
+                  initialValue={currentUser.contactInfo || ''}
+                >
+                  <ReactQuill modules={editorModules} formats={editorFormats} />
+                </FormItem>
+
+                <FormItem
+                  label="Skogen & Me"
+                  name="skogenAndMe"
+                  rules={[
+                    {
+                      required: false,
+                    },
+                  ]}
+                  initialValue={currentUser.skogenAndMe || ''}
+                >
+                  <ReactQuill modules={editorModules} formats={editorFormats} />
+                </FormItem>
+
+                <FormItem
+                  label="What I like to share with the community"
+                  name="forCommunity"
+                  rules={[
+                    {
+                      required: false,
+                    },
+                  ]}
+                  initialValue={currentUser.forCommunity || ''}
+                >
+                  <ReactQuill modules={editorModules} formats={editorFormats} />
+                </FormItem>
+
+                <FormItem
+                  label="I'm interested in..."
+                  name="interestedIn"
+                  rules={[
+                    {
+                      required: false,
+                    },
+                  ]}
+                  initialValue={currentUser.interestedIn || ''}
+                >
+                  <ReactQuill modules={editorModules} formats={editorFormats} />
+                </FormItem>
+
+                <FormItem>
+                  <div style={{ display: 'flex', justifyContent: 'end' }}>
+                    <Button type="primary" htmlType="submit">
+                      Save
+                    </Button>
+                  </div>
                 </FormItem>
               </Form>
             )}
+
             <Divider />
 
-            {currentUser && (
-              <div>
-                <Button
-                  onClick={() => this.setState({ isDeleteModalOn: true })}
-                  style={{ color: 'red' }}
-                >
-                  Delete Account
-                </Button>
-                <Divider />
-              </div>
-            )}
-          </Col>
-
-          <Col md={6} style={{ paddingeLeft: 12, textAlign: 'center' }}>
-            <h3>Avatar</h3>
-            <UploadAvatar currentUser={currentUser} />
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Button
+                onClick={() => setIsDeleteModalOn(true)}
+                style={{ color: 'red' }}
+              >
+                Delete Account
+              </Button>
+            </div>
+            <Divider />
           </Col>
         </Row>
+      )}
 
-        <Divider />
+      <Divider />
 
-        <Row>
-          <Col md={10}>
-            <SkogenTerms />
-          </Col>
-        </Row>
+      <Row>
+        <Col md={10}>
+          <SkogenTerms />
+        </Col>
+      </Row>
 
-        <Modal
-          title="Are you sure?"
-          okText="Confirm Deletion"
-          onOk={this.deleteAccount}
-          onCancel={() => this.setState({ isDeleteModalOn: false })}
-          visible={isDeleteModalOn}
-        >
-          <p>
-            You are about to permanently delete your user information. This is
-            an irreversible action.
-          </p>
-        </Modal>
-      </div>
-    );
-  }
+      <Modal
+        title="Are you sure?"
+        okText="Confirm Deletion"
+        onOk={deleteAccount}
+        onCancel={() => setIsDeleteModalOn(false)}
+        visible={isDeleteModalOn}
+      >
+        <p>
+          You are about to permanently delete your user information. This is an
+          irreversible action.
+        </p>
+      </Modal>
+    </div>
+  );
 }
 
 export default Profile;

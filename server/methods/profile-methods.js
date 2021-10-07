@@ -10,13 +10,24 @@ Meteor.methods({
     check(values.firstName, String);
     check(values.lastName, String);
     check(values.bio, String);
+    check(values.contactInfo, String);
+    check(values.skogenAndMe, String);
+    check(values.forCommunity, String);
+    check(values.interestedIn, String);
+    check(values.isPublic, Boolean);
 
     try {
       Meteor.users.update(user._id, {
         $set: {
           firstName: values.firstName,
           lastName: values.lastName,
-          bio: values.bio
+          bio: values.bio,
+          contactInfo: values.contactInfo,
+          skogenAndMe: values.skogenAndMe,
+          forCommunity: values.forCommunity,
+          interestedIn: values.interestedIn,
+          isPublic: values.isPublic
+
         }
       });
     } catch (error) {
