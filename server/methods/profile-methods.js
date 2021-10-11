@@ -9,7 +9,6 @@ Meteor.methods({
 
     check(values.firstName, String);
     check(values.lastName, String);
-    check(values.bio, String);
     check(values.contactInfo, String);
     check(values.skogenAndMe, String);
     check(values.forCommunity, String);
@@ -21,7 +20,6 @@ Meteor.methods({
         $set: {
           firstName: values.firstName,
           lastName: values.lastName,
-          bio: values.bio,
           contactInfo: values.contactInfo,
           skogenAndMe: values.skogenAndMe,
           forCommunity: values.forCommunity,
