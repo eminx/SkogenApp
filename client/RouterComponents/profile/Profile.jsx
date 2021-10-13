@@ -19,7 +19,6 @@ import {
   Typography,
 } from 'antd';
 
-import SkogenTerms from '../../UIComponents/SkogenTerms';
 import UploadAvatar from '../../UIComponents/UploadAvatar';
 
 const FormItem = Form.Item;
@@ -354,12 +353,6 @@ function Profile(props) {
       </Row>
 
       <Divider />
-
-      <Row>
-        <Col md={10}>
-          <SkogenTerms />
-        </Col>
-      </Row>
 
       <Modal
         title="Are you sure?"
