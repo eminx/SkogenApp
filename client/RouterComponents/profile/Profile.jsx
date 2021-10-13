@@ -16,6 +16,7 @@ import {
   Modal,
   Switch,
   Tag,
+  Typography,
 } from 'antd';
 
 import SkogenTerms from '../../UIComponents/SkogenTerms';
@@ -23,9 +24,10 @@ import UploadAvatar from '../../UIComponents/UploadAvatar';
 
 const FormItem = Form.Item;
 const { Search } = Input;
-const h3Style = {
-  textAlign: 'center',
-  marginBottom: 12,
+const { Title } = Typography;
+
+const noBottomMargin = {
+  marginBottom: 0,
 };
 
 function Profile(props) {
@@ -35,12 +37,15 @@ function Profile(props) {
 
   useEffect(() => {
     getKeywords();
-  });
+  }, []);
 
   const getKeywords = () => {
+    if (!props.currentUser) {
+      return;
+    }
     Meteor.call('getKeywords', (error, respond) => {
       if (error) {
-        message.error('getKeywords');
+        message.error('cannot get keywords');
         return;
       }
       setKeywords(respond);
@@ -76,24 +81,15 @@ function Profile(props) {
     (item) => item.value === keywordInput.toLowerCase()
   );
 
-  const onKeywordSelect = (data) => {
-    Meteor.call('assignKeyword', data, (error, respond) => {
-      if (error) {
-        console.log(error);
-        message.error(error.reason);
-        return;
-      }
-      message.success('The keyword is assigned to you');
-    });
-    setKeywordInput('');
-  };
-
-  const onKeywordCreate = () => {
+  const handleKeywordAssign = () => {
+    if (keywordInput.length < 4) {
+      message.error('Minimum 4 letters required');
+      return;
+    }
     if (keywordExists) {
       Meteor.call('assignKeyword', keywordInput, (error, respond) => {
         if (error) {
-          console.log(error);
-          message.error(error.reason);
+          message.error(error.error);
           return;
         }
         message.success('The keyword is assigned to you');
@@ -101,18 +97,26 @@ function Profile(props) {
     } else {
       Meteor.call('createAndAssignKeyword', keywordInput, (error, respond) => {
         if (error) {
-          console.log(error);
-          message.error(error.reason);
+          message.error(error.error);
           return;
         }
         message.success('A new keyword is created and assigned to you');
       });
     }
+    getKeywords();
     setKeywordInput('');
   };
 
-  const onRemoveKeyword = (data) => {
-    console.log(data);
+  const onRemoveKeyword = (item) => {
+    Meteor.call('removeKeyword', item, (error, respond) => {
+      if (error) {
+        message.error(error.error);
+        return;
+      }
+      message.success(
+        'Yoi have successfully removed the keyword from your profile'
+      );
+    });
   };
 
   const { currentUser } = props;
@@ -135,6 +139,13 @@ function Profile(props) {
     );
   }
 
+  const myKeywords = currentUser.keywords;
+  const myKeywordsStr = myKeywords ? myKeywords.map((item) => item.label) : [];
+  const keywordsWithoutMine =
+    keywords &&
+    myKeywordsStr &&
+    keywords.filter((kw) => !myKeywordsStr.includes(kw.value));
+
   return (
     <div style={{ padding: 24, minHeight: '80vh' }}>
       <Row gutter={24}>
@@ -144,144 +155,189 @@ function Profile(props) {
       </Row>
       <Divider />
 
-      <h2>Profile</h2>
       <Row>
-        <Col md={8} />
-        <Col md={8}>
-          <h3 style={h3Style}>Avatar</h3>
-          <UploadAvatar currentUser={currentUser} />
+        <Col md={12}>
+          <Form layout="vertical" onFinish={handleSubmit}>
+            <Row gutter={24}>
+              <Col md={16}>
+                <FormItem
+                  label={
+                    <Title style={noBottomMargin} level={4}>
+                      First name
+                    </Title>
+                  }
+                  name="firstName"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please enter your first name',
+                    },
+                  ]}
+                  initialValue={currentUser.firstName || null}
+                >
+                  <Input placeholder="first name" />
+                </FormItem>
+
+                <FormItem
+                  label={
+                    <Title style={noBottomMargin} level={4}>
+                      Last name
+                    </Title>
+                  }
+                  name="lastName"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Please enter your last name',
+                    },
+                  ]}
+                  initialValue={currentUser.lastName || null}
+                >
+                  <Input placeholder="last name" />
+                </FormItem>
+              </Col>
+
+              <Col md={8}>
+                <Title level={4} style={{ textAlign: 'center' }}>
+                  Profile Picture
+                </Title>
+                <UploadAvatar currentUser={currentUser} />
+              </Col>
+            </Row>
+
+            <FormItem>
+              <div style={{ display: 'flex', justifyContent: 'end' }}>
+                <Button type="primary" htmlType="submit">
+                  Save
+                </Button>
+              </div>
+            </FormItem>
+
+            <Divider />
+
+            <FormItem
+              initialValue={currentUser.isPublic || false}
+              label={
+                <Title style={noBottomMargin} level={4}>
+                  Make my profile public
+                </Title>
+              }
+              name="isPublic"
+              valuePropName="checked"
+            >
+              <Switch />
+            </FormItem>
+
+            <FormItem
+              label={
+                <Title style={noBottomMargin} level={4}>
+                  Contact info
+                </Title>
+              }
+              name="contactInfo"
+              rules={[
+                {
+                  required: false,
+                },
+              ]}
+              initialValue={currentUser.contactInfo || ''}
+            >
+              <ReactQuill modules={editorModules} formats={editorFormats} />
+            </FormItem>
+
+            <FormItem
+              label={
+                <Title style={noBottomMargin} level={4}>
+                  Skogen & Me
+                </Title>
+              }
+              name="skogenAndMe"
+              rules={[
+                {
+                  required: false,
+                },
+              ]}
+              initialValue={currentUser.skogenAndMe || ''}
+            >
+              <ReactQuill modules={editorModules} formats={editorFormats} />
+            </FormItem>
+
+            <FormItem
+              label={
+                <Title style={noBottomMargin} level={4}>
+                  What I like to share with the community
+                </Title>
+              }
+              name="forCommunity"
+              rules={[
+                {
+                  required: false,
+                },
+              ]}
+              initialValue={currentUser.forCommunity || ''}
+            >
+              <ReactQuill modules={editorModules} formats={editorFormats} />
+            </FormItem>
+
+            <FormItem
+              label={
+                <Title style={noBottomMargin} level={4}>
+                  I'm interested in...
+                </Title>
+              }
+              name="interestedIn"
+              rules={[
+                {
+                  required: false,
+                },
+              ]}
+              initialValue={currentUser.interestedIn || ''}
+            >
+              <ReactQuill modules={editorModules} formats={editorFormats} />
+            </FormItem>
+
+            <FormItem>
+              <div style={{ display: 'flex', justifyContent: 'end' }}>
+                <Button type="primary" htmlType="submit">
+                  Save
+                </Button>
+              </div>
+            </FormItem>
+          </Form>
           <Divider />
-          <h3 style={h3Style}>Personal Info</h3>
-          {currentUser && (
-            <Form layout="vertical" onFinish={handleSubmit}>
-              <FormItem
-                label="First name"
-                name="firstName"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please enter your first name',
-                  },
-                ]}
-                initialValue={currentUser.firstName || null}
-              >
-                <Input placeholder="first name" />
-              </FormItem>
-
-              <FormItem
-                label="Last name"
-                name="lastName"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please enter your last name',
-                  },
-                ]}
-                initialValue={currentUser.lastName || null}
-              >
-                <Input placeholder="last name" />
-              </FormItem>
-
-              <FormItem
-                label="Make my profile public"
-                name="isPublic"
-                initialValue={currentUser.isPublic || false}
-              >
-                <Switch />
-              </FormItem>
-
-              <FormItem
-                label="Contact info"
-                name="contactInfo"
-                rules={[
-                  {
-                    required: false,
-                  },
-                ]}
-                initialValue={currentUser.contactInfo || ''}
-              >
-                <ReactQuill modules={editorModules} formats={editorFormats} />
-              </FormItem>
-
-              <FormItem
-                label="Skogen & Me"
-                name="skogenAndMe"
-                rules={[
-                  {
-                    required: false,
-                  },
-                ]}
-                initialValue={currentUser.skogenAndMe || ''}
-              >
-                <ReactQuill modules={editorModules} formats={editorFormats} />
-              </FormItem>
-
-              <FormItem
-                label="What I like to share with the community"
-                name="forCommunity"
-                rules={[
-                  {
-                    required: false,
-                  },
-                ]}
-                initialValue={currentUser.forCommunity || ''}
-              >
-                <ReactQuill modules={editorModules} formats={editorFormats} />
-              </FormItem>
-
-              <FormItem
-                label="I'm interested in..."
-                name="interestedIn"
-                rules={[
-                  {
-                    required: false,
-                  },
-                ]}
-                initialValue={currentUser.interestedIn || ''}
-              >
-                <ReactQuill modules={editorModules} formats={editorFormats} />
-              </FormItem>
-
-              <FormItem>
-                <div style={{ display: 'flex', justifyContent: 'end' }}>
-                  <Button type="primary" htmlType="submit">
-                    Save
-                  </Button>
-                </div>
-              </FormItem>
-            </Form>
-          )}
 
           <AutoComplete
-            options={keywords}
-            style={{
-              width: '100%  ',
-            }}
-            onSelect={onKeywordSelect}
+            options={keywordsWithoutMine}
+            filterOption={(inputValue, option) =>
+              option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
+              -1
+            }
+            onSelect={(data) => setKeywordInput(data)}
+            style={{ width: '100%' }}
           >
             <Search
+              placeholder="add keyword"
+              enterButton={keywordExists ? 'Assign' : 'Create'}
+              size="large"
               value={keywordInput}
               onChange={(event) => setKeywordInput(event.target.value)}
-              placeholder="add keyword"
-              allowClear
-              enterButton={keywordExists ? 'Select' : 'Create'}
-              onSearch={onKeywordCreate}
-              size="large"
+              onSearch={handleKeywordAssign}
             />
           </AutoComplete>
 
           <div>
-            {keywords.map((item) => (
-              <Tag
-                closable
-                color="geekblue"
-                key={item._id}
-                style={{ marginTop: 8, marginRight: 8 }}
-                onClose={() => onRemoveKeyword(item)}
-              >
-                {item.value}
-              </Tag>
-            ))}
+            {myKeywords &&
+              myKeywords.map((item) => (
+                <Tag
+                  closable
+                  color="purple"
+                  key={item.id}
+                  style={{ marginTop: 8, marginRight: 8 }}
+                  onClose={() => onRemoveKeyword(item)}
+                >
+                  <b>{item.label}</b>
+                </Tag>
+              ))}
           </div>
           <Divider />
 

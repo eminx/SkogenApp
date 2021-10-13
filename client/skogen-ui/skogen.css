@@ -162,7 +162,7 @@ body .ant-input,
   padding-bottom: 24px;
 }
 
-.ql-toolbar.ql-snow, .ql-container.ql-snow {
+.quill .ql-toolbar.ql-snow, .quill .ql-container.ql-snow {
   border-color: #3b1456;
 }
 

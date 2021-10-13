@@ -119,7 +119,6 @@ function AvatarUI({
         <FileDropper
           imageUrl={avatarImageIfAny}
           label="Click/Drag your favourite image to upload avatar"
-          round
           setUploadableImage={setUploadableAvatar}
         />
       </div>
