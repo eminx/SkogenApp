@@ -1,7 +1,7 @@
 @import '../node_modules/antd/dist/antd.less';
 
 @primary-color: #921bef; // dark purple - primary color for all components
-// @primary-color-dark: #;  // newly added
+@primary-color-dark: #3b1456;  // newly added
 @primary-color-light: #921bef; // light purple
 @link-color: #401159; // link color
 @success-color: #52c41a; // success state color
@@ -9,22 +9,14 @@
 @error-color: #f5222d; // error state color
 @font-size-base: 14px; // major text font size
 @heading-color: rgba(0, 0, 0, 0.85); // heading text color
-@text-color: rgba(0, 0, 0, 0.75); // major text color
+@text-color: @primary-color-dark; // major text color
 @text-color-secondary: rgba(0, 0, 0, 0.45); // secondary text color
 @disabled-color: rgba(0, 0, 0, 0.25); // disable state color
 @border-radius-base: 0; // major border radius
-@border-color-base: #d9d9d9; // major border color
+@border-color-base: @primary-color-dark; // major border color
 @box-shadow-base: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
   0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05); // major shadow for layers
-
 @typography-title-font-weight: 700;
-
-// .ant-btn {
-//   text-transform: uppercase;
-//   font-style: italic;
-//   font-weight: 700;
-//   border: 1px solid @primary-color-light;
-// }
 
 * a {
   color: @primary-color;

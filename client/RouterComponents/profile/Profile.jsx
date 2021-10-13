@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 import ReactQuill from 'react-quill';
 import { editorFormats, editorModules } from '../../themes/skogen';
 
 import {
+  AutoComplete,
   Row,
   Col,
   Form,
@@ -14,13 +15,14 @@ import {
   Divider,
   Modal,
   Switch,
+  Tag,
 } from 'antd';
 
 import SkogenTerms from '../../UIComponents/SkogenTerms';
 import UploadAvatar from '../../UIComponents/UploadAvatar';
 
 const FormItem = Form.Item;
-
+const { Search } = Input;
 const h3Style = {
   textAlign: 'center',
   marginBottom: 12,
@@ -28,6 +30,22 @@ const h3Style = {
 
 function Profile(props) {
   const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
+  const [keywords, setKeywords] = useState([]);
+  const [keywordInput, setKeywordInput] = useState('');
+
+  useEffect(() => {
+    getKeywords();
+  });
+
+  const getKeywords = () => {
+    Meteor.call('getKeywords', (error, respond) => {
+      if (error) {
+        message.error('getKeywords');
+        return;
+      }
+      setKeywords(respond);
+    });
+  };
 
   const handleSubmit = (fieldsValue) => {
     Meteor.call('saveUserInfo', fieldsValue, (error, respond) => {
@@ -52,6 +70,49 @@ function Profile(props) {
     setTimeout(() => {
       window.location.reload();
     }, 400);
+  };
+
+  const keywordExists = keywords.find(
+    (item) => item.value === keywordInput.toLowerCase()
+  );
+
+  const onKeywordSelect = (data) => {
+    Meteor.call('assignKeyword', data, (error, respond) => {
+      if (error) {
+        console.log(error);
+        message.error(error.reason);
+        return;
+      }
+      message.success('The keyword is assigned to you');
+    });
+    setKeywordInput('');
+  };
+
+  const onKeywordCreate = () => {
+    if (keywordExists) {
+      Meteor.call('assignKeyword', keywordInput, (error, respond) => {
+        if (error) {
+          console.log(error);
+          message.error(error.reason);
+          return;
+        }
+        message.success('The keyword is assigned to you');
+      });
+    } else {
+      Meteor.call('createAndAssignKeyword', keywordInput, (error, respond) => {
+        if (error) {
+          console.log(error);
+          message.error(error.reason);
+          return;
+        }
+        message.success('A new keyword is created and assigned to you');
+      });
+    }
+    setKeywordInput('');
+  };
+
+  const onRemoveKeyword = (data) => {
+    console.log(data);
   };
 
   const { currentUser } = props;
@@ -124,7 +185,7 @@ function Profile(props) {
               <FormItem
                 label="Make my profile public"
                 name="isPublic"
-                initialValue={false}
+                initialValue={currentUser.isPublic || false}
               >
                 <Switch />
               </FormItem>
@@ -191,6 +252,37 @@ function Profile(props) {
             </Form>
           )}
 
+          <AutoComplete
+            options={keywords}
+            style={{
+              width: '100%  ',
+            }}
+            onSelect={onKeywordSelect}
+          >
+            <Search
+              value={keywordInput}
+              onChange={(event) => setKeywordInput(event.target.value)}
+              placeholder="add keyword"
+              allowClear
+              enterButton={keywordExists ? 'Select' : 'Create'}
+              onSearch={onKeywordCreate}
+              size="large"
+            />
+          </AutoComplete>
+
+          <div>
+            {keywords.map((item) => (
+              <Tag
+                closable
+                color="geekblue"
+                key={item._id}
+                style={{ marginTop: 8, marginRight: 8 }}
+                onClose={() => onRemoveKeyword(item)}
+              >
+                {item.value}
+              </Tag>
+            ))}
+          </div>
           <Divider />
 
           <div style={{ display: 'flex', justifyContent: 'center' }}>
