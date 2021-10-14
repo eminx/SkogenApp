@@ -23,9 +23,15 @@ Meteor.startup(() => {
   });
   Places._ensureIndex({ isPublished: 1 });
 
-  Meteor.users.update({}, {
-    $set: {
-      keywords: []
+  Meteor.users.find().forEach(user => {
+    if (!user.keywords) {
+      Meteor.users.update({
+        _id: user._id
+      }, {
+        $set: {
+          keywords: []
+        }
+      })
     }
   })
 });
