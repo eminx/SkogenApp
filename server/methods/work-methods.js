@@ -1,18 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 
 Meteor.methods({
-  getWork(workId, username) {
-    try {
-      const work = Works.findOne(workId);
-      if (work.authorUsername !== username) {
-        throw new Meteor.Error('Not allowed!');
-      }
-      return work;
-    } catch (error) {
-      throw new Meteor.Error(error);
-    }
-  },
-
   getAllWorks() {
     try {
       const works = Works.find().fetch();

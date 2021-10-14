@@ -183,3 +183,17 @@ body .ant-input,
 .spin-container {
   width: 100%;
 }
+
+
+.community-page {
+  padding: 24px;
+}
+
+.ant-cascader-dropdown.ant-select-dropdown {
+  box-shadow: none;
+}
+
+.ant-cascader-menus .ant-cascader-menu {
+  height: auto;
+  width: 280px
+}

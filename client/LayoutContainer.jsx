@@ -37,8 +37,12 @@ const menu = [
     route: '/groups',
   },
   {
-    label: 'Community Press',
+    label: 'Publications',
     route: '/publications',
+  },
+  {
+    label: 'Community',
+    route: '/community',
   },
   {
     label: 'Info',

@@ -1,6 +1,25 @@
 import { Meteor } from 'meteor/meteor';
 
 Meteor.methods({
+  getPublicProfile(username) {
+    const p = Meteor.users.findOne({
+      username: username
+    })
+
+    if (!p.isPublic) {
+      throw Meteor.Error('Profile is not public');
+    }
+
+    return {
+      username: p.username,
+      firstName: p.firstName,
+      lastName: p.lastName,
+      contactInfo: p.contactInfo,
+      forCommunity: p.forCommunity,
+      avatar: p.avatar,
+    }
+  },
+
   saveUserInfo(values) {
     const user = Meteor.user();
     if (!user) {

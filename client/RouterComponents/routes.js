@@ -38,6 +38,8 @@ import EditWork from './works/EditWork';
 
 import DocumentsListContainer from './documents/DocumentsListContainer';
 
+import Community from './Community';
+
 import ScrollToTop from './ScrollToTop';
 import SkogenTerms from '../UIComponents/SkogenTerms';
 
@@ -95,6 +97,8 @@ export const renderRoutes = () => (
           <Route exact path="/:username/work/:id" component={Work} />
           <Route path="/:username/edit-work/:id" component={EditWork} />
           <Route path="/new-work" component={NewWork} />
+
+          <Route path="/community" component={Community} />
 
           <Route path="/terms" component={SkogenTerms} />
         </ScrollToTop>

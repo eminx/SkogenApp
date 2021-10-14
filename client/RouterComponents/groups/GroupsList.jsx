@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { Radio, Button, message } from 'antd';
+
 import Loader from '../../UIComponents/Loader';
 import SexyThumb from '../../UIComponents/SexyThumb';
 import { call } from '../../functions';
@@ -94,9 +95,8 @@ class GroupsList extends PureComponent {
     const { currentUser } = this.props;
     const { filterOption, loading } = this.state;
 
-    const groupsFilteredAndSorted = this.getFilteredGroups().sort(
-      compareForSort
-    );
+    const groupsFilteredAndSorted =
+      this.getFilteredGroups().sort(compareForSort);
 
     return (
       <div>
