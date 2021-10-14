@@ -117,6 +117,17 @@ Meteor.methods({
 
     try {
       const filteredKeywords = user.keywords.filter(k => k.label !== data.label)
+      
+      Keywords.update({
+        value: data.label
+      }, {
+        $pull: {
+          assignedTo: {
+            username: user.username,
+          }
+        }
+      })
+
       Meteor.users.update({
         _id: user._id
       }, {
