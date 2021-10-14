@@ -22,6 +22,7 @@ Meteor.methods({
     }
 
     if (Keywords.findOne({value: data.toLowerCase()})) {
+      console.log('keywords exists');
       throw new Meteor.Error('Keyword exists');
     } else if (!user.keywords) {
       return;

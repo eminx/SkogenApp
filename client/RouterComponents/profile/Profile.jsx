@@ -128,12 +128,6 @@ function Profile(props) {
             <Blaze template="loginButtons" />
           </Col>
         </Row>
-        <Divider />
-        <Row>
-          <Col md={10}>
-            <SkogenTerms />
-          </Col>
-        </Row>
       </div>
     );
   }

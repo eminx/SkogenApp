@@ -22,4 +22,10 @@ Meteor.startup(() => {
     isPublished: 1,
   });
   Places._ensureIndex({ isPublished: 1 });
+
+  Meteor.users.update({}, {
+    $set: {
+      keywords: []
+    }
+  })
 });
