@@ -23,7 +23,7 @@ import UploadAvatar from '../../UIComponents/UploadAvatar';
 
 const FormItem = Form.Item;
 const { Search } = Input;
-const { Title } = Typography;
+const { Text, Title } = Typography;
 
 const noBottomMargin = {
   marginBottom: 0,
@@ -303,8 +303,13 @@ function Profile(props) {
               </div>
             </FormItem>
           </Form>
+
           <Divider />
 
+          <Title style={noBottomMargin} level={4}>
+            Keywords
+          </Title>
+          <Text>People can use keywords to filter and find profiles</Text>
           <AutoComplete
             options={keywordsWithoutMine}
             filterOption={(inputValue, option) =>

@@ -178,41 +178,36 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
 
   return (
     <div style={{ marginBottom: 48 }}>
-      <Row gutter={24}>
-        <div style={{ width: '100%' }}>
-          <Loader isContainer spinning={!thumbs || thumbs.length === 0}>
-            <div>
-              {/* <CovidInfo /> */}
-              <div style={centerStyle}>
-                <RadioGroup
-                  value={showPast ? 'Past' : 'Upcoming'}
-                  options={['Past', 'Upcoming']}
-                  onChange={handlePastChange}
-                  optionType="button"
-                  buttonStyle="solid"
+      <div style={{ width: '100%' }}>
+        <Loader isContainer spinning={!thumbs || thumbs.length === 0}>
+          <div style={centerStyle}>
+            <RadioGroup
+              value={showPast ? 'Past' : 'Upcoming'}
+              options={['Past', 'Upcoming']}
+              onChange={handlePastChange}
+              optionType="button"
+              buttonStyle="solid"
+            />
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+            }}
+          >
+            {thumbs &&
+              thumbs.map((activity) => (
+                <SexyThumb
+                  key={activity._id}
+                  item={activity}
+                  isHome
+                  showPast={showPast}
                 />
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  justifyContent: 'center',
-                }}
-              >
-                {thumbs &&
-                  thumbs.map((activity) => (
-                    <SexyThumb
-                      key={activity._id}
-                      item={activity}
-                      isHome
-                      showPast={showPast}
-                    />
-                  ))}
-              </div>
-            </div>
-          </Loader>
-        </div>
-      </Row>
+              ))}
+          </div>
+        </Loader>
+      </div>
     </div>
   );
 }

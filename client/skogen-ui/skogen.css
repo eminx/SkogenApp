@@ -67,8 +67,8 @@ body .ant-input,
 
 .thumb-cover-container {
   position: relative;
-  flex: 288px 1 0;
-  height: 288px;
+  flex: 300px 1 0;
+  height: 300px;
   background-color: #921bef;
   margin: 12px 6px;
 }

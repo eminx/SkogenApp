@@ -589,7 +589,7 @@ const RsvpForm = (props) => {
   const { isUpdateMode, handleSubmit, handleDelete } = props;
 
   const layout = {
-    wrapperCol: { span: 4 },
+    wrapperCol: { span: 24 },
   };
   return (
     <Form {...layout} onFinish={handleSubmit} style={{ paddingLeft: 12 }}>
