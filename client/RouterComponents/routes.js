@@ -91,7 +91,7 @@ export const renderRoutes = () => (
           <Route path="/admin/resources" component={Resources} />
           <Route path="/admin/categories" component={Categories} />
 
-          <Route exact path="/:username" component={UserContainer} />
+          <Route exact path="/@:username" component={UserContainer} />
 
           <Route path="/works" component={Works} />
           <Route exact path="/:username/work/:id" component={Work} />

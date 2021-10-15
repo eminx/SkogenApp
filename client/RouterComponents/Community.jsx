@@ -113,7 +113,7 @@ function Community(props) {
               )}
               <div style={{ marginBottom: 24 }}>
                 For more info, go to the{' '}
-                <Link to={`/${selectedProfile.username}`}>profile page</Link>.
+                <Link to={`/@${selectedProfile.username}`}>profile page</Link>.
               </div>
 
               {selectedProfile.contactInfo && (
@@ -132,7 +132,7 @@ function Community(props) {
           {publicProfiles.map(
             (p) =>
               p.avatar && (
-                <Link to={`/${p.username}`}>
+                <Link to={`/@${p.username}`}>
                   <div
                     style={{
                       display: 'flex',
