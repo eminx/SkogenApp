@@ -57,6 +57,7 @@ class Profile extends PureComponent {
         keywords: allKeywords.sort((a, b) => {
           return a.value < b.value ? -1 : a.value > b.value ? 1 : 0;
         }),
+        currentUser: Meteor.user(),
       });
     } catch (error) {
       message.error(error.error);
@@ -89,6 +90,8 @@ class Profile extends PureComponent {
   };
 
   handleKeywordAssign = () => {
+    const { keywords, keywordInput } = this.state;
+
     const keywordExists = keywords.find(
       (item) => item.value === keywordInput.toLowerCase()
     );

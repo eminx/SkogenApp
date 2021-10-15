@@ -55,7 +55,6 @@ function Community(props) {
   };
 
   const onChange = (value, selectedOptions) => {
-    console.log(value, selectedOptions);
     const username = value[1];
     if (typeof username !== 'string') {
       return;
