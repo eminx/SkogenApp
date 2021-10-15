@@ -191,21 +191,21 @@ Meteor.publish('me', function () {
 });
 
 Meteor.publish('user', function (username) {
-  return Meteor.users.find(
-    { username },
-    {
-      fields: {
-        avatar: 1,
-        contactInfo: 1,
-        firstName: 1,
-        forCommunity: 1,
-        interestedIn: 1,
-        lastName: 1,
-        meAndSkogen: 1,
-        username: 1,
-      },
-    }
-  );
+  return Meteor.users.find({
+    username, 
+    isPublic: true 
+  }, {
+    fields: {
+      avatar: 1,
+      contactInfo: 1,
+      firstName: 1,
+      forCommunity: 1,
+      interestedIn: 1,
+      lastName: 1,
+      meAndSkogen: 1,
+      username: 1,
+    },
+  });
 });
 
 Meteor.publish('userWorks', function (username) {

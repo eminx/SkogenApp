@@ -1,7 +1,16 @@
 import React from 'react';
 import renderHTML from 'react-render-html';
 
-import { Avatar, Row, Col, message, Divider, Typography, Space } from 'antd';
+import {
+  Alert,
+  Avatar,
+  Row,
+  Col,
+  message,
+  Divider,
+  Typography,
+  Space,
+} from 'antd';
 import Loader from '../../UIComponents/Loader';
 
 const { Text, Title, Paragraph } = Typography;
@@ -15,9 +24,14 @@ const getFullName = (user) => {
   }
 };
 
-function User({ user, userWorks }) {
+function User({ user }) {
   if (!user) {
-    return null;
+    return (
+      <Alert
+        message="There's no user associated with this handle, or the user chose not to publish their profile"
+        type="error"
+      />
+    );
   }
 
   return (
@@ -45,6 +59,7 @@ function User({ user, userWorks }) {
             </Space>
 
             <Divider />
+
             <InfoSection title="Skogen & Me" info={user.skogenAndMe} />
             <InfoSection
               title="What I can contribute to the community"
