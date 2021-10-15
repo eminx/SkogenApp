@@ -91,7 +91,6 @@ class UploadAvatar extends PureComponent {
 }
 
 const avatarHolderStyle = {
-  marginBottom: 24,
   width: 120,
   height: 120,
 };
@@ -112,7 +111,7 @@ function AvatarUI({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        marginBottom: 24,
+        marginBottom: 12,
       }}
     >
       <div style={avatarHolderStyle}>
@@ -125,23 +124,25 @@ function AvatarUI({
       {(uploadableAvatarLocal || avatar) && (
         <Fragment>
           <Button
+            danger
+            disabled={!uploadableAvatarLocal}
+            style={{ marginBottom: 12 }}
+            type="text"
             onClick={() => removeLocalAvatar()}
-            color="status-critical"
-            style={{ marginBottom: 24 }}
           >
             Remove
           </Button>
 
           <Button
-            onClick={() => uploadAvatar()}
-            disabled={isUploading}
+            disabled={isUploading || !uploadableAvatarLocal}
+            loading={isUploading}
             style={{ marginBottom: 24 }}
+            onClick={() => uploadAvatar()}
           >
-            Confirm & Upload
+            {isUploading ? 'Uploading...' : 'Confirm & Upload'}
           </Button>
         </Fragment>
       )}
-      {isUploading && <Loader />}
     </div>
   );
 }

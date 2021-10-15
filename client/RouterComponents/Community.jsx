@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Avatar, Cascader, Divider, Typography, message } from 'antd/lib';
+import { Avatar, Cascader, Divider, Typography, message, Row } from 'antd/lib';
 import renderHTML from 'react-render-html';
 
 import Loader from '../UIComponents/Loader';
@@ -55,7 +55,11 @@ function Community(props) {
   };
 
   const onChange = (value, selectedOptions) => {
+    console.log(value, selectedOptions);
     const username = value[1];
+    if (typeof username !== 'string') {
+      return;
+    }
     setSelectedProfile({
       username,
     });
@@ -74,7 +78,9 @@ function Community(props) {
   const dropdownRender = (menus) => {
     return (
       <div>
-        <div style={{ display: 'flex' }}>
+        <div
+          style={{ display: 'flex', flexWrap: 'wrap', position: 'relative' }}
+        >
           {menus}
           <Divider type="vertical" />
           {selectedProfile ? (
@@ -128,7 +134,8 @@ function Community(props) {
           ) : null}
         </div>
 
-        <div style={{ display: 'flex', padding: 24 }}>
+        <Row>
+          <Divider />
           {publicProfiles.map(
             (p) =>
               p.avatar && (
@@ -147,27 +154,32 @@ function Community(props) {
                 </Link>
               )
           )}
-        </div>
+        </Row>
       </div>
     );
   };
 
   return (
-    <div className="community-page" style={{ minHeight: '100vh' }}>
+    <div className="community-page" style={{ minHeight: '200vh' }}>
       <Loader isContainer spinning={!cascaderOptions}>
         <Title level={3}>Select Keywords</Title>
-        <Cascader
-          bordered={false}
-          dropdownClassName="dropdown-class"
-          dropdownRender={dropdownRender}
-          open
-          options={cascaderOptions}
-          size="large"
-          style={{
-            visibility: 'hidden',
-          }}
-          onChange={onChange}
-        />
+        <div id="cascader-holder" style={{ position: 'relative' }}>
+          <Cascader
+            bordered={false}
+            dropdownClassName="dropdown-class"
+            dropdownRender={dropdownRender}
+            getPopupContainer={() => document.getElementById('cascader-holder')}
+            open
+            options={cascaderOptions}
+            size="large"
+            style={{
+              visibility: 'hidden',
+              transform: 'translateY(-40px)',
+              marginBottom: 24,
+            }}
+            onChange={onChange}
+          />
+        </div>
       </Loader>
     </div>
   );

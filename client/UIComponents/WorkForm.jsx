@@ -19,7 +19,7 @@ function getBase64(file) {
   });
 }
 
-const sliderSettings = { dots: true };
+const sliderSettings = { dots: true, autoplay: true };
 
 function WorkForm({
   formValues,

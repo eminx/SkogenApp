@@ -24,7 +24,7 @@ import PageContainer from './pages/PageContainer';
 import NewPageContainer from './pages/NewPageContainer';
 import EditPageContainer from './pages/EditPageContainer';
 
-import ProfileContainer from './profile/ProfileContainer';
+import Profile from './profile/Profile';
 import UserContainer from './users/UserContainer';
 
 import UsersContainer from './admin/UsersContainer';
@@ -82,7 +82,7 @@ export const renderRoutes = () => (
           <Route
             path="/my-profile/"
             history={browserHistory}
-            component={ProfileContainer}
+            component={Profile}
           />
 
           <Route path="/documents" component={DocumentsListContainer} />

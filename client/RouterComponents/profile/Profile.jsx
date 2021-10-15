@@ -1,26 +1,30 @@
 import { Meteor } from 'meteor/meteor';
-import React, { useEffect, useState } from 'react';
+import React, { PureComponent } from 'react';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 import ReactQuill from 'react-quill';
-import { editorFormats, editorModules } from '../../themes/skogen';
+import { sortableContainer, sortableElement } from 'react-sortable-hoc';
+import arrayMove from 'array-move';
 
 import {
   AutoComplete,
-  Row,
+  Button,
+  Carousel,
   Col,
+  Divider,
   Form,
   Input,
-  Button,
-  message,
-  Divider,
   Modal,
+  Row,
   Switch,
   Tag,
   Typography,
-} from 'antd';
+  message,
+} from 'antd/lib';
 
+import { editorFormats, editorModules } from '../../themes/skogen';
 import UploadAvatar from '../../UIComponents/UploadAvatar';
-import { call } from '../../functions';
+import { call, resizeImage, uploadImage } from '../../functions';
+import FileDropper from '../../UIComponents/FileDropper';
 
 const FormItem = Form.Item;
 const { Search } = Input;
@@ -30,32 +34,36 @@ const noBottomMargin = {
   marginBottom: 0,
 };
 
-function Profile(props) {
-  const [isDeleteModalOn, setIsDeleteModalOn] = useState(false);
-  const [keywords, setKeywords] = useState([]);
-  const [keywordInput, setKeywordInput] = useState('');
+class Profile extends PureComponent {
+  state = {
+    currentUser: null,
+    isDeleteModalOn: false,
+    isImagesEdited: false,
+    keywordInput: '',
+    keywords: [],
+    uploadableImages: [],
+    uploadableImagesLocal: [],
+  };
 
-  useEffect(() => {
-    getKeywords();
-  }, []);
+  componentDidMount() {
+    const currentUser = Meteor.user();
+    this.setState({ currentUser }, this.getKeywords);
+  }
 
-  const getKeywords = async () => {
-    if (!props.currentUser) {
-      return;
-    }
+  getKeywords = async () => {
     try {
       const allKeywords = await call('getKeywords');
-      setKeywords(
-        allKeywords.sort((a, b) => {
+      this.setState({
+        keywords: allKeywords.sort((a, b) => {
           return a.value < b.value ? -1 : a.value > b.value ? 1 : 0;
-        })
-      );
+        }),
+      });
     } catch (error) {
       message.error(error.error);
     }
   };
 
-  const handleSubmit = (fieldsValue) => {
+  handleSubmit = (fieldsValue) => {
     Meteor.call('saveUserInfo', fieldsValue, (error, respond) => {
       if (error) {
         console.log(error);
@@ -67,7 +75,7 @@ function Profile(props) {
     });
   };
 
-  const deleteAccount = () => {
+  deleteAccount = () => {
     Meteor.call('deleteAccount', (error, respond) => {
       if (error) {
         console.log(error);
@@ -80,11 +88,11 @@ function Profile(props) {
     }, 400);
   };
 
-  const keywordExists = keywords.find(
-    (item) => item.value === keywordInput.toLowerCase()
-  );
+  handleKeywordAssign = () => {
+    const keywordExists = keywords.find(
+      (item) => item.value === keywordInput.toLowerCase()
+    );
 
-  const handleKeywordAssign = () => {
     if (keywordInput.length < 4) {
       message.error('Minimum 4 letters required');
       return;
@@ -110,7 +118,7 @@ function Profile(props) {
     setKeywordInput('');
   };
 
-  const onRemoveKeyword = (item) => {
+  onRemoveKeyword = (item) => {
     Meteor.call('removeKeyword', item, (error, respond) => {
       if (error) {
         message.error(error.error);
@@ -122,9 +130,113 @@ function Profile(props) {
     });
   };
 
-  const { currentUser } = props;
+  handleSelectImages = (files) => {
+    files.forEach((uploadableImage, index) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(uploadableImage);
+      reader.addEventListener(
+        'load',
+        () => {
+          this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
+            uploadableImages: [...uploadableImages, uploadableImage],
+            uploadableImagesLocal: [...uploadableImagesLocal, reader.result],
+            isImagesEdited: true,
+          }));
+        },
+        false
+      );
+    });
+  };
 
-  if (!currentUser) {
+  handleSortImages = ({ oldIndex, newIndex }) => {
+    if (oldIndex === newIndex) {
+      return;
+    }
+
+    this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
+      uploadableImages: arrayMove(uploadableImages, oldIndex, newIndex),
+      uploadableImagesLocal: arrayMove(
+        uploadableImagesLocal,
+        oldIndex,
+        newIndex
+      ),
+      isImagesEdited: true,
+    }));
+  };
+
+  uploadImages = async () => {
+    const { uploadableImages } = this.state;
+
+    try {
+      const imagesReadyToSave = await Promise.all(
+        uploadableImages.map(async (uploadableImage, index) => {
+          const resizedImage = await resizeImage(uploadableImage, 1200);
+          const uploadedImage = await uploadImage(
+            resizedImage,
+            'profileImageUpload'
+          );
+          return uploadedImage;
+        })
+      );
+      this.saveUploadedImages(imagesReadyToSave);
+    } catch (error) {
+      console.log(error);
+      message.error(error.reason);
+      this.setState({
+        isError: true,
+      });
+    }
+  };
+
+  saveUploadedImages = (imagesReadyToSave) => {
+    try {
+      call('saveProfileImages', imagesReadyToSave);
+      message.success('Images are successfully saved');
+      this.setState({
+        isImagesEdited: false,
+      });
+    } catch (error) {
+      console.log(error);
+      message.error(error.error);
+    }
+  };
+
+  render() {
+    const {
+      currentUser,
+      keywordInput,
+      isImagesEdited,
+      isDeleteModalOn,
+      uploadableImages,
+      uploadableImagesLocal,
+      keywords,
+    } = this.state;
+
+    if (!currentUser) {
+      return (
+        <div style={{ padding: 24, minHeight: '80vh' }}>
+          <Row gutter={24}>
+            <Col md={8}>
+              <Blaze template="loginButtons" />
+            </Col>
+          </Row>
+        </div>
+      );
+    }
+
+    const keywordExists = keywords.find(
+      (item) => item.value === keywordInput.toLowerCase()
+    );
+    const myKeywords = currentUser.keywords;
+    const myKeywordsStr = myKeywords
+      ? myKeywords.map((item) => item.label)
+      : [];
+    const keywordsWithoutMine =
+      keywords &&
+      myKeywordsStr &&
+      keywords.filter((kw) => !myKeywordsStr.includes(kw.value));
+
+    const images = uploadableImagesLocal;
     return (
       <div style={{ padding: 24, minHeight: '80vh' }}>
         <Row gutter={24}>
@@ -132,245 +244,338 @@ function Profile(props) {
             <Blaze template="loginButtons" />
           </Col>
         </Row>
-      </div>
-    );
-  }
+        <Divider />
 
-  const myKeywords = currentUser.keywords;
-  const myKeywordsStr = myKeywords ? myKeywords.map((item) => item.label) : [];
-  const keywordsWithoutMine =
-    keywords &&
-    myKeywordsStr &&
-    keywords.filter((kw) => !myKeywordsStr.includes(kw.value));
+        <Row>
+          <Col md={8}>
+            <Form layout="vertical" onFinish={this.handleSubmit}>
+              <Row gutter={24}>
+                <Col md={12}>
+                  <FormItem
+                    label={
+                      <Title style={noBottomMargin} level={4}>
+                        First name
+                      </Title>
+                    }
+                    name="firstName"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please enter your first name',
+                      },
+                    ]}
+                    initialValue={currentUser.firstName || null}
+                  >
+                    <Input placeholder="first name" />
+                  </FormItem>
 
-  return (
-    <div style={{ padding: 24, minHeight: '80vh' }}>
-      <Row gutter={24}>
-        <Col md={8}>
-          <Blaze template="loginButtons" />
-        </Col>
-      </Row>
-      <Divider />
+                  <FormItem
+                    label={
+                      <Title style={noBottomMargin} level={4}>
+                        Last name
+                      </Title>
+                    }
+                    name="lastName"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please enter your last name',
+                      },
+                    ]}
+                    initialValue={currentUser.lastName || null}
+                  >
+                    <Input placeholder="last name" />
+                  </FormItem>
 
-      <Row>
-        <Col md={12}>
-          <Form layout="vertical" onFinish={handleSubmit}>
-            <Row gutter={24}>
-              <Col md={16}>
-                <FormItem
-                  label={
-                    <Title style={noBottomMargin} level={4}>
-                      First name
-                    </Title>
-                  }
-                  name="firstName"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please enter your first name',
-                    },
-                  ]}
-                  initialValue={currentUser.firstName || null}
-                >
-                  <Input placeholder="first name" />
-                </FormItem>
+                  <FormItem>
+                    <div style={{ display: 'flex', justifyContent: 'end' }}>
+                      <Button type="primary" htmlType="submit">
+                        Save
+                      </Button>
+                    </div>
+                  </FormItem>
+                </Col>
 
-                <FormItem
-                  label={
-                    <Title style={noBottomMargin} level={4}>
-                      Last name
-                    </Title>
-                  }
-                  name="lastName"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'Please enter your last name',
-                    },
-                  ]}
-                  initialValue={currentUser.lastName || null}
-                >
-                  <Input placeholder="last name" />
-                </FormItem>
-              </Col>
+                <Col md={12}>
+                  <Title level={4} style={{ textAlign: 'center' }}>
+                    Profile Picture
+                  </Title>
+                  <UploadAvatar currentUser={currentUser} />
+                </Col>
+              </Row>
 
-              <Col md={8}>
-                <Title level={4} style={{ textAlign: 'center' }}>
-                  Profile Picture
-                </Title>
-                <UploadAvatar currentUser={currentUser} />
-              </Col>
-            </Row>
+              <Divider />
 
-            <FormItem>
-              <div style={{ display: 'flex', justifyContent: 'end' }}>
-                <Button type="primary" htmlType="submit">
-                  Save
-                </Button>
-              </div>
-            </FormItem>
+              <FormItem
+                initialValue={currentUser.isPublic || false}
+                label={
+                  <Title style={noBottomMargin} level={4}>
+                    Make my profile public
+                  </Title>
+                }
+                name="isPublic"
+                valuePropName="checked"
+              >
+                <Switch />
+              </FormItem>
+
+              <FormItem
+                label={
+                  <Title style={noBottomMargin} level={4}>
+                    Contact info
+                  </Title>
+                }
+                name="contactInfo"
+                rules={[
+                  {
+                    required: false,
+                  },
+                ]}
+                initialValue={currentUser.contactInfo || ''}
+              >
+                <ReactQuill modules={editorModules} formats={editorFormats} />
+              </FormItem>
+
+              <FormItem
+                label={
+                  <Title style={noBottomMargin} level={4}>
+                    Skogen & Me
+                  </Title>
+                }
+                name="skogenAndMe"
+                rules={[
+                  {
+                    required: false,
+                  },
+                ]}
+                initialValue={currentUser.skogenAndMe || ''}
+              >
+                <ReactQuill modules={editorModules} formats={editorFormats} />
+              </FormItem>
+
+              <FormItem
+                label={
+                  <Title style={noBottomMargin} level={4}>
+                    What I like to share with the community
+                  </Title>
+                }
+                name="forCommunity"
+                rules={[
+                  {
+                    required: false,
+                  },
+                ]}
+                initialValue={currentUser.forCommunity || ''}
+              >
+                <ReactQuill modules={editorModules} formats={editorFormats} />
+              </FormItem>
+
+              <FormItem
+                label={
+                  <Title style={noBottomMargin} level={4}>
+                    I'm interested in...
+                  </Title>
+                }
+                name="interestedIn"
+                rules={[
+                  {
+                    required: false,
+                  },
+                ]}
+                initialValue={currentUser.interestedIn || ''}
+              >
+                <ReactQuill modules={editorModules} formats={editorFormats} />
+              </FormItem>
+
+              <FormItem>
+                <div style={{ display: 'flex', justifyContent: 'end' }}>
+                  <Button type="primary" htmlType="submit">
+                    Save
+                  </Button>
+                </div>
+              </FormItem>
+            </Form>
 
             <Divider />
 
-            <FormItem
-              initialValue={currentUser.isPublic || false}
-              label={
-                <Title style={noBottomMargin} level={4}>
-                  Make my profile public
-                </Title>
+            <Title style={noBottomMargin} level={4}>
+              Keywords
+            </Title>
+            <Text>People can use keywords to filter and find profiles</Text>
+            <AutoComplete
+              options={keywordsWithoutMine}
+              filterOption={(inputValue, option) =>
+                option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
+                -1
               }
-              name="isPublic"
-              valuePropName="checked"
+              onSelect={(data) => this.setState({ keywordInput: data })}
+              style={{ width: '100%' }}
             >
-              <Switch />
-            </FormItem>
+              <Search
+                placeholder="add keyword"
+                enterButton={keywordExists ? 'Assign' : 'Create'}
+                size="large"
+                value={keywordInput}
+                onChange={(event) =>
+                  this.setState({ keywordInput: event.target.value })
+                }
+                onSearch={this.handleKeywordAssign}
+              />
+            </AutoComplete>
 
-            <FormItem
-              label={
-                <Title style={noBottomMargin} level={4}>
-                  Contact info
+            <div>
+              {myKeywords &&
+                myKeywords.map((item) => (
+                  <Tag
+                    closable
+                    color="purple"
+                    key={item.id}
+                    style={{ marginTop: 8, marginRight: 8 }}
+                    onClose={() => this.onRemoveKeyword(item)}
+                  >
+                    <b>{item.label}</b>
+                  </Tag>
+                ))}
+            </div>
+            <Divider />
+
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Button
+                onClick={() => this.setState({ isDeleteModalOn: true })}
+                style={{ color: 'red' }}
+              >
+                Delete Account
+              </Button>
+            </div>
+            <Divider />
+          </Col>
+
+          <Col md={16}>
+            <Row justify="center">
+              <div style={{ minWidth: 300 }}>
+                <Title level={4} style={{ textAlign: 'center' }}>
+                  Images
                 </Title>
-              }
-              name="contactInfo"
-              rules={[
-                {
-                  required: false,
-                },
-              ]}
-              initialValue={currentUser.contactInfo || ''}
-            >
-              <ReactQuill modules={editorModules} formats={editorFormats} />
-            </FormItem>
+                <Carousel autoplay>
+                  {images &&
+                    images.length > 0 &&
+                    images.map((image) => (
+                      <div
+                        key={image}
+                        style={{
+                          height: 300,
+                          margin: '0 auto',
+                        }}
+                      >
+                        <img
+                          src={image}
+                          style={{ margin: '0 auto', height: 300 }}
+                        />
+                      </div>
+                    ))}
+                </Carousel>
 
-            <FormItem
-              label={
-                <Title style={noBottomMargin} level={4}>
-                  Skogen & Me
-                </Title>
-              }
-              name="skogenAndMe"
-              rules={[
-                {
-                  required: false,
-                },
-              ]}
-              initialValue={currentUser.skogenAndMe || ''}
-            >
-              <ReactQuill modules={editorModules} formats={editorFormats} />
-            </FormItem>
+                <div style={{ padding: 24 }}>
+                  {images && images.length > 0 ? (
+                    <SortableContainer
+                      onSortEnd={this.handleSortImages}
+                      axis="xy"
+                      helperClass="sortableHelper"
+                    >
+                      {images.map((image, index) => (
+                        <SortableItem
+                          key={image}
+                          index={index}
+                          image={image}
+                          onRemoveImage={() => this.onRemoveImage(index)}
+                        />
+                      ))}
 
-            <FormItem
-              label={
-                <Title style={noBottomMargin} level={4}>
-                  What I like to share with the community
-                </Title>
-              }
-              name="forCommunity"
-              rules={[
-                {
-                  required: false,
-                },
-              ]}
-              initialValue={currentUser.forCommunity || ''}
-            >
-              <ReactQuill modules={editorModules} formats={editorFormats} />
-            </FormItem>
-
-            <FormItem
-              label={
-                <Title style={noBottomMargin} level={4}>
-                  I'm interested in...
-                </Title>
-              }
-              name="interestedIn"
-              rules={[
-                {
-                  required: false,
-                },
-              ]}
-              initialValue={currentUser.interestedIn || ''}
-            >
-              <ReactQuill modules={editorModules} formats={editorFormats} />
-            </FormItem>
-
-            <FormItem>
-              <div style={{ display: 'flex', justifyContent: 'end' }}>
-                <Button type="primary" htmlType="submit">
-                  Save
-                </Button>
+                      <FileDropper
+                        setUploadableImage={this.handleSelectImages}
+                      />
+                    </SortableContainer>
+                  ) : (
+                    <FileDropper
+                      width={300}
+                      setUploadableImage={this.handleSelectImages}
+                    />
+                  )}
+                </div>
               </div>
-            </FormItem>
-          </Form>
+            </Row>
+            <Row justify="center">
+              <Button disabled={!isImagesEdited} onClick={this.uploadImages}>
+                Save
+              </Button>
+            </Row>
+          </Col>
+        </Row>
 
-          <Divider />
+        <Divider />
 
-          <Title style={noBottomMargin} level={4}>
-            Keywords
-          </Title>
-          <Text>People can use keywords to filter and find profiles</Text>
-          <AutoComplete
-            options={keywordsWithoutMine}
-            filterOption={(inputValue, option) =>
-              option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
-              -1
-            }
-            onSelect={(data) => setKeywordInput(data)}
-            style={{ width: '100%' }}
-          >
-            <Search
-              placeholder="add keyword"
-              enterButton={keywordExists ? 'Assign' : 'Create'}
-              size="large"
-              value={keywordInput}
-              onChange={(event) => setKeywordInput(event.target.value)}
-              onSearch={handleKeywordAssign}
-            />
-          </AutoComplete>
+        <Modal
+          title="Are you sure?"
+          okText="Confirm Deletion"
+          onOk={this.deleteAccount}
+          onCancel={() => this.setState({ isDeleteModalOn: false })}
+          visible={isDeleteModalOn}
+        >
+          <p>
+            You are about to permanently delete your user information. This is
+            an irreversible action.
+          </p>
+        </Modal>
+      </div>
+    );
+  }
+}
 
-          <div>
-            {myKeywords &&
-              myKeywords.map((item) => (
-                <Tag
-                  closable
-                  color="purple"
-                  key={item.id}
-                  style={{ marginTop: 8, marginRight: 8 }}
-                  onClose={() => onRemoveKeyword(item)}
-                >
-                  <b>{item.label}</b>
-                </Tag>
-              ))}
-          </div>
-          <Divider />
+const thumbStyle = (backgroundImage) => ({
+  flexBasis: 120,
+  height: 80,
+  margin: 8,
+  backgroundImage: backgroundImage && `url('${backgroundImage}')`,
+  backgroundPosition: 'center',
+  backgroundSize: 'cover',
+  borderRadius: 4,
+  border: '1px solid #fff',
+});
 
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button
-              onClick={() => setIsDeleteModalOn(true)}
-              style={{ color: 'red' }}
-            >
-              Delete Account
-            </Button>
-          </div>
-          <Divider />
-        </Col>
-      </Row>
+const thumbIconStyle = {
+  float: 'right',
+  margin: 2,
+  padding: 4,
+  borderRadius: 4,
+  backgroundColor: 'rgba(255, 255, 255, .8)',
+  cursor: 'pointer',
+};
 
-      <Divider />
+const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
+  const onRemoveClick = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    onRemoveImage();
+  };
 
-      <Modal
-        title="Are you sure?"
-        okText="Confirm Deletion"
-        onOk={deleteAccount}
-        onCancel={() => setIsDeleteModalOn(false)}
-        visible={isDeleteModalOn}
-      >
-        <p>
-          You are about to permanently delete your user information. This is an
-          irreversible action.
-        </p>
-      </Modal>
+  return (
+    <div key={image} className="sortable-thumb" style={thumbStyle(image)}>
+      <div
+        color="dark-1"
+        size="small"
+        style={thumbIconStyle}
+        onClick={onRemoveClick}
+      />
     </div>
   );
-}
+});
+
+const SortableContainer = sortableContainer(({ children }) => {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', wrap: 'wrap' }}>
+      {children}
+    </div>
+  );
+});
 
 export default Profile;

@@ -12,11 +12,12 @@ const containerStyle = {
 };
 
 const FileDropper = ({
+  imageUrl,
+  label,
+  round = false,
+  width,
   setUploadableImage,
   uploadableImageLocal,
-  imageUrl,
-  round = false,
-  label,
   ...otherProps
 }) => {
   return (
@@ -31,6 +32,7 @@ const FileDropper = ({
               backgroundColor: isDragActive ? '#921bef' : '#fbd5d0',
               borderRadius: round ? '50%' : '0',
               overflow: round ? 'hidden' : 'inherit',
+              width: width || containerStyle.width,
             }}
           >
             {uploadableImageLocal || imageUrl ? (

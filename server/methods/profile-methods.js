@@ -92,6 +92,24 @@ Meteor.methods({
     }
   },
 
+  saveProfileImages(images) {
+    const user = Meteor.user();
+    if (!user) {
+      throw new Meteor.Error('Not allowed!');
+    }
+
+    try {
+      Meteor.users.update(user._id, {
+        $set: {
+          images: images
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Meteor.Error(error);
+    }
+  },
+
   deleteAccount() {
     const userId = Meteor.userId();
     if (!userId) {
