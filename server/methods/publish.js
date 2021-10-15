@@ -200,6 +200,7 @@ Meteor.publish('user', function (username) {
       contactInfo: 1,
       firstName: 1,
       forCommunity: 1,
+      images: 1,
       interestedIn: 1,
       lastName: 1,
       meAndSkogen: 1,
