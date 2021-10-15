@@ -7,7 +7,7 @@ Meteor.methods({
     })
 
     if (!p.isPublic) {
-      throw Meteor.Error('Profile is not public');
+      throw new Meteor.Error('Profile is not public');
     }
 
     return {
@@ -18,6 +18,24 @@ Meteor.methods({
       forCommunity: p.forCommunity,
       avatar: p.avatar,
     }
+  },
+
+  getPublicProfiles() {
+    try {
+      const publicProfiles = Meteor.users.find({
+        isPublic: true
+      }).fetch();
+
+      return publicProfiles.map(p => ({
+        avatar: p.avatar,
+        username: p.username,
+        firstName: p.firstName, 
+        lastName: p.lastName,
+      }));
+    } catch(error) {
+      throw new Meteor.Error('Cannot retrieve public profiles')
+    }
+
   },
 
   saveUserInfo(values) {

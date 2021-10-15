@@ -169,7 +169,18 @@ Meteor.publish('users', function () {
   if (!user || !user.isSuperAdmin) {
     return null;
   }
-  return Meteor.users.find();
+  return Meteor.users.find({}, {
+    fields: {
+      avatar: 1,
+      contactInfo: 1,
+      firstName: 1,
+      forCommunity: 1,
+      interestedIn: 1,
+      lastName: 1,
+      meAndSkogen: 1,
+      username: 1,
+    },
+  });
 });
 
 Meteor.publish('me', function () {
@@ -184,11 +195,14 @@ Meteor.publish('user', function (username) {
     { username },
     {
       fields: {
-        username: 1,
-        firstName: 1,
-        lastName: 1,
-        bio: 1,
         avatar: 1,
+        contactInfo: 1,
+        firstName: 1,
+        forCommunity: 1,
+        interestedIn: 1,
+        lastName: 1,
+        meAndSkogen: 1,
+        username: 1,
       },
     }
   );

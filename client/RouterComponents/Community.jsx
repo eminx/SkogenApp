@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Avatar, Cascader, Divider, Typography } from 'antd/lib';
+import { Avatar, Cascader, Divider, Typography, message } from 'antd/lib';
 import renderHTML from 'react-render-html';
 
 import Loader from '../UIComponents/Loader';
@@ -56,7 +56,6 @@ function Community(props) {
 
   const onChange = (value, selectedOptions) => {
     const username = value[1];
-    console.log(username);
     setSelectedProfile({
       username,
     });
@@ -74,53 +73,81 @@ function Community(props) {
 
   const dropdownRender = (menus) => {
     return (
-      <div style={{ display: 'flex' }}>
-        {menus}
-        <Divider type="vertical" />
-        {selectedProfile ? (
-          <div style={{ maxWidth: 350 }}>
-            <div
-              style={{
-                display: 'flex',
-                marginBottom: 24,
-              }}
-            >
-              {selectedProfile.avatar && (
-                <Avatar
-                  size={80}
-                  src={
-                    selectedProfile.avatar ? selectedProfile.avatar.src : null
-                  }
-                  style={{ marginRight: 24 }}
-                />
-              )}
-              <div>
-                <Title level={3}>{selectedProfile.username}</Title>
-                {selectedProfile.firstName && selectedProfile.lastName && (
-                  <Text strong style={{ marginBottom: 24 }}>
-                    {selectedProfile.firstName + ' ' + selectedProfile.lastName}
-                  </Text>
+      <div>
+        <div style={{ display: 'flex' }}>
+          {menus}
+          <Divider type="vertical" />
+          {selectedProfile ? (
+            <div style={{ maxWidth: 350 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  marginBottom: 24,
+                }}
+              >
+                {selectedProfile.avatar && (
+                  <Avatar
+                    shape="square"
+                    size={80}
+                    src={
+                      selectedProfile.avatar ? selectedProfile.avatar.src : null
+                    }
+                    style={{ marginRight: 24 }}
+                  />
                 )}
+                <div>
+                  <Title level={3}>{selectedProfile.username}</Title>
+                  {selectedProfile.firstName && selectedProfile.lastName && (
+                    <Text strong style={{ marginBottom: 24 }}>
+                      {selectedProfile.firstName +
+                        ' ' +
+                        selectedProfile.lastName}
+                    </Text>
+                  )}
+                </div>
               </div>
-            </div>
-            {selectedProfile.forCommunity && (
-              <Paragraph italic>
-                {renderHTML(selectedProfile.forCommunity)}
-              </Paragraph>
-            )}
-            <div style={{ marginBottom: 24 }}>
-              For more info, go to the{' '}
-              <Link to={`/${selectedProfile.username}`}>profile page</Link>.
-            </div>
+              {selectedProfile.forCommunity && (
+                <Paragraph italic>
+                  {renderHTML(selectedProfile.forCommunity)}
+                </Paragraph>
+              )}
+              <div style={{ marginBottom: 24 }}>
+                For more info, go to the{' '}
+                <Link to={`/${selectedProfile.username}`}>profile page</Link>.
+              </div>
 
-            {selectedProfile.contactInfo && (
-              <div>
-                <Title level={5}>Contact Info</Title>
-                <Paragraph>{renderHTML(selectedProfile.contactInfo)}</Paragraph>
-              </div>
-            )}
-          </div>
-        ) : null}
+              {selectedProfile.contactInfo && (
+                <div>
+                  <Title level={5}>Contact Info</Title>
+                  <Paragraph>
+                    {renderHTML(selectedProfile.contactInfo)}
+                  </Paragraph>
+                </div>
+              )}
+            </div>
+          ) : null}
+        </div>
+
+        <div style={{ display: 'flex', padding: 24 }}>
+          {publicProfiles.map(
+            (p) =>
+              p.avatar && (
+                <Link to={`/${p.username}`}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      padding: 12,
+                    }}
+                  >
+                    <Avatar shape="square" size={80} src={p.avatar.src} />
+                    <Title level={5}>{p.username}</Title>
+                  </div>
+                </Link>
+              )
+          )}
+        </div>
       </div>
     );
   };
