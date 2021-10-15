@@ -1,15 +1,18 @@
 import React from 'react';
 import renderHTML from 'react-render-html';
+import Gallery from 'react-photo-gallery';
 
 import {
   Alert,
   Avatar,
-  Row,
+  Carousel,
   Col,
-  message,
   Divider,
-  Typography,
+  Image,
   Space,
+  Row,
+  Typography,
+  message,
 } from 'antd';
 import Loader from '../../UIComponents/Loader';
 
@@ -34,10 +37,19 @@ function User({ user }) {
     );
   }
 
+  console.log(user);
+
+  const images =
+    user.images &&
+    user.images.length > 0 &&
+    user.images.map((image) => ({
+      src: image,
+    }));
+
   return (
     <div style={{ padding: 24 }}>
       <Loader isContainer spinning={!user}>
-        <Row>
+        <Row gutter={24}>
           <Col md={8}>
             <Space align="center">
               <Avatar
@@ -69,7 +81,7 @@ function User({ user }) {
             <InfoSection title="Contact info" info={user.contactInfo} />
           </Col>
 
-          <Col md={16}></Col>
+          <Col md={16}>{images && <Gallery photos={images} />}</Col>
         </Row>
       </Loader>
     </div>

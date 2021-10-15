@@ -22,4 +22,17 @@ Meteor.startup(() => {
     isPublished: 1,
   });
   Places._ensureIndex({ isPublished: 1 });
+
+  Meteor.users.find().forEach(user => {
+    if (user.images) {
+      return;
+    }
+    Meteor.users.update({
+      _id: user._id
+    }, {
+      $set: {
+        images: []
+      }
+    })
+  })
 });
