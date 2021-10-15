@@ -20,6 +20,7 @@ import {
 } from 'antd';
 
 import UploadAvatar from '../../UIComponents/UploadAvatar';
+import { call } from '../../functions';
 
 const FormItem = Form.Item;
 const { Search } = Input;
@@ -38,17 +39,20 @@ function Profile(props) {
     getKeywords();
   }, []);
 
-  const getKeywords = () => {
+  const getKeywords = async () => {
     if (!props.currentUser) {
       return;
     }
-    Meteor.call('getKeywords', (error, respond) => {
-      if (error) {
-        message.error('cannot get keywords');
-        return;
-      }
-      setKeywords(respond);
-    });
+    try {
+      const allKeywords = await call('getKeywords');
+      setKeywords(
+        allKeywords.sort((a, b) => {
+          return a.value < b.value ? -1 : a.value > b.value ? 1 : 0;
+        })
+      );
+    } catch (error) {
+      message.error(error.error);
+    }
   };
 
   const handleSubmit = (fieldsValue) => {
@@ -113,7 +117,7 @@ function Profile(props) {
         return;
       }
       message.success(
-        'Yoi have successfully removed the keyword from your profile'
+        'You have successfully removed the keyword from your profile'
       );
     });
   };

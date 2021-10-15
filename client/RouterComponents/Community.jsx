@@ -11,9 +11,11 @@ const { Paragraph, Text, Title } = Typography;
 function Community(props) {
   const [keywords, setKeywords] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
+  const [publicProfiles, setPublicProfiles] = useState([]);
 
   useEffect(() => {
     getKeywords();
+    getPublicProfiles();
   }, []);
 
   const getKeywords = async () => {
@@ -21,9 +23,18 @@ function Community(props) {
       const allKeywords = await call('getKeywords');
       setKeywords(
         allKeywords.sort((a, b) => {
-          return a.label < b.label ? -1 : a.label > b.label ? 1 : 0;
+          return a.value < b.value ? -1 : a.value > b.value ? 1 : 0;
         })
       );
+    } catch (error) {
+      message.error(error.error);
+    }
+  };
+
+  const getPublicProfiles = async () => {
+    try {
+      const profiles = await call('getPublicProfiles');
+      setPublicProfiles(profiles);
     } catch (error) {
       message.error(error.error);
     }
@@ -67,7 +78,7 @@ function Community(props) {
         {menus}
         <Divider type="vertical" />
         {selectedProfile ? (
-          <div>
+          <div style={{ maxWidth: 350 }}>
             <div
               style={{
                 display: 'flex',
@@ -120,6 +131,7 @@ function Community(props) {
         <Title level={3}>Select Keywords</Title>
         <Cascader
           bordered={false}
+          dropdownClassName="dropdown-class"
           dropdownRender={dropdownRender}
           open
           options={cascaderOptions}
