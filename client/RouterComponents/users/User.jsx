@@ -1,6 +1,5 @@
 import React from 'react';
 import renderHTML from 'react-render-html';
-import Gallery from 'react-photo-gallery';
 
 import {
   Alert,
@@ -37,15 +36,6 @@ function User({ user }) {
     );
   }
 
-  console.log(user);
-
-  const images =
-    user.images &&
-    user.images.length > 0 &&
-    user.images.map((image) => ({
-      src: image,
-    }));
-
   return (
     <div style={{ padding: 24 }}>
       <Loader isContainer spinning={!user}>
@@ -81,7 +71,15 @@ function User({ user }) {
             <InfoSection title="Contact info" info={user.contactInfo} />
           </Col>
 
-          <Col md={16}>{images && <Gallery photos={images} />}</Col>
+          <Col md={16}>
+            {user.images && user.images.length > 0 && (
+              <Carousel autoplay autoplaySpeed={3000}>
+                {user.images.map((image) => (
+                  <Image key={image} src={image} />
+                ))}
+              </Carousel>
+            )}
+          </Col>
         </Row>
       </Loader>
     </div>
