@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { withTracker } from 'meteor/react-meteor-data';
 import React, { PureComponent } from 'react';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 import ReactQuill from 'react-quill';
@@ -36,19 +37,46 @@ const noBottomMargin = {
 
 class Profile extends PureComponent {
   state = {
-    currentUser: null,
     isDeleteModalOn: false,
     isImagesEdited: false,
+    isUploading: false,
     keywordInput: '',
     keywords: [],
-    uploadableImages: [],
-    uploadableImagesLocal: [],
+    images: [],
   };
 
   componentDidMount() {
-    const currentUser = Meteor.user();
-    this.setState({ currentUser }, this.getKeywords);
+    this.parseImages();
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.currentUser &&
+      !prevProps.currentUser.images &&
+      this.props.currentUser &&
+      this.props.currentUser.images
+    ) {
+      console.log(this.props.currentUser);
+      this.parseImages();
+    }
+  }
+
+  parseImages = () => {
+    const { currentUser } = this.props;
+    if (!currentUser || !currentUser.images) {
+      return;
+    }
+
+    this.setState(
+      {
+        images: currentUser.images.map((image) => ({
+          src: image,
+          type: 'uploaded',
+        })),
+      },
+      this.getKeywords
+    );
+  };
 
   getKeywords = async () => {
     try {
@@ -57,7 +85,6 @@ class Profile extends PureComponent {
         keywords: allKeywords.sort((a, b) => {
           return a.value < b.value ? -1 : a.value > b.value ? 1 : 0;
         }),
-        currentUser: Meteor.user(),
       });
     } catch (error) {
       message.error(error.error);
@@ -140,11 +167,21 @@ class Profile extends PureComponent {
       reader.addEventListener(
         'load',
         () => {
-          this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
-            uploadableImages: [...uploadableImages, uploadableImage],
-            uploadableImagesLocal: [...uploadableImagesLocal, reader.result],
+          this.setState(({ images }) => ({
+            images: [
+              ...images,
+              {
+                resizableData: uploadableImage,
+                type: 'not-uploaded',
+                src: reader.result,
+              },
+            ],
             isImagesEdited: true,
           }));
+          // this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
+          //   uploadableImages: [...uploadableImages, uploadableImage],
+          //   uploadableImagesLocal: [...uploadableImagesLocal, reader.result],
+          // }));
         },
         false
       );
@@ -156,29 +193,41 @@ class Profile extends PureComponent {
       return;
     }
 
-    this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
-      uploadableImages: arrayMove(uploadableImages, oldIndex, newIndex),
-      uploadableImagesLocal: arrayMove(
-        uploadableImagesLocal,
-        oldIndex,
-        newIndex
-      ),
+    this.setState(({ images }) => ({
+      images: arrayMove(images, oldIndex, newIndex),
       isImagesEdited: true,
     }));
   };
 
   uploadImages = async () => {
-    const { uploadableImages } = this.state;
+    const { images } = this.state;
+
+    this.setState({
+      isUploading: true,
+    });
+
+    const isThereUploadable = images.some(
+      (image) => image.type === 'not-uploaded'
+    );
+    if (!isThereUploadable) {
+      const imagesReadyToSave = images.map((image) => image.src);
+      this.saveUploadedImages(imagesReadyToSave);
+      return;
+    }
 
     try {
       const imagesReadyToSave = await Promise.all(
-        uploadableImages.map(async (uploadableImage, index) => {
-          const resizedImage = await resizeImage(uploadableImage, 1200);
-          const uploadedImage = await uploadImage(
-            resizedImage,
-            'profileImageUpload'
-          );
-          return uploadedImage;
+        images.map(async (image, index) => {
+          if (image.type === 'uploaded') {
+            return image.src;
+          } else {
+            const resizedImage = await resizeImage(image.resizableData, 1200);
+            const uploadedImage = await uploadImage(
+              resizedImage,
+              'profileImageUpload'
+            );
+            return uploadedImage;
+          }
         })
       );
       this.saveUploadedImages(imagesReadyToSave);
@@ -191,9 +240,9 @@ class Profile extends PureComponent {
     }
   };
 
-  saveUploadedImages = (imagesReadyToSave) => {
+  saveUploadedImages = async (imagesReadyToSave) => {
     try {
-      call('saveProfileImages', imagesReadyToSave);
+      await call('saveProfileImages', imagesReadyToSave);
       message.success('Images are successfully saved');
       this.setState({
         isImagesEdited: false,
@@ -205,15 +254,10 @@ class Profile extends PureComponent {
   };
 
   render() {
-    const {
-      currentUser,
-      keywordInput,
-      isImagesEdited,
-      isDeleteModalOn,
-      uploadableImages,
-      uploadableImagesLocal,
-      keywords,
-    } = this.state;
+    const { currentUser } = this.props;
+
+    const { keywordInput, isImagesEdited, isDeleteModalOn, images, keywords } =
+      this.state;
 
     if (!currentUser) {
       return (
@@ -239,7 +283,6 @@ class Profile extends PureComponent {
       myKeywordsStr &&
       keywords.filter((kw) => !myKeywordsStr.includes(kw.value));
 
-    const images = uploadableImagesLocal;
     return (
       <div style={{ padding: 24, minHeight: '80vh' }}>
         <Row gutter={24}>
@@ -471,7 +514,7 @@ class Profile extends PureComponent {
                         }}
                       >
                         <img
-                          src={image}
+                          src={image.src}
                           style={{ margin: '0 auto', height: 300 }}
                         />
                       </div>
@@ -487,9 +530,9 @@ class Profile extends PureComponent {
                     >
                       {images.map((image, index) => (
                         <SortableItem
-                          key={image}
+                          key={image.src}
                           index={index}
-                          image={image}
+                          image={image.src}
                           onRemoveImage={() => this.onRemoveImage(index)}
                         />
                       ))}
@@ -581,4 +624,9 @@ const SortableContainer = sortableContainer(({ children }) => {
   );
 });
 
-export default Profile;
+export default withTracker((props) => {
+  const currentUser = Meteor.user();
+  return {
+    currentUser,
+  };
+})(Profile);
