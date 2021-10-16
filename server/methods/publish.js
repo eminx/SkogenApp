@@ -203,7 +203,7 @@ Meteor.publish('user', function (username) {
       images: 1,
       interestedIn: 1,
       lastName: 1,
-      meAndSkogen: 1,
+      skogenAndMe: 1,
       username: 1,
     },
   });

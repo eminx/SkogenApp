@@ -1,9 +1,5 @@
 Meteor.methods({
   getKeywords() {
-    const user = Meteor.user();
-    if (!user) {
-      throw new Meteor.Error('Not allowed!');
-    }
     try {
       return Keywords.find().fetch();
     } catch(error) {
