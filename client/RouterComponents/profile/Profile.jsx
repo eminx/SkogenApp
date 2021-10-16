@@ -521,7 +521,7 @@ class Profile extends PureComponent {
                     ))}
                 </Carousel>
 
-                <div style={{ padding: 24 }}>
+                <div>
                   {images && images.length > 0 ? (
                     <SortableContainer
                       onSortEnd={this.handleSortImages}
