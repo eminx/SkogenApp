@@ -43,7 +43,7 @@ class EditPlace extends PureComponent {
     const { id } = match.params;
 
     try {
-      const response = await call('getWork', id);
+      const response = await call('getPlace', id);
       const catLabel =
         response.category &&
         response.category.label &&

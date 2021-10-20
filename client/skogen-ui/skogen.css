@@ -74,10 +74,7 @@ body .ant-input,
 }
 
 .thumb-cover-container.work-thumb {
-  flex: 360px 0 0;
-  height: 360px;
   width: 360px;
-  max-width: 360px;
 }
 
 .thumb-cover-container-event {
