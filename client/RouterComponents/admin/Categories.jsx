@@ -61,7 +61,7 @@ const Categories = ({ history, currentUser }) => {
 
   return (
     <div>
-      <Loader isContainer spinning={!categories || categories.length === 0}>
+      <Loader isContainer spinning={!categories}>
         <Row gutter={24}>
           <Col md={8}>
             <AdminMenu currentPath={currentPath} />

@@ -13,7 +13,6 @@ const containerStyle = {
 
 const FileDropper = ({
   imageUrl,
-  label,
   round = false,
   width,
   setUploadableImage,

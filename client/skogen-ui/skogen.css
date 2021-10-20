@@ -67,17 +67,17 @@ body .ant-input,
 
 .thumb-cover-container {
   position: relative;
-  flex: 300px 1 0;
-  height: 300px;
+  flex: 360px 1 0;
+  height: 360px;
   background-color: #921bef;
   margin: 12px 6px;
 }
 
 .thumb-cover-container.work-thumb {
-  flex: 320px 0 0;
-  height: 320px;
-  width: 320px;
-  max-width: 320px;
+  flex: 360px 0 0;
+  height: 360px;
+  width: 360px;
+  max-width: 360px;
 }
 
 .thumb-cover-container-event {

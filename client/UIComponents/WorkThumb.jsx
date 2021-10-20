@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Tag } from 'antd';
+import { Tag } from 'antd';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const commonStyle = {
@@ -8,8 +8,8 @@ const commonStyle = {
   lineHeight: 1,
 };
 const imageStyle = {
-  width: 320,
-  height: 320,
+  width: 380,
+  height: 360,
   objectFit: 'cover',
 };
 
@@ -39,7 +39,7 @@ function WorkThumb({ work, history }) {
           padding: 16,
         }}
       >
-        {work.category ? (
+        {work.category && work.category.label !== 'uncategorised' ? (
           <Tag
             color={work.category.color}
             style={{ zIndex: 2, borderRadius: 0 }}
@@ -49,13 +49,13 @@ function WorkThumb({ work, history }) {
         ) : (
           <div />
         )}
-        <Avatar
+        {/* <Avatar
           src={work.authorAvatar && work.authorAvatar.src}
           style={{ backgroundColor: '#921bef' }}
           size="large"
         >
           {work.authorUsername.substring(0, 1).toUpperCase()}
-        </Avatar>
+        </Avatar> */}
       </div>
 
       <div
@@ -69,7 +69,7 @@ function WorkThumb({ work, history }) {
         <h4
           style={{
             ...commonStyle,
-            fontSize: 18,
+            fontSize: 20,
             marginBottom: 6,
             lineHeight: '24px',
             overflowWrap: 'anywhere',

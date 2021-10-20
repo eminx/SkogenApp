@@ -31,10 +31,10 @@ import UsersContainer from './admin/UsersContainer';
 import Resources from './admin/Resources';
 import Categories from './admin/Categories';
 
-import Works from './works/Works';
-import Work from './works/Work';
-import NewWork from './works/NewWork';
-import EditWork from './works/EditWork';
+import Places from './places/Places';
+import Place from './places/Place';
+import NewPlace from './places/NewPlace';
+import EditPlace from './places/EditPlace';
 
 import DocumentsListContainer from './documents/DocumentsListContainer';
 
@@ -93,10 +93,15 @@ export const renderRoutes = () => (
 
           <Route exact path="/@:username" component={UserContainer} />
 
-          <Route path="/works" component={Works} />
+          <Route path="/places" component={Places} />
+          <Route exact path="/place/:id" component={Place} />
+          <Route path="/edit-place/:id" component={EditPlace} />
+          <Route path="/new-place" component={NewPlace} />
+
+          {/* <Route path="/works" component={Works} />
           <Route exact path="/:username/work/:id" component={Work} />
           <Route path="/:username/edit-work/:id" component={EditWork} />
-          <Route path="/new-work" component={NewWork} />
+          <Route path="/new-work" component={NewWork} /> */}
 
           <Route path="/community" component={Community} />
 

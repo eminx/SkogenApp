@@ -45,6 +45,10 @@ const menu = [
     route: '/community',
   },
   {
+    label: 'Places',
+    route: '/places',
+  },
+  {
     label: 'Info',
     route: '/page/about-skogen',
   },
