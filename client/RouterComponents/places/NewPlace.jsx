@@ -187,7 +187,7 @@ class NewPlace extends PureComponent {
     } = this.state;
 
     if (isSuccess && newPlaceId) {
-      return <Redirect to={`/${currentUser.username}/place/${newPlaceId}`} />;
+      return <Redirect to={`/place/${newPlaceId}`} />;
     }
 
     const buttonLabel = isCreating ? 'Creating...' : 'Confirm and Create';

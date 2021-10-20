@@ -155,10 +155,10 @@ class EditPlace extends PureComponent {
 
   updatePlace = async (imagesReadyToSave) => {
     const { match } = this.props;
-    const { id, username } = match.params;
+    const { id } = match.params;
     const { formValues, categories } = this.state;
     const currentUser = Meteor.user();
-    if (username !== currentUser.username) {
+    if (!currentUser || !currentUser.isSuperAdmin) {
       message.error('You are not allowed');
       return;
     }
