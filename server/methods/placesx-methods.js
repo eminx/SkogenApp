@@ -34,7 +34,7 @@ Meteor.methods({
 
   createPlace(values, images) {
     const user = Meteor.user();
-    if (!user || !user.isRegisteredMember) {
+    if (!user || !user.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed!');
     }
 
@@ -57,7 +57,7 @@ Meteor.methods({
 
   updatePlace(placeId, values, images) {
     const user = Meteor.user();
-    if (!user) {
+    if (!user || !user.isSuperAdmin) {
       throw new Meteor.Error('Not allowed!');
     }
 
@@ -76,14 +76,14 @@ Meteor.methods({
   },
 
   deletePlace(placeId) {
-    const userId = Meteor.userId();
+    const user = Meteor.user();
 
-    if (!userId) {
+    if (!user || !user.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed!');
     }
 
     const place = PlacesX.findOne(placeId);
-    if (place.authorId !== userId) {
+    if (place.authorId !== user._id) {
       throw new Meteor.Error('You are not allowed!');
     }
 

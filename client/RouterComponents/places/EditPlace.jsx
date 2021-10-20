@@ -26,7 +26,7 @@ class EditPlace extends PureComponent {
   };
 
   componentDidMount() {
-    this.getWork();
+    this.getPlace();
     this.getCategories();
   }
 
@@ -37,7 +37,7 @@ class EditPlace extends PureComponent {
     });
   };
 
-  getWork = async () => {
+  getPlace = async () => {
     this.setState({ isLoading: true });
     const { match } = this.props;
     const { id } = match.params;
@@ -67,7 +67,7 @@ class EditPlace extends PureComponent {
     }
   };
 
-  registerWorkLocally = (formValues) => {
+  registerPlaceLocally = (formValues) => {
     this.setState(
       {
         isCreating: true,
@@ -120,7 +120,7 @@ class EditPlace extends PureComponent {
     );
     if (!isThereUploadable) {
       const imagesReadyToSave = images.map((image) => image.src);
-      this.updateWork(imagesReadyToSave);
+      this.updatePlace(imagesReadyToSave);
       return;
     }
 
@@ -142,7 +142,7 @@ class EditPlace extends PureComponent {
           }
         })
       );
-      this.updateWork(imagesReadyToSave);
+      this.updatePlace(imagesReadyToSave);
     } catch (error) {
       console.error('Error uploading:', error);
       message.error(error.reason);
@@ -153,7 +153,7 @@ class EditPlace extends PureComponent {
     }
   };
 
-  updateWork = async (imagesReadyToSave) => {
+  updatePlace = async (imagesReadyToSave) => {
     const { match } = this.props;
     const { id, username } = match.params;
     const { formValues, categories } = this.state;
@@ -177,12 +177,12 @@ class EditPlace extends PureComponent {
     };
 
     try {
-      await call('updateWork', id, updatedValues, imagesReadyToSave);
+      await call('updatePlace', id, updatedValues, imagesReadyToSave);
       this.setState({
         isCreating: false,
         isSuccess: true,
       });
-      message.success('Your work is successfully updated');
+      message.success('Place is successfully updated');
     } catch (error) {
       message.error(error.reason);
       this.setState({ isCreating: false });
@@ -207,25 +207,24 @@ class EditPlace extends PureComponent {
     }));
   };
 
-  handleDeleteWork = async () => {
+  handleDeletePlace = async () => {
     const { match, history } = this.props;
     const { id } = match.params;
     const currentUser = Meteor.user();
-    const { formValues } = this.state;
 
-    if (formValues.authorId !== currentUser._id) {
+    if (!currentUser || !currentUser.isSuperAdmin) {
       return;
     }
 
     this.setState({ isLoading: true });
 
     try {
-      await call('deleteWork', id);
+      await call('deletePlace', id);
       this.setState({
         isLoading: false,
       });
-      history.push('/my-works');
-      message.success('Your work is successfully deleted');
+      history.push('/places');
+      message.success('Place is successfully deleted');
     } catch (error) {
       message.error(error.reason);
       this.setState({ isLoading: false });
@@ -237,7 +236,7 @@ class EditPlace extends PureComponent {
 
   render() {
     const { match } = this.props;
-    const { username, id } = match.params;
+    const { id } = match.params;
     const currentUser = Meteor.user();
 
     if (!currentUser || !currentUser.isSuperAdmin) {
@@ -258,7 +257,7 @@ class EditPlace extends PureComponent {
     } = this.state;
 
     if (isSuccess) {
-      return <Redirect to={`/work/${id}`} />;
+      return <Redirect to={`/place/${id}`} />;
     }
 
     const buttonLabel = isCreating ? 'Updating...' : 'Confirm and Update';
@@ -278,7 +277,7 @@ class EditPlace extends PureComponent {
             isButtonDisabled={isCreating}
             isFormValid={isFormValid}
             setUploadableImages={this.setUploadableImages}
-            registerWorkLocally={this.registerWorkLocally}
+            registerWorkLocally={this.registerPlaceLocally}
             onSortImages={this.handleSortImages}
             onRemoveImage={this.handleRemoveImage}
           />
@@ -290,12 +289,12 @@ class EditPlace extends PureComponent {
         <Modal
           title="Confirm"
           visible={isDeleteModalOn}
-          onOk={this.handleDeleteWork}
+          onOk={this.handleDeletePlace}
           onCancel={this.hideDeleteModal}
           okText="Yes, delete"
           cancelText="Cancel"
         >
-          Are you sure you want to delete this work?
+          Are you sure you want to delete?
         </Modal>
       </Row>
     );
