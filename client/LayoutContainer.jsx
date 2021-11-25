@@ -1,5 +1,5 @@
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -63,7 +63,7 @@ const adminMenu = [
 
 const FormItem = Form.Item;
 
-class LayoutPage extends React.Component {
+class LayoutPage extends PureComponent {
   state = {
     menuOpen: false,
     me: false,
@@ -123,7 +123,7 @@ class LayoutPage extends React.Component {
 
   render() {
     const { isNotificationPopoverOpen } = this.state;
-    const { children, currentUser } = this.props;
+    const { currentUser, location, children } = this.props;
 
     const notifications = currentUser && currentUser.notifications;
     let notificationsCounter = 0;
@@ -132,6 +132,8 @@ class LayoutPage extends React.Component {
         notificationsCounter += notification.count;
       });
     }
+
+    const { pathname } = location;
 
     return (
       <div className="main-viewport">
@@ -182,7 +184,11 @@ class LayoutPage extends React.Component {
 
         <div className="skogen-menu-layout">
           {menu.map((item) => (
-            <Link to={item.route} key={item.label}>
+            <Link
+              to={item.route}
+              key={item.label}
+              className={item.route === pathname && 'active-menu-item'}
+            >
               <b>{item.label}</b>
             </Link>
           ))}

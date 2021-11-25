@@ -1,9 +1,9 @@
 @import '../node_modules/antd/dist/antd.less';
 
 @primary-color: #921bef; // dark purple - primary color for all components
-@primary-color-dark: #3b1456;  // newly added
-@primary-color-light: #921bef; // light purple
-@link-color: #401159; // link color
+@primary-color-dark: #401159;  // newly added
+@primary-color-light: #b344fc; // light purple
+@secondary-color: #ccffff;
 @success-color: #52c41a; // success state color
 @warning-color: #faad14; // warning state color
 @error-color: #f5222d; // error state color
@@ -18,8 +18,31 @@
   0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05); // major shadow for layers
 @typography-title-font-weight: 700;
 
+.main-viewport {
+  background-image: url('images/skogen-new-background.svg');
+  background-repeat: no-repeat;
+  background-position: top;
+  background-color: @secondary-color;
+  background-size: cover;
+  padding-bottom: 240px;
+}
+
 * a {
   color: @primary-color;
+}
+
+* a:hover {
+  font-style: italic;
+}
+
+* a:active, * a:focus {
+  font-style: italic;
+}
+
+a.active-menu-item {
+  font-style: italic;
+  color: @primary-color-light;
+  // border-bottom: 1px solid @primary-color;
 }
 
 body, div, p {

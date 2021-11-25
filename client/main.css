@@ -1,15 +1,5 @@
 @import 'bigcalendar-custom.css';
 
-.main-viewport {
-  /* background-image: url('https://s3.eu-central-1.amazonaws.com/pomegra-profile-images/web+background+glitch+drawing+layered.svg'); */
-  background-image: url('images/skogen-new-background.svg');
-  background-repeat: no-repeat;
-  background-position: top;
-  background-color: #fff;
-  background-size: cover;
-  padding-bottom: 240px;
-}
-
 h1 {
   font-size: 28px;
 }
