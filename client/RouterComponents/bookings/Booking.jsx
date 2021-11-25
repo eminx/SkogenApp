@@ -300,6 +300,7 @@ class Booking extends React.Component {
     const isRegisteredMember = this.isRegisteredMember();
 
     const customPanelStyle = {
+      width: '100%',
       marginBottom: 24,
       borderRadius: 4,
       border: 0,

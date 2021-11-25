@@ -187,3 +187,8 @@ body .ant-input,
   height: auto;
   width: 280px
 }
+
+.ant-collapse-item > .ant-collapse-header {
+  display: flex;
+  align-items: center;
+}

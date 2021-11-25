@@ -424,7 +424,7 @@ class Group extends Component {
         <Panel
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           header={
-            <div>
+            <div style={{ width: '100%' }}>
               <FancyDate occurence={meeting} places={places} />
               {/* <div style={{ marginTop: 12, textAlign: 'center' }}>
                 <span>{meeting.attendees && meeting.attendees.length}</span>
@@ -1036,6 +1036,7 @@ const MeetingInfo = ({ meeting, isAttending, places }) => {
   const style = {
     flexBasis: 180,
     flexShrink: 0,
+    width: '100%',
   };
 
   return (
