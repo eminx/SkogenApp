@@ -77,7 +77,6 @@ class PublicationsList extends React.PureComponent {
     return (
       <div>
         <Loader isContainer spinning={isLoading}>
-          <h2 style={{ textAlign: 'center', marginTop: 12 }}>Publications</h2>
           {currentUser && currentUser.isRegisteredMember && (
             <div style={centerStyle}>
               <Link to="/new-publication">

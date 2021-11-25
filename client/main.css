@@ -41,11 +41,6 @@ h1 {
   padding: 24px;
 }
 
-.layout.ant-layout {
-  background-color: #fff;
-  border: 1px solid #401159;
-}
-
 .ant-layout .ant-layout-footer {
   background: none;
 }

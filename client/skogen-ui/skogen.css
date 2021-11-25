@@ -38,9 +38,7 @@ body .ant-input,
   justify-content: center;
   padding: 12px;
   flex-wrap: wrap;
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid #401159;
-  border-bottom: none;
+  /* background-color: rgba(255, 255, 255, 0.9); */
   max-width: 1200px;
   margin: 0 auto;
 }

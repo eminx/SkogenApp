@@ -101,8 +101,6 @@ class GroupsList extends PureComponent {
     return (
       <div>
         <Loader isContainer spinning={loading}>
-          <h2 style={{ textAlign: 'center', marginTop: 12 }}>Groups</h2>
-
           {currentUser && currentUser.isRegisteredMember && (
             <div style={centerStyle}>
               <Link to="/new-group">
