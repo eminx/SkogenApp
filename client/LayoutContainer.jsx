@@ -143,13 +143,12 @@ class LayoutPage extends PureComponent {
               <span
                 style={{
                   padding: '6px 12px',
-                  textTransform: 'uppercase',
                   fontWeight: 700,
                   backgroundColor: 'rgba(255, 255, 255, .7)',
                 }}
               >
                 <Link to="/my-profile" style={{ color: '#401159' }}>
-                  {currentUser ? currentUser.username : 'LOGIN'}
+                  {currentUser ? currentUser.username : 'Login'}
                 </Link>
               </span>
             </Col>
