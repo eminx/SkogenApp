@@ -1,9 +1,8 @@
 import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { List, Card, Radio, Button } from 'antd';
+import { Radio, Button } from 'antd';
 
-const ListItem = List.Item;
 const RadioGroup = Radio.Group;
 
 import Loader from '../../UIComponents/Loader';
@@ -80,7 +79,9 @@ class PublicationsList extends React.PureComponent {
           {currentUser && currentUser.isRegisteredMember && (
             <div style={centerStyle}>
               <Link to="/new-publication">
-                <Button component="span">New Publication</Button>
+                <Button type="primary" component="span">
+                  New Publication
+                </Button>
               </Link>
             </div>
           )}

@@ -201,7 +201,9 @@ class Calendar extends React.PureComponent {
         {currentUser && currentUser.isRegisteredMember && (
           <Row justify="center" style={{ paddingBottom: 12 }}>
             <Link to="/new-booking">
-              <Button>New Booking</Button>
+              <Button type="primary" component="span">
+                New Booking
+              </Button>
             </Link>
           </Row>
         )}

@@ -104,7 +104,9 @@ class GroupsList extends PureComponent {
           {currentUser && currentUser.isRegisteredMember && (
             <div style={centerStyle}>
               <Link to="/new-group">
-                <Button component="span">New Group</Button>
+                <Button type="primary" component="span">
+                  New Group
+                </Button>
               </Link>
             </div>
           )}
