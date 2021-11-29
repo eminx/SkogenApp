@@ -15,7 +15,7 @@ const centerStyle = {
   width: '100%',
   display: 'flex',
   justifyContent: 'center',
-  padding: 6,
+  padding: 12,
 };
 
 const groupFilterOptions = [

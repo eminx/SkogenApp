@@ -5,7 +5,7 @@ h1 {
 }
 
 .logo {
-  width: 180px;
+  width: 140px;
   height: 100px;
   background-repeat: no-repeat;
   background-size: contain;
@@ -19,8 +19,7 @@ h1 {
 }
 
 .skogen-logo {
-  /* background-image: url('https://s3.eu-central-1.amazonaws.com/pomegra-profile-images/skogen-logo-x2.png'); */
-  background-image: url('images/skogen-new-logo-bad.png');
+  background-image: url('images/skogen-new-logo.svg');
   background-repeat: no-repeat;
 }
 
@@ -38,7 +37,7 @@ h1 {
   flex-wrap: nowrap;
   margin: 0 auto;
   max-width: 1200px;
-  padding: 24px;
+  padding: 12px;
 }
 
 .ant-layout .ant-layout-footer {

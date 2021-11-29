@@ -62,7 +62,7 @@ class PublicationsList extends React.PureComponent {
       width: '100%',
       display: 'flex',
       justifyContent: 'center',
-      padding: 6,
+      padding: 12,
     };
 
     const publicationTypesRepeated = publicationsData.map((pub) => pub.format);
