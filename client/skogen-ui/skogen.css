@@ -152,7 +152,8 @@ body .ant-input,
   padding-bottom: 24px;
 }
 
-.quill .ql-toolbar.ql-snow, .quill .ql-container.ql-snow {
+.quill .ql-toolbar.ql-snow,
+.quill .ql-container.ql-snow {
   border-color: #3b1456;
 }
 
@@ -174,7 +175,6 @@ body .ant-input,
   width: 100%;
 }
 
-
 .community-page {
   padding: 24px;
 }
@@ -185,10 +185,14 @@ body .ant-input,
 
 .ant-cascader-menus .ant-cascader-menu {
   height: auto;
-  width: 280px
+  width: 280px;
 }
 
 .ant-collapse-item > .ant-collapse-header {
   display: flex;
   align-items: center;
+}
+
+.ant-collapse.ant-collapse-borderless {
+  background-color: #fff;
 }

@@ -22,7 +22,7 @@ const DateJust = ({ children, ...otherProps }) => {
 
 const FancyDate = ({ occurence, places, ...otherProps }) => (
   <div
-    style={{ display: 'flex', justifyContent: 'space-between' }}
+    style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}
     {...otherProps}
   >
     <div style={{ flexGrow: 1 }}>
