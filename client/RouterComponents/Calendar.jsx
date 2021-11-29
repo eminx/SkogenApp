@@ -289,19 +289,20 @@ class Calendar extends React.PureComponent {
             {manuals && manuals.length > 0 && (
               <NiceList list={manualsList} actionsDisabled={!isSuperAdmin}>
                 {(manual) => (
-                  <Card
+                  <div
                     key={manual.documentLabel}
-                    title={
-                      <h4>
-                        <a href={manual.documentUrl} target="_blank">
-                          {manual.documentLabel}
-                        </a>
-                      </h4>
-                    }
-                    bordered={false}
-                    style={{ width: '100%', marginBottom: 0 }}
-                    className="empty-card-body"
-                  />
+                    style={{
+                      width: '100%',
+                      marginBottom: 0,
+                      padding: '0 12px',
+                    }}
+                  >
+                    <h3>
+                      <a href={manual.documentUrl} target="_blank">
+                        {manual.documentLabel}
+                      </a>
+                    </h3>
+                  </div>
                 )}
               </NiceList>
             )}
