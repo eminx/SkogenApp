@@ -187,11 +187,7 @@ class LayoutPage extends PureComponent {
             <Link
               to={item.route}
               key={item.label}
-              className={
-                item.route === pathname
-                  ? 'menu-item active-menu-item'
-                  : 'menu-item'
-              }
+              className={getMenuItemClass(item.route, pathname)}
             >
               <b>{item.label}</b>
             </Link>
@@ -213,6 +209,18 @@ class LayoutPage extends PureComponent {
       </div>
     );
   }
+}
+
+function getMenuItemClass(route, pathname) {
+  let className = 'menu-item ';
+  if (
+    pathname === route ||
+    pathname.substring(0, 5) === route.substring(0, 5)
+  ) {
+    className += 'active-menu-item';
+  }
+
+  return className;
 }
 
 const widgetBgrstyle = {
