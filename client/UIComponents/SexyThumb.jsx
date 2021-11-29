@@ -47,8 +47,8 @@ function ThumbDate({ date }) {
       <div style={{ ...dateStyle, fontSize: 24 }}>
         {moment(date.startDate).format('DD')}
       </div>
-      <div style={{ ...dateStyle, fontSize: 15 }}>
-        {moment(date.startDate).format('MMM').toUpperCase()}
+      <div style={{ ...dateStyle, fontSize: 17 }}>
+        {moment(date.startDate).format('MMM')}
       </div>
     </div>
   );
@@ -149,15 +149,13 @@ function SexyThumb({ item, isHome, isPub, showPast }) {
                   size={48}
                   style={{ color: '#921bef', backgroundColor: '#fbd5d0' }}
                 >
-                  {item.adminUsername[0].toUpperCase()}
+                  {item.adminUsername[0]}
                 </Avatar>
                 <span style={{ color: '#fff' }}>{item.adminUsername}</span>
               </Fragment>
             )}
 
-            {isPub && (
-              <em style={{ color: '#fff' }}>{item.format.toUpperCase()}</em>
-            )}
+            {isPub && <em style={{ color: '#fff' }}>{item.format}</em>}
           </div>
         </div>
       </Link>
