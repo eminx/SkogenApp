@@ -187,7 +187,11 @@ class LayoutPage extends PureComponent {
             <Link
               to={item.route}
               key={item.label}
-              className={item.route === pathname && 'active-menu-item'}
+              className={
+                item.route === pathname
+                  ? 'menu-item active-menu-item'
+                  : 'menu-item'
+              }
             >
               <b>{item.label}</b>
             </Link>

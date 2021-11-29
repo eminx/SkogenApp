@@ -1,7 +1,7 @@
 @import '../node_modules/antd/dist/antd.less';
 
 @primary-color: #921bef; // dark purple - primary color for all components
-@primary-color-dark: #401159;  // newly added
+@primary-color-dark: #401159; // newly added
 @primary-color-light: #b344fc; // light purple
 @secondary-color: #ccffff;
 @success-color: #52c41a; // success state color
@@ -31,24 +31,34 @@
   color: @primary-color;
 }
 
-* a:hover {
+* a:hover,
+* a:active,
+* a:focus {
   font-style: italic;
 }
 
-* a:active, * a:focus {
-  font-style: italic;
+.skogen-menu-layout {
+  & a.menu-item {
+    color: @primary-color-dark;
+
+    &.active-menu.item {
+      color: @primary-color;
+    }
+  }
 }
 
-a.active-menu-item {
+.skogen-menu-layout a.active-menu-item {
   font-style: italic;
-  color: @primary-color-light;
+  color: @primary-color;
   // border-bottom: 1px solid @primary-color;
 }
 
-body, div, p {
-  color: @primary-color-dark;  
+body,
+div,
+p {
+  color: @primary-color-dark;
 }
 
 .layout.ant-layout {
-  background-color: #fff
+  background-color: #fff;
 }
