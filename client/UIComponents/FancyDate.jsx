@@ -14,7 +14,7 @@ const DateJust = ({ children, ...otherProps }) => {
         {moment(children).format('DD')}
       </div>
       <div style={{ ...fancyDateStyle, fontSize: 15 }}>
-        {moment(children).format('MMM').toUpperCase()}
+        {moment(children).format('MMM')}
       </div>
     </div>
   );
