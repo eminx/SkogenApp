@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
@@ -12,6 +12,7 @@ import {
   Row,
   Spin,
   Tag,
+  Tooltip,
   message,
 } from 'antd';
 import Loader from '../UIComponents/Loader';
@@ -21,7 +22,7 @@ import colors from '../constants/colors';
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
-class Calendar extends React.PureComponent {
+class Calendar extends PureComponent {
   state = {
     mode: 'list',
     editBooking: null,
@@ -224,7 +225,7 @@ class Calendar extends React.PureComponent {
                   flexWrap: 'wrap',
                 }}
               >
-                <Popover content="Show all">
+                <Tooltip title="Show all">
                   <Tag.CheckableTag
                     checked={calendarFilter === 'All rooms'}
                     onChange={() =>
@@ -234,13 +235,17 @@ class Calendar extends React.PureComponent {
                   >
                     {'All rooms'}
                   </Tag.CheckableTag>
-                </Popover>
+                </Tooltip>
                 {placesList.map((room, i) => (
                   <Popover
                     key={room.name}
-                    content={room.description}
-                    // mouseEnterDelay={0.5}
-                    // title={room.name}
+                    content={
+                      <div
+                        style={{ maxWidth: 280, fontSize: 14, lineHeight: 1.3 }}
+                      >
+                        {room.description}
+                      </div>
+                    }
                   >
                     <Tag
                       color={colors[i]}
