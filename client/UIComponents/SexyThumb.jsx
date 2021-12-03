@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { Avatar, Image } from 'antd';
+import { Avatar } from 'antd';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -73,7 +73,7 @@ function SexyThumb({ item, isHome, isPub, showPast }) {
     : `/event/${item._id}`;
 
   return (
-    <div style={{ height: 300 }}>
+    <div className={coverContainerClass}>
       <Link to={clickLink}>
         <div className={coverClass}>
           <LazyLoadImage

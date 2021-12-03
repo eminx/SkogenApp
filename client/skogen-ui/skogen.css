@@ -59,11 +59,11 @@ body .ant-input,
 }
 
 .thumb-cover-container {
-  position: relative;
-  flex: 360px 1 0;
   height: 300px;
+  /* position: relative;
+  flex: 360px 1 0;
   background-color: #921bef;
-  margin: 6px;
+  margin: 6px; */
 }
 
 .thumb-cover-container.work-thumb {
