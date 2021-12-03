@@ -14,12 +14,6 @@ const dateStyle = {
   lineHeight: 1,
 };
 
-const commonStyle = {
-  color: '#fff',
-  fontWeight: 300,
-  lineHeight: 1,
-};
-
 const imageStyle = {
   width: '100%',
   height: 300,
@@ -115,18 +109,8 @@ function SexyThumb({ item, isHome, isPub, showPast }) {
                   ))}
             </div>
           )}
-          <h3
-            style={{
-              ...commonStyle,
-              fontSize: 24,
-              marginBottom: 6,
-              lineHeight: '32px',
-              overflowWrap: 'anywhere',
-            }}
-          >
-            {item.title}
-          </h3>
-          <h4 style={{ ...commonStyle, fontSize: 16, lineHeight: '21px' }}>
+          <h3 className="thumb-title">{item.title}</h3>
+          <h4 className="thumb-subtitle">
             {isGroup
               ? item.readingMaterial
               : isPub

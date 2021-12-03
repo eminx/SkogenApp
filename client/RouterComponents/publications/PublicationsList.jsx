@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { Radio, Button } from 'antd';
+import { Button, Col, Radio, Row } from 'antd';
 
 const RadioGroup = Radio.Group;
 
@@ -97,19 +97,21 @@ class PublicationsList extends React.PureComponent {
             />
           </div>
 
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-            }}
-          >
+          <Row gutter={0} style={{ marginRight: 0 }}>
             {publicationsFiltered &&
               publicationsFiltered.length > 0 &&
               publicationsFiltered.map((pub) => (
-                <SexyThumb key={pub._id} item={pub} isPub />
+                <Col
+                  key={pub._id}
+                  xs={24}
+                  sm={12}
+                  lg={8}
+                  style={{ overflow: 'hidden', padding: '4px 8px' }}
+                >
+                  <SexyThumb item={pub} isPub />
+                </Col>
               ))}
-          </div>
+          </Row>
         </Loader>
       </div>
     );

@@ -21,8 +21,6 @@ body .ant-input,
 .ant-modal-wrap h2,
 .ant-layout h3,
 .ant-modal-wrap h3,
-.ant-layout h4,
-.ant-modal-wrap h4,
 .ant-layout h5,
 .ant-modal-wrap h5,
 .ant-layout h6,
@@ -38,7 +36,6 @@ body .ant-input,
   justify-content: center;
   padding: 12px;
   flex-wrap: wrap;
-  /* background-color: rgba(255, 255, 255, 0.9); */
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -80,6 +77,22 @@ body .ant-input,
 
 .thumb-cover-container:hover .thumb-cover {
   filter: brightness(70%);
+}
+
+.thumb-title {
+  color: #fff;
+  font-size: 24px;
+  margin-bottom: 6px;
+  line-height: 32px;
+  overflow-wrap: anywhere;
+  font-weight: bold;
+}
+
+.thumb-subtitle {
+  color: #fff;
+  font-size: 16px;
+  line-height: 21px;
+  font-weight: normal;
 }
 
 .toggleable {

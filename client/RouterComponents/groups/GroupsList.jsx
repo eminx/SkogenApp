@@ -1,7 +1,6 @@
-import { Meteor } from 'meteor/meteor';
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
-import { Radio, Button, message } from 'antd';
+import { Button, Col, Radio, Row, message } from 'antd';
 
 import Loader from '../../UIComponents/Loader';
 import SexyThumb from '../../UIComponents/SexyThumb';
@@ -121,19 +120,21 @@ class GroupsList extends PureComponent {
             />
           </div>
 
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-            }}
-          >
+          <Row gutter={0} style={{ marginRight: 0 }}>
             {groupsFilteredAndSorted &&
               groupsFilteredAndSorted.length > 0 &&
               groupsFilteredAndSorted.map((group) => (
-                <SexyThumb key={group._id} item={group} />
+                <Col
+                  key={group._id}
+                  xs={24}
+                  sm={12}
+                  lg={8}
+                  style={{ overflow: 'hidden', padding: '4px 8px' }}
+                >
+                  <SexyThumb item={group} />
+                </Col>
               ))}
-          </div>
+          </Row>
         </Loader>
       </div>
     );
