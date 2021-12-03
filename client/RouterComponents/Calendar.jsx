@@ -233,7 +233,7 @@ class Calendar extends PureComponent {
                     }
                     key={'All rooms'}
                   >
-                    {'All rooms'}
+                    {'All'}
                   </Tag.CheckableTag>
                 </Tooltip>
                 {placesList.map((room, i) => (
