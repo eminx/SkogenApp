@@ -73,7 +73,7 @@ function SexyThumb({ item, isHome, isPub, showPast }) {
     : `/event/${item._id}`;
 
   return (
-    <div className={coverContainerClass}>
+    <div style={{ height: 300 }}>
       <Link to={clickLink}>
         <div className={coverClass}>
           <LazyLoadImage

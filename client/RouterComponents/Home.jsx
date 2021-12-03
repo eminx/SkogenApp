@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { parse, stringify } from 'query-string';
 import moment from 'moment';
-import { Row, Radio } from 'antd';
+import { Row, Col, Radio } from 'antd';
 import Loader from '../UIComponents/Loader';
 import SexyThumb from '../UIComponents/SexyThumb';
 
@@ -189,23 +189,20 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
               buttonStyle="solid"
             />
           </div>
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-            }}
-          >
+          <Row gutter={0} style={{ marginRight: 0 }}>
             {thumbs &&
               thumbs.map((activity) => (
-                <SexyThumb
+                <Col
                   key={activity._id}
-                  item={activity}
-                  isHome
-                  showPast={showPast}
-                />
+                  xs={24}
+                  sm={12}
+                  lg={8}
+                  style={{ overflow: 'hidden', padding: '4px 8px' }}
+                >
+                  <SexyThumb item={activity} isHome showPast={showPast} />
+                </Col>
               ))}
-          </div>
+          </Row>
         </Loader>
       </div>
     </div>
