@@ -3,14 +3,15 @@ import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
 import {
-  Row,
-  Col,
-  Card,
-  Divider,
-  Tag,
   Button,
+  Card,
+  Col,
+  Divider,
   Modal,
+  Row,
   Spin,
+  Tag,
+  Tooltip,
   message,
 } from 'antd';
 import Loader from '../UIComponents/Loader';
@@ -223,22 +224,30 @@ class Calendar extends React.PureComponent {
                   flexWrap: 'wrap',
                 }}
               >
-                <Tag.CheckableTag
-                  checked={calendarFilter === 'All rooms'}
-                  onChange={() => this.handleCalendarFilterChange('All rooms')}
-                  key={'All rooms'}
-                >
-                  {'All rooms'}
-                </Tag.CheckableTag>
-                {placesList.map((room, i) => (
-                  <Tag
-                    color={colors[i]}
-                    className={calendarFilter === room.name ? 'checked' : null}
-                    onClick={() => this.handleCalendarFilterChange(room.name)}
-                    key={room.name}
+                <Tooltip title="Show all">
+                  <Tag.CheckableTag
+                    checked={calendarFilter === 'All rooms'}
+                    onChange={() =>
+                      this.handleCalendarFilterChange('All rooms')
+                    }
+                    key={'All rooms'}
                   >
-                    {room.name}
-                  </Tag>
+                    {'All rooms'}
+                  </Tag.CheckableTag>
+                </Tooltip>
+                {placesList.map((room, i) => (
+                  <Tooltip key={room.name} title={room.description}>
+                    <Tag
+                      color={colors[i]}
+                      className={
+                        calendarFilter === room.name ? 'checked' : null
+                      }
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => this.handleCalendarFilterChange(room.name)}
+                    >
+                      {room.name}
+                    </Tag>
+                  </Tooltip>
                 ))}
               </div>
 
