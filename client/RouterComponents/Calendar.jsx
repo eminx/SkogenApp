@@ -8,10 +8,10 @@ import {
   Col,
   Divider,
   Modal,
+  Popover,
   Row,
   Spin,
   Tag,
-  Tooltip,
   message,
 } from 'antd';
 import Loader from '../UIComponents/Loader';
@@ -224,7 +224,7 @@ class Calendar extends React.PureComponent {
                   flexWrap: 'wrap',
                 }}
               >
-                <Tooltip title="Show all">
+                <Popover content="Show all">
                   <Tag.CheckableTag
                     checked={calendarFilter === 'All rooms'}
                     onChange={() =>
@@ -234,9 +234,14 @@ class Calendar extends React.PureComponent {
                   >
                     {'All rooms'}
                   </Tag.CheckableTag>
-                </Tooltip>
+                </Popover>
                 {placesList.map((room, i) => (
-                  <Tooltip key={room.name} title={room.description}>
+                  <Popover
+                    key={room.name}
+                    content={room.description}
+                    // mouseEnterDelay={0.5}
+                    // title={room.name}
+                  >
                     <Tag
                       color={colors[i]}
                       className={
@@ -247,7 +252,7 @@ class Calendar extends React.PureComponent {
                     >
                       {room.name}
                     </Tag>
-                  </Tooltip>
+                  </Popover>
                 ))}
               </div>
 
