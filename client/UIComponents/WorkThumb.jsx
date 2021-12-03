@@ -73,9 +73,10 @@ function WorkThumb({ work, history }) {
             marginBottom: 6,
             lineHeight: '24px',
             overflowWrap: 'anywhere',
+            fontWeight: 'bold',
           }}
         >
-          <b>{work.title}</b>
+          {work.title}
         </h4>
         <p
           style={{
