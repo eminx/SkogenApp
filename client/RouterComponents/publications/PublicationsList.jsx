@@ -97,7 +97,7 @@ class PublicationsList extends React.PureComponent {
             />
           </div>
 
-          <Row gutter={0} style={{ marginRight: 0 }}>
+          <Row style={{ marginRight: 8 }}>
             {publicationsFiltered &&
               publicationsFiltered.length > 0 &&
               publicationsFiltered.map((pub) => (

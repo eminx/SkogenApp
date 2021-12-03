@@ -120,7 +120,7 @@ class GroupsList extends PureComponent {
             />
           </div>
 
-          <Row gutter={0} style={{ marginRight: 0 }}>
+          <Row style={{ marginRight: 8 }}>
             {groupsFilteredAndSorted &&
               groupsFilteredAndSorted.length > 0 &&
               groupsFilteredAndSorted.map((group) => (

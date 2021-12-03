@@ -1,7 +1,7 @@
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Row, Tag, message } from 'antd';
+import { Button, Col, Row, message } from 'antd';
 
 import WorkThumb from '../../UIComponents/WorkThumb';
 import Loader from '../../UIComponents/Loader';
@@ -59,26 +59,20 @@ function Places({ history, currentUser }) {
         </div>
       )}
 
-      <Row gutter={24}>
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'center',
-          }}
-        >
-          {filteredWorks.map((work) => (
-            <div
-              key={work._id}
-              className="thumb-cover-container"
-              style={{ margin: 12 }}
-            >
-              <Link to={`/place/${work._id}`}>
-                <WorkThumb work={work} />
-              </Link>
-            </div>
-          ))}
-        </div>
+      <Row style={{ marginRight: 8, paddingBottom: 4 }}>
+        {filteredWorks.map((work) => (
+          <Col
+            key={work._id}
+            xs={24}
+            sm={12}
+            lg={8}
+            style={{ overflow: 'hidden', padding: '4px 8px' }}
+          >
+            <Link to={`/place/${work._id}`}>
+              <WorkThumb work={work} />
+            </Link>
+          </Col>
+        ))}
       </Row>
     </Loader>
   );

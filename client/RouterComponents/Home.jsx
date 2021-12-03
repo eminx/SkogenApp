@@ -177,7 +177,7 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
   }
 
   return (
-    <div style={{ marginBottom: 48 }}>
+    <div>
       <div style={{ width: '100%' }}>
         <Loader isContainer spinning={!thumbs || thumbs.length === 0}>
           <div style={centerStyle}>
@@ -189,7 +189,7 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
               buttonStyle="solid"
             />
           </div>
-          <Row gutter={0} style={{ marginRight: 0 }}>
+          <Row style={{ marginRight: 8 }}>
             {thumbs &&
               thumbs.map((activity) => (
                 <Col
