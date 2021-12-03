@@ -57,7 +57,7 @@ function Place({ history, match }) {
 
   return (
     <Row gutter={12}>
-      <Col lg={6}>
+      <Col md={24} lg={6}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div style={{ padding: 12, flexGrow: 1 }}>
             <h2 style={{ marginBottom: 0 }}>{place.title}</h2>
@@ -74,7 +74,7 @@ function Place({ history, match }) {
           </div>
         </div>
       </Col>
-      <Col lg={12}>
+      <Col md={24} lg={12}>
         <div
           style={{
             padding: '0 36px',
@@ -107,16 +107,12 @@ function Place({ history, match }) {
           </div>
         </div>
 
-        <MediaQuery query="(min-width: 991px)">
-          <div
-            style={{ display: 'flex', justifyContent: 'center', padding: 12 }}
-          >
-            {isSuperAdmin && <Link to={`/edit-place/${place._id}`}>Edit</Link>}
-          </div>
-        </MediaQuery>
+        <div style={{ display: 'flex', justifyContent: 'center', margin: 12 }}>
+          {isSuperAdmin && <Link to={`/edit-place/${place._id}`}>Edit</Link>}
+        </div>
       </Col>
 
-      <Col lg={6}>
+      <Col md={24} lg={6}>
         <MediaQuery query="(min-width: 992px)">
           <div
             style={{
@@ -135,17 +131,6 @@ function Place({ history, match }) {
           <h4 style={{ textAlign: 'center', marginBottom: 24 }}>
             {place.additionalInfo}
           </h4>
-          {isSuperAdmin && (
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                marginBottom: 24,
-              }}
-            >
-              <Link to={`/edit-place/${place._id}`}>Edit</Link>
-            </div>
-          )}
         </MediaQuery>
       </Col>
     </Row>
