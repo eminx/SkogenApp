@@ -31,18 +31,21 @@
   color: @primary-color;
 }
 
-* a:hover,
-* a:active,
-* a:focus {
+* a:hover {
   font-style: italic;
+}
+
+* a:active {
+  color: @primary-color;
 }
 
 a.menu-item {
   color: @primary-color-dark;
-
+  &:active {
+    color: @primary-color;
+  }
   &.active-menu-item {
     color: @primary-color;
-    font-style: italic;
   }
 }
 

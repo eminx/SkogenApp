@@ -194,7 +194,11 @@ class LayoutPage extends PureComponent {
           {currentUser &&
             currentUser.isSuperAdmin &&
             adminMenu.map((item) => (
-              <Link to={item.route} key={item.label}>
+              <Link
+                to={item.route}
+                key={item.label}
+                className={getMenuItemClass(item.route, pathname)}
+              >
                 <b>{item.label}</b>
               </Link>
             ))}
