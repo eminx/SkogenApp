@@ -1,17 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Avatar, Cascader, Divider, Typography, message, Row } from 'antd/lib';
+import {
+  Avatar,
+  Button,
+  Cascader,
+  Divider,
+  Row,
+  Tabs,
+  Typography,
+  message,
+} from 'antd/lib';
 import renderHTML from 'react-render-html';
 
 import Loader from '../UIComponents/Loader';
 import { call } from '../functions';
 
 const { Paragraph, Text, Title } = Typography;
+const { TabPane } = Tabs;
 
 function Community(props) {
   const [keywords, setKeywords] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [publicProfiles, setPublicProfiles] = useState([]);
+  const [activeTab, setActiveTab] = useState('1');
 
   useEffect(() => {
     getKeywords();
@@ -75,22 +86,45 @@ function Community(props) {
   }));
 
   const dropdownRender = (menus) => {
+    if (activeTab !== '2') {
+      return;
+    }
     return (
-      <div>
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          position: 'relative',
+        }}
+      >
         <div
-          style={{ display: 'flex', flexWrap: 'wrap', position: 'relative' }}
+          style={{
+            maxHeight: 280,
+            overflow: 'scroll',
+            padding: 12,
+            backgroundColor: '#e5ffe9',
+          }}
         >
           {menus}
-          <Divider type="vertical" />
-          {selectedProfile ? (
-            <div style={{ maxWidth: 350 }}>
-              <div
-                style={{
-                  display: 'flex',
-                  marginBottom: 24,
-                }}
-              >
-                {selectedProfile.avatar && (
+        </div>
+        <Divider type="vertical" />
+        {selectedProfile ? (
+          <div
+            style={{
+              maxWidth: 380,
+              maxHeight: 480,
+              overflow: 'scroll',
+              padding: 12,
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                marginBottom: 24,
+              }}
+            >
+              {selectedProfile.avatar && (
+                <Link to={`/@${selectedProfile.username}`}>
                   <Avatar
                     shape="square"
                     size={80}
@@ -99,86 +133,103 @@ function Community(props) {
                     }
                     style={{ marginRight: 24 }}
                   />
-                )}
-                <div>
-                  <Title level={3}>{selectedProfile.username}</Title>
-                  {selectedProfile.firstName && selectedProfile.lastName && (
-                    <Text strong style={{ marginBottom: 24 }}>
-                      {selectedProfile.firstName +
-                        ' ' +
-                        selectedProfile.lastName}
-                    </Text>
-                  )}
-                </div>
-              </div>
-              {selectedProfile.forCommunity && (
-                <Paragraph italic>
-                  {renderHTML(selectedProfile.forCommunity)}
-                </Paragraph>
-              )}
-              <div style={{ marginBottom: 24 }}>
-                For more info, go to the{' '}
-                <Link to={`/@${selectedProfile.username}`}>profile page</Link>.
-              </div>
-
-              {selectedProfile.contactInfo && (
-                <div>
-                  <Title level={5}>Contact Info</Title>
-                  <Paragraph>
-                    {renderHTML(selectedProfile.contactInfo)}
-                  </Paragraph>
-                </div>
-              )}
-            </div>
-          ) : null}
-        </div>
-
-        <Row>
-          <Divider />
-          {publicProfiles.map(
-            (p) =>
-              p.avatar && (
-                <Link to={`/@${p.username}`}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      padding: 12,
-                    }}
-                  >
-                    <Avatar shape="square" size={80} src={p.avatar.src} />
-                    <Title level={5}>{p.username}</Title>
-                  </div>
                 </Link>
-              )
-          )}
-        </Row>
+              )}
+              <div>
+                <Link to={`/@${selectedProfile.username}`}>
+                  <Title level={3}>{selectedProfile.username}</Title>
+                </Link>
+                {selectedProfile.firstName && selectedProfile.lastName && (
+                  <Text strong style={{ marginBottom: 24 }}>
+                    {selectedProfile.firstName + ' ' + selectedProfile.lastName}
+                  </Text>
+                )}
+              </div>
+            </div>
+            {selectedProfile.forCommunity && (
+              <Paragraph italic>
+                {renderHTML(selectedProfile.forCommunity)}
+              </Paragraph>
+            )}
+            <div style={{ marginBottom: 24 }}>
+              For more info, go to the{' '}
+              <Link to={`/@${selectedProfile.username}`}>profile page</Link>.
+            </div>
+
+            {selectedProfile.contactInfo && (
+              <div>
+                <Title level={5}>Contact Info</Title>
+                <Paragraph>{renderHTML(selectedProfile.contactInfo)}</Paragraph>
+              </div>
+            )}
+          </div>
+        ) : null}
       </div>
     );
+  };
+
+  const filter = (inputValue, path) => {
+    return path.some(
+      (option) =>
+        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+    );
+  };
+
+  const handleTabSelect = (key, event) => {
+    if (key === activeTab) {
+      return;
+    }
+    setSelectedProfile(null);
+    setActiveTab(key);
   };
 
   return (
     <div className="community-page" style={{ minHeight: '200vh' }}>
       <Loader isContainer spinning={!cascaderOptions}>
-        <Title level={3}>Select Keywords</Title>
-        <div id="cascader-holder" style={{ position: 'relative' }}>
-          <Cascader
-            bordered={false}
-            dropdownClassName="dropdown-class"
-            dropdownRender={dropdownRender}
-            getPopupContainer={() => document.getElementById('cascader-holder')}
-            open
-            options={cascaderOptions}
-            size="large"
-            style={{
-              visibility: 'hidden',
-              transform: 'translateY(-40px)',
-              marginBottom: 24,
-            }}
-            onChange={onChange}
-          />
-        </div>
+        <Tabs centered onTabClick={handleTabSelect}>
+          <TabPane tab="See People" key="1">
+            <Row justify="center">
+              {publicProfiles.map(
+                (p) =>
+                  p.avatar && (
+                    <Link to={`/@${p.username}`}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          padding: 12,
+                        }}
+                      >
+                        <Avatar shape="square" size={80} src={p.avatar.src} />
+                        <Title level={5}>{p.username}</Title>
+                      </div>
+                    </Link>
+                  )
+              )}
+            </Row>
+          </TabPane>
+          <TabPane tab="Find People" key="2">
+            {activeTab === '2' && (
+              <Row justify="space-between">
+                <Cascader
+                  autoFocus
+                  dropdownRender={dropdownRender}
+                  open={activeTab === '2'}
+                  options={cascaderOptions}
+                  placeholder="Type/Select Keywords..."
+                  size="large"
+                  showSearch={{ filter }}
+                  style={{
+                    backgroundColor: '#401159',
+                    width: 304,
+                  }}
+                  onChange={onChange}
+                />
+              </Row>
+            )}
+          </TabPane>
+        </Tabs>
       </Loader>
     </div>
   );
