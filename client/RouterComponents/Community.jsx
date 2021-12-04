@@ -98,12 +98,14 @@ function Community(props) {
         }}
       >
         <div
-          style={{
-            maxHeight: 280,
-            overflow: 'scroll',
-            padding: 12,
-            backgroundColor: '#e5ffe9',
-          }}
+          style={
+            {
+              // maxHeight: 280,
+              // overflow: 'scroll',
+              // padding: 12,
+              // backgroundColor: '#e5ffe9',
+            }
+          }
         >
           {menus}
         </div>
@@ -222,7 +224,7 @@ function Community(props) {
                   showSearch={{ filter }}
                   style={{
                     backgroundColor: '#401159',
-                    width: 304,
+                    width: 280,
                   }}
                   onChange={onChange}
                 />
