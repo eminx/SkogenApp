@@ -65,15 +65,14 @@ function Community(props) {
     }
   };
 
-  const onChange = (value, selectedOptions) => {
+  const handleCascaderChange = (value, selectedOptions) => {
+    console.log(value);
     const username = value[1];
-    if (typeof username !== 'string') {
-      return;
+    if (username) {
+      getProfile(username);
+    } else {
+      setSelectedProfile(null);
     }
-    setSelectedProfile({
-      username,
-    });
-    getProfile(username);
   };
 
   const cascaderOptions = keywords.map((k) => ({
@@ -226,7 +225,7 @@ function Community(props) {
                     backgroundColor: '#401159',
                     width: 280,
                   }}
-                  onChange={onChange}
+                  onChange={handleCascaderChange}
                 />
               </Row>
             )}
