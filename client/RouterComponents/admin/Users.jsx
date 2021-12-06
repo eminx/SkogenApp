@@ -157,7 +157,7 @@ class Users extends React.PureComponent {
               {filter} users ({usersSorted.length}){' '}
             </h2>
 
-            <div style={{ background: '#f8f8f8', padding: 12 }}>
+            <div style={{ padding: 12 }}>
               <span style={{ marginRight: 12 }}>filtered by </span>
               <RadioGroup
                 options={filterOptions}

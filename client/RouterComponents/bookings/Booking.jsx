@@ -483,8 +483,6 @@ class Booking extends React.Component {
         </div>
       ) : null;
 
-    // const messages = this.getChatMessages();
-
     return (
       <div style={{ padding: 24 }}>
         <div style={{ paddingBottom: 24 }}>

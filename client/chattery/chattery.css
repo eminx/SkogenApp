@@ -20,12 +20,10 @@
 .chattery-inputform-container {
   width: 100%;
   padding: 12px;
-  background-color: #fff;
 }
 
 .chattery-inputform {
   display: flex;
-  align-items: center;
 }
 
 .chattery-input {
@@ -83,7 +81,7 @@
   position: relative;
   width: 80%;
   height: auto;
-  background-color: #eee;
+  background-color: #fff;
 }
 .border {
   border: 8px solid #666;
@@ -362,11 +360,11 @@
 .chattery-window {
   margin: 12px;
   border: 1px solid #401159;
-  background-color: #fff5f4;
+  background-color: #fff;
 }
 
 .talk-bubble {
-  background-color: #fff;
+  background-color: #ccffff;
   border: 1px solid;
   border-radius: 0;
 }
@@ -384,7 +382,6 @@
 .chattery-input {
   border-radius: 0;
   border: 1px solid #401159;
-  /* border-right: none; */
   color: #401159;
 }
 

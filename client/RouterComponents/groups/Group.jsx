@@ -42,11 +42,11 @@ import EllipsisMenu from '../../UIComponents/EllipsisMenu';
 const defaultMeetingRoom = 'Office';
 
 const customPanelStyle = {
-  background: '#f7f7f7',
+  background: '#fff',
   borderRadius: 4,
   marginBottom: 12,
   paddingRight: 12,
-  border: 0,
+  border: '1px solid #921bef',
   overflow: 'hidden',
 };
 
@@ -878,7 +878,6 @@ class Group extends Component {
 
     const collapseStyle = {
       marginBottom: 24,
-      backgroundColor: '#fff',
       borderRadius: 0,
       borderColor: '#401159',
     };
@@ -1075,7 +1074,8 @@ class CreateMeetingForm extends PureComponent {
       <div
         style={{
           padding: 12,
-          backgroundColor: '#f8f8f8',
+          backgroundColor: '#fff',
+          border: '1px solid #921bef',
           marginBottom: 12,
         }}
       >
