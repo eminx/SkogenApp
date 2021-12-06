@@ -65,7 +65,7 @@ function Community(props) {
     }
   };
 
-  const handleCascaderChange = (value, selectedOptions) => {
+  const handleCascaderSelect = (value, selectedOptions) => {
     console.log(value);
     const username = value[1];
     if (username) {
@@ -214,7 +214,7 @@ function Community(props) {
             {activeTab === '2' && (
               <Row justify="space-between">
                 <Cascader
-                  autoFocus
+                  // autoFocus
                   dropdownRender={dropdownRender}
                   open={activeTab === '2'}
                   options={cascaderOptions}
@@ -225,7 +225,7 @@ function Community(props) {
                     backgroundColor: '#401159',
                     width: 280,
                   }}
-                  onChange={handleCascaderChange}
+                  onChange={handleCascaderSelect}
                 />
               </Row>
             )}
