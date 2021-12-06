@@ -12,11 +12,11 @@ const RadioGroup = Radio.Group;
 const yesterday = moment().add(-1, 'days');
 
 const getFirstFutureOccurence = (occurence) =>
-  moment(occurence.endDate).isAfter(yesterday);
+  moment(occurence.startDate).isAfter(yesterday);
 
 const compareForSortFuture = (a, b) => {
-  const firstOccurenceA = a.datesAndTimes.find(getFirstFutureOccurence);
-  const firstOccurenceB = b.datesAndTimes.find(getFirstFutureOccurence);
+  const firstOccurenceA = a.meetings.find(getFirstFutureOccurence);
+  const firstOccurenceB = b.meetings.find(getFirstFutureOccurence);
   const dateA = new Date(
     firstOccurenceA.startDate + 'T' + firstOccurenceA.startTime + ':00Z'
   );
