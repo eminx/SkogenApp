@@ -173,6 +173,8 @@ Meteor.publish('users', function () {
     fields: {
       avatar: 1,
       contactInfo: 1,
+      createdAt: 1,
+      emails: 1,
       firstName: 1,
       forCommunity: 1,
       interestedIn: 1,
