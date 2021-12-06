@@ -303,8 +303,8 @@ class Booking extends React.Component {
       width: '100%',
       marginBottom: 12,
       borderRadius: 4,
-      border: 0,
-      background: '#f7f7f7',
+      border: '1px solid #921bef',
+      background: '#fff',
       overflow: 'hidden',
     };
 

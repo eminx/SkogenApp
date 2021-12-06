@@ -196,7 +196,9 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
                   key={activity._id}
                   xs={24}
                   sm={12}
+                  md={8}
                   lg={8}
+                  xl={6}
                   style={{ overflow: 'hidden', padding: '4px 8px' }}
                 >
                   <SexyThumb item={activity} isHome showPast={showPast} />

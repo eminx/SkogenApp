@@ -8,9 +8,7 @@ const commonStyle = {
   lineHeight: 1,
 };
 const imageStyle = {
-  width: 380,
   height: 360,
-  objectFit: 'cover',
 };
 
 const ellipsisStyle = {
@@ -21,7 +19,7 @@ const ellipsisStyle = {
 
 function WorkThumb({ work, history }) {
   return (
-    <div className="thumb-cover-container work-thumb">
+    <div className="thumb-cover-container">
       <div className="thumb-cover">
         <LazyLoadImage
           alt={work.title}

@@ -65,7 +65,9 @@ function Places({ history, currentUser }) {
             key={work._id}
             xs={24}
             sm={12}
+            md={8}
             lg={8}
+            xl={8}
             style={{ overflow: 'hidden', padding: '4px 8px' }}
           >
             <Link to={`/place/${work._id}`}>
