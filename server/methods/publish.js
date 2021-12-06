@@ -178,6 +178,7 @@ Meteor.publish('users', function () {
       firstName: 1,
       forCommunity: 1,
       interestedIn: 1,
+      isRegisteredMember: 1,
       lastName: 1,
       meAndSkogen: 1,
       username: 1,
