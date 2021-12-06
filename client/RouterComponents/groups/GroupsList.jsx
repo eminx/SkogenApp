@@ -1,14 +1,52 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Col, Radio, Row, message } from 'antd';
+import moment from 'moment';
 
 import Loader from '../../UIComponents/Loader';
 import SexyThumb from '../../UIComponents/SexyThumb';
-import { call } from '../../functions';
+import { call, compareForSort } from '../../functions';
 
 const RadioGroup = Radio.Group;
 
-import { compareForSort } from '../../functions';
+const yesterday = moment().add(-1, 'days');
+
+const getFirstFutureOccurence = (occurence) =>
+  moment(occurence.endDate).isAfter(yesterday);
+
+const compareForSortFuture = (a, b) => {
+  const firstOccurenceA = a.datesAndTimes.find(getFirstFutureOccurence);
+  const firstOccurenceB = b.datesAndTimes.find(getFirstFutureOccurence);
+  const dateA = new Date(
+    firstOccurenceA.startDate + 'T' + firstOccurenceA.startTime + ':00Z'
+  );
+  const dateB = new Date(
+    firstOccurenceB.startDate + 'T' + firstOccurenceB.startTime + ':00Z'
+  );
+  return dateA - dateB;
+};
+
+function getSortedGroups(groups) {
+  const groupsWithFutureMeetings = [];
+  const groupsWithoutFutureMeetings = [];
+
+  groups.forEach((group) => {
+    const meetings = group.meetings;
+    if (
+      meetings &&
+      moment(meetings[meetings.length - 1].startDate).isAfter(yesterday)
+    ) {
+      groupsWithFutureMeetings.push(group);
+    } else {
+      groupsWithoutFutureMeetings.push(group);
+    }
+  });
+
+  return [
+    ...groupsWithFutureMeetings.sort(compareForSortFuture),
+    ...groupsWithoutFutureMeetings.sort(compareForSort),
+  ];
+}
 
 const centerStyle = {
   width: '100%',
@@ -94,8 +132,8 @@ class GroupsList extends PureComponent {
     const { currentUser } = this.props;
     const { filterOption, loading } = this.state;
 
-    const groupsFilteredAndSorted =
-      this.getFilteredGroups().sort(compareForSort);
+    const groupsFiltered = this.getFilteredGroups();
+    const groupsFilteredAndSorted = getSortedGroups(groupsFiltered);
 
     return (
       <div>
