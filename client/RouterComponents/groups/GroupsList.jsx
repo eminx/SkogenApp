@@ -37,6 +37,7 @@ function getSortedGroups(groups) {
     const meetings = group.meetings;
     if (
       meetings &&
+      meetings.length > 0 &&
       moment(meetings[meetings.length - 1].startDate).isAfter(yesterday)
     ) {
       groupsWithFutureMeetings.push(group);
