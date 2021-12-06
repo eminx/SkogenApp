@@ -196,5 +196,14 @@ body .ant-input,
 }
 
 .ant-collapse.ant-collapse-borderless {
-  background-color: rgba(0,0,0,0);
+  background-color: transparent;
+}
+
+.ant-cascader-dropdown .ant-cascader-menus .ant-cascader-menu {
+  height: 300px;
+  overflow: scroll;
+}
+
+.ant-cascader-dropdown.ant-select-dropdown {
+  background-color: transparent;
 }

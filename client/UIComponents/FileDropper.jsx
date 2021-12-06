@@ -47,7 +47,7 @@ const FileDropper = ({
             ) : (
               <Button
                 style={{
-                  backgroundColor: 'rgba(0,0,0,0)',
+                  backgroundColor: 'transparent',
                   margin: '24px auto',
                   border: 'none',
                 }}
