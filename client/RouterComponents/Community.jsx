@@ -96,18 +96,7 @@ function Community(props) {
           position: 'relative',
         }}
       >
-        <div
-          style={
-            {
-              // maxHeight: 280,
-              // overflow: 'scroll',
-              // padding: 12,
-              // backgroundColor: '#e5ffe9',
-            }
-          }
-        >
-          {menus}
-        </div>
+        <div>{menus}</div>
         <Divider type="vertical" />
         {selectedProfile ? (
           <div
@@ -219,8 +208,8 @@ function Community(props) {
                   open={activeTab === '2'}
                   options={cascaderOptions}
                   placeholder="Type/Select Keywords..."
-                  size="large"
                   showSearch={{ filter }}
+                  size="large"
                   style={{
                     backgroundColor: '#401159',
                     width: 280,
