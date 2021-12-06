@@ -207,3 +207,8 @@ body .ant-input,
 .ant-cascader-dropdown.ant-select-dropdown {
   background-color: transparent;
 }
+
+.slick-slide > div {
+  display: flex;
+  justify-content: center;
+}

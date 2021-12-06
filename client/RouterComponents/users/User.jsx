@@ -73,9 +73,9 @@ function User({ user }) {
 
           <Col md={16}>
             {user.images && user.images.length > 0 && (
-              <Carousel autoplay autoplaySpeed={3000}>
+              <Carousel autoplay autoplaySpeed={3000} effect="fade">
                 {user.images.map((image) => (
-                  <Image key={image} src={image} />
+                  <Image key={image} height={500} src={image} />
                 ))}
               </Carousel>
             )}
