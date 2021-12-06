@@ -2,6 +2,7 @@ import React from 'react';
 import renderHTML from 'react-render-html';
 
 import {
+  Affix,
   Alert,
   Avatar,
   Carousel,
@@ -59,16 +60,21 @@ function User({ user }) {
                 <Text strong>{getFullName(user)}</Text>
               </div>
             </Space>
-
-            <Divider />
-
-            <InfoSection title="Skogen & Me" info={user.skogenAndMe} />
-            <InfoSection
-              title="What I can contribute to the community"
-              info={user.forCommunity}
-            />
-            <InfoSection title="I'm interested in" info={user.interestedIn} />
-            <InfoSection title="Contact info" info={user.contactInfo} />
+            <div
+              style={{
+                height: '60vh',
+                overflow: 'scroll',
+                margin: '24px 0',
+              }}
+            >
+              <InfoSection title="Skogen & Me" info={user.skogenAndMe} />
+              <InfoSection
+                title="What I can contribute to the community"
+                info={user.forCommunity}
+              />
+              <InfoSection title="I'm interested in" info={user.interestedIn} />
+              <InfoSection title="Contact info" info={user.contactInfo} />
+            </div>
           </Col>
 
           <Col md={16}>

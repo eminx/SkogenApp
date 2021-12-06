@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import React, { PureComponent } from 'react';
+import { Link } from 'react-router-dom';
 import Blaze from 'meteor/gadicc:blaze-react-component';
 import ReactQuill from 'react-quill';
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
@@ -18,6 +19,7 @@ import {
   Row,
   Switch,
   Tag,
+  Tooltip,
   Typography,
   message,
 } from 'antd/lib';
@@ -289,6 +291,14 @@ class Profile extends PureComponent {
           <Col md={8}>
             <Blaze template="loginButtons" />
           </Col>
+        </Row>
+
+        <Row justify="center">
+          <Tooltip title="See your public profile">
+            <Link to={`/@${currentUser.username}`}>
+              {`@${currentUser.username}`}
+            </Link>
+          </Tooltip>
         </Row>
         <Divider />
 
