@@ -189,7 +189,7 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
               buttonStyle="solid"
             />
           </div>
-          <Row style={{ marginRight: 8 }}>
+          <Row style={{ marginRight: 24, paddingBottom: 12 }}>
             {thumbs &&
               thumbs.map((activity) => (
                 <Col
@@ -199,7 +199,7 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
                   md={8}
                   lg={8}
                   xl={6}
-                  style={{ overflow: 'hidden', padding: '4px 8px' }}
+                  style={{ overflow: 'hidden', padding: '12px 24px' }}
                 >
                   <SexyThumb item={activity} isHome showPast={showPast} />
                 </Col>

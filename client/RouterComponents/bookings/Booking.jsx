@@ -410,7 +410,7 @@ class Booking extends React.Component {
           <Panel
             key={occurence.startDate + occurence.startTime}
             header={<FancyDate occurence={occurence} />}
-            style={{ ...customPanelStyle, paddingRight: 12 }}
+            style={{ ...customPanelStyle }}
           >
             {conditionalRender(occurence, occurenceIndex)}
           </Panel>

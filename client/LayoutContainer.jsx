@@ -181,30 +181,30 @@ class LayoutPage extends PureComponent {
           </Row>
         </div>
 
-        <div className="skogen-menu-layout">
-          {menu.map((item) => (
-            <Link
-              to={item.route}
-              key={item.label}
-              className={getMenuItemClass(item.route, pathname)}
-            >
-              <b>{item.label}</b>
-            </Link>
-          ))}
-          {currentUser &&
-            currentUser.isSuperAdmin &&
-            adminMenu.map((item) => (
-              <Link
-                to={item.route}
-                key={item.label}
-                className={getMenuItemClass(item.route, pathname)}
-              >
-                <b>{item.label}</b>
-              </Link>
-            ))}
-        </div>
         <Layout className="layout">
           <ConfigProvider locale={en_GB}>
+            <div className="skogen-menu-layout">
+              {menu.map((item) => (
+                <Link
+                  to={item.route}
+                  key={item.label}
+                  className={getMenuItemClass(item.route, pathname)}
+                >
+                  <b>{item.label}</b>
+                </Link>
+              ))}
+              {currentUser &&
+                currentUser.isSuperAdmin &&
+                adminMenu.map((item) => (
+                  <Link
+                    to={item.route}
+                    key={item.label}
+                    className={getMenuItemClass(item.route, pathname)}
+                  >
+                    <b>{item.label}</b>
+                  </Link>
+                ))}
+            </div>
             <Content>{children}</Content>
           </ConfigProvider>
         </Layout>
