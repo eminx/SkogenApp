@@ -144,10 +144,10 @@ class LayoutPage extends PureComponent {
                 style={{
                   padding: '6px 12px',
                   fontWeight: 700,
-                  backgroundColor: 'rgba(255, 255, 255, .7)',
+                  backgroundColor: '#435CBD',
                 }}
               >
-                <Link to="/my-profile" style={{ color: '#401159' }}>
+                <Link to="/my-profile" style={{ color: '#fff' }}>
                   {currentUser ? currentUser.username : 'Login'}
                 </Link>
               </span>
@@ -226,15 +226,6 @@ function getMenuItemClass(route, pathname) {
   return className;
 }
 
-const widgetBgrstyle = {
-  textAlign: 'center',
-  backgroundColor: 'rgba(204, 255, 255, .8)',
-  padding: 24,
-  margin: 12,
-  marginTop: 32,
-  maxWidth: 320,
-};
-
 const boldBabe = {
   textTransform: 'uppercase',
   fontWeight: 700,
@@ -249,19 +240,19 @@ const FancyFooter = () => {
         flexWrap: 'wrap',
       }}
     >
-      <div style={widgetBgrstyle}>
+      <div className="footer-widget">
         <EmailSignupForm />
 
-        <Divider style={{ background: '#401159' }} />
+        <Divider style={{ background: '#921bef' }} />
 
         <SkogenInfo />
 
-        <Divider style={{ background: '#401159' }} />
+        <Divider style={{ background: '#921bef' }} />
 
         <h4>Swish for donations:</h4>
         <h3 style={{ ...boldBabe }}>123 388 4772</h3>
 
-        <Divider style={{ background: '#401159' }} />
+        <Divider style={{ background: '#921bef' }} />
 
         <p style={{ marginTop: 24 }}>
           Crafted with ∞♥︎ at{' '}
