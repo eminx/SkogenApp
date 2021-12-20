@@ -162,7 +162,7 @@ class GroupsList extends PureComponent {
             />
           </div>
 
-          <Row style={{ marginRight: 8 }}>
+          <Row style={{ marginRight: 24, marginBottom: 12 }}>
             {groupsFilteredAndSorted &&
               groupsFilteredAndSorted.length > 0 &&
               groupsFilteredAndSorted.map((group) => (
@@ -171,7 +171,7 @@ class GroupsList extends PureComponent {
                   xs={24}
                   sm={12}
                   lg={8}
-                  style={{ overflow: 'hidden', padding: '4px 8px' }}
+                  style={{ overflow: 'hidden', padding: '12px 24px' }}
                 >
                   <SexyThumb item={group} />
                 </Col>

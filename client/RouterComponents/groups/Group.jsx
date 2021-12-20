@@ -721,12 +721,13 @@ class Group extends Component {
               <div
                 {...getRootProps()}
                 style={{
-                  width: '100%',
-                  height: 200,
                   background: isDragActive ? '#921bef' : '#fff5f4cc',
-                  padding: 24,
                   border: '1px dashed #921bef',
+                  height: 200,
+                  margin: 12,
+                  padding: 24,
                   textAlign: 'center',
+                  width: 'calc(100% - 24px)',
                 }}
               >
                 {isUploading ? (
@@ -788,7 +789,11 @@ class Group extends Component {
               title={null}
               bordered={false}
               // extra={this.getExtra(group, isAdmin)}
-              style={{ width: '100%', marginBottom: 24 }}
+              style={{
+                width: '100%',
+                marginBottom: 24,
+                background: 'transparent',
+              }}
               bodyStyle={{ padding: 12 }}
               cover={
                 group.imageUrl ? (
@@ -811,15 +816,8 @@ class Group extends Component {
     const messages = this.getChatMessages();
     const isMember = this.isMember();
 
-    const titleStyle = {
-      marginLeft: 24,
-      fontWeigth: 300,
-      color: '#0g0g0g',
-    };
-
     return (
       <div>
-        <h3 style={titleStyle}>Discussion</h3>
         <Chattery
           messages={messages}
           onNewMessage={this.addNewChatMessage}
@@ -880,6 +878,7 @@ class Group extends Component {
       marginBottom: 24,
       borderRadius: 0,
       borderColor: '#401159',
+      paddingLeft: 12,
     };
 
     if (group && group.isPrivate && this.isNoAccess()) {
@@ -888,7 +887,7 @@ class Group extends Component {
 
     return (
       <div>
-        <div style={{ padding: 12 }}>
+        <div style={{ paddingLeft: 24, paddingBottom: 12 }}>
           <Link to="/groups">
             <Button icon={<LeftOutlined />}>Groups</Button>
           </Link>
@@ -946,7 +945,7 @@ class Group extends Component {
               )}
 
               {isAdmin && (
-                <div>
+                <div style={{ paddingLeft: 12 }}>
                   <CreateMeetingForm
                     handleDateChange={(date, dateString) =>
                       this.handleDateAndTimeChange(

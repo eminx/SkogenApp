@@ -97,7 +97,7 @@ class PublicationsList extends React.PureComponent {
             />
           </div>
 
-          <Row style={{ marginRight: 8 }}>
+          <Row style={{ marginRight: 24, marginBottom: 12 }}>
             {publicationsFiltered &&
               publicationsFiltered.length > 0 &&
               publicationsFiltered.map((pub) => (
@@ -106,7 +106,7 @@ class PublicationsList extends React.PureComponent {
                   xs={24}
                   sm={12}
                   lg={8}
-                  style={{ overflow: 'hidden', padding: '4px 8px' }}
+                  style={{ overflow: 'hidden', padding: '12px 24px' }}
                 >
                   <SexyThumb item={pub} isPub />
                 </Col>

@@ -59,7 +59,7 @@ function Places({ history, currentUser }) {
         </div>
       )}
 
-      <Row style={{ marginRight: 8, paddingBottom: 4 }}>
+      <Row style={{ marginRight: 24, marginBottom: 24 }}>
         {filteredWorks.map((work) => (
           <Col
             key={work._id}
@@ -68,7 +68,7 @@ function Places({ history, currentUser }) {
             md={8}
             lg={8}
             xl={8}
-            style={{ overflow: 'hidden', padding: '4px 8px' }}
+            style={{ overflow: 'hidden', padding: '12px 24px' }}
           >
             <Link to={`/place/${work._id}`}>
               <WorkThumb work={work} />
