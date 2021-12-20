@@ -9,7 +9,7 @@ h1 {
   height: 100px;
   background-repeat: no-repeat;
   background-size: contain;
-  margin-top: 48px;
+  margin-top: 36px;
   margin-bottom: 60px;
 }
 
@@ -39,7 +39,7 @@ h1 {
   flex-wrap: nowrap;
   margin: 0 auto;
   max-width: 1280px;
-  padding: 12px;
+  padding: 24px 0;
 }
 
 .ant-layout .ant-layout-footer {

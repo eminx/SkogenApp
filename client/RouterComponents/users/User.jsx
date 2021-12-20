@@ -1,5 +1,6 @@
 import React from 'react';
 import renderHTML from 'react-render-html';
+import MediaQuery from 'react-responsive';
 
 import {
   Affix,
@@ -8,11 +9,9 @@ import {
   Carousel,
   Col,
   Divider,
-  Image,
   Space,
   Row,
   Typography,
-  message,
 } from 'antd';
 import Loader from '../../UIComponents/Loader';
 
@@ -60,10 +59,15 @@ function User({ user }) {
                 <Text strong>{getFullName(user)}</Text>
               </div>
             </Space>
+
+            <MediaQuery query="(max-width: 767px)">
+              <ImageSlider user={user} />
+            </MediaQuery>
+
             <div
               style={{
-                height: '60vh',
-                overflow: 'scroll',
+                // height: '60vh',
+                // overflow: 'scroll',
                 margin: '24px 0',
               }}
             >
@@ -78,17 +82,44 @@ function User({ user }) {
           </Col>
 
           <Col md={16}>
-            {user.images && user.images.length > 0 && (
-              <Carousel autoplay autoplaySpeed={3000} effect="fade">
-                {user.images.map((image) => (
-                  <Image key={image} height={500} src={image} />
-                ))}
-              </Carousel>
-            )}
+            <MediaQuery query="(min-width: 768px)">
+              <Affix offsetTop={50}>
+                <ImageSlider user={user} height={500} />
+              </Affix>
+            </MediaQuery>
           </Col>
         </Row>
       </Loader>
     </div>
+  );
+}
+
+function ImageSlider({ user, height = 300 }) {
+  if (!user || !user.images || user.images.length === 0) {
+    return null;
+  }
+
+  return (
+    <Carousel
+      autoplay
+      autoplaySpeed={3000}
+      effect="fade"
+      style={{ marginTop: 12 }}
+    >
+      {user.images &&
+        user.images.length > 0 &&
+        user.images.map((image) => (
+          <div
+            key={image}
+            style={{
+              height: height,
+              margin: '0 auto',
+            }}
+          >
+            <img src={image} style={{ margin: '0 auto', height: height }} />
+          </div>
+        ))}
+    </Carousel>
   );
 }
 
@@ -98,9 +129,7 @@ function InfoSection({ info, title }) {
       <Title italic level={5}>
         {title}
       </Title>
-      {info && (
-        <Paragraph style={{ maxWidth: 480 }}>{renderHTML(info)}</Paragraph>
-      )}
+      {info && <Paragraph>{renderHTML(info)}</Paragraph>}
       <Divider />
     </div>
   );

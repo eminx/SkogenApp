@@ -250,7 +250,7 @@ const FancyFooter = () => {
         <Divider style={{ background: '#921bef' }} />
 
         <h4>Swish for donations:</h4>
-        <h3 style={{ ...boldBabe }}>123 388 4772</h3>
+        <h4 style={{ ...boldBabe }}>123 388 4772</h4>
 
         <Divider style={{ background: '#921bef' }} />
 
@@ -274,7 +274,7 @@ const FancyFooter = () => {
 const EmailSignupForm = () => (
   <Fragment>
     <FormItem>
-      <h4 style={{ ...boldBabe, marginBottom: 0, lineHeight: '10px' }}>
+      <h4 style={{ ...boldBabe, marginBottom: 0, lineHeight: '20px' }}>
         Sign up to Our Newsletter
       </h4>
     </FormItem>

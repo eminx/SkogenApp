@@ -494,16 +494,6 @@ class Profile extends PureComponent {
                 ))}
             </div>
             <Divider />
-
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Button
-                onClick={() => this.setState({ isDeleteModalOn: true })}
-                style={{ color: 'red' }}
-              >
-                Delete Account
-              </Button>
-            </div>
-            <Divider />
           </Col>
 
           <Col md={16}>
@@ -531,7 +521,7 @@ class Profile extends PureComponent {
                     ))}
                 </Carousel>
 
-                <div>
+                <div style={{ marginTop: 12 }}>
                   {images && images.length > 0 ? (
                     <SortableContainer
                       onSortEnd={this.handleSortImages}
@@ -568,6 +558,16 @@ class Profile extends PureComponent {
           </Col>
         </Row>
 
+        <Divider />
+
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Button
+            onClick={() => this.setState({ isDeleteModalOn: true })}
+            style={{ color: 'red' }}
+          >
+            Delete Account
+          </Button>
+        </div>
         <Divider />
 
         <Modal

@@ -182,7 +182,7 @@ function Community(props) {
               {publicProfiles.map(
                 (p) =>
                   p.avatar && (
-                    <Link to={`/@${p.username}`}>
+                    <Link key={p.username} to={`/@${p.username}`}>
                       <div
                         style={{
                           display: 'flex',
