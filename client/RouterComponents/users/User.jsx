@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import renderHTML from 'react-render-html';
 import MediaQuery from 'react-responsive';
 
@@ -27,6 +27,8 @@ const getFullName = (user) => {
 };
 
 function User({ user }) {
+  // const [affixContainer, setAffixContainer] = useState(null);
+
   if (!user) {
     return (
       <Alert
@@ -66,8 +68,6 @@ function User({ user }) {
 
             <div
               style={{
-                // height: '60vh',
-                // overflow: 'scroll',
                 margin: '24px 0',
               }}
             >
@@ -83,9 +83,9 @@ function User({ user }) {
 
           <Col md={16}>
             <MediaQuery query="(min-width: 768px)">
-              <Affix offsetTop={50}>
-                <ImageSlider user={user} height={500} />
-              </Affix>
+              {/* <Affix offsetTop={50} target={() => affixContainer}> */}
+              <ImageSlider user={user} height={500} />
+              {/* </Affix> */}
             </MediaQuery>
           </Col>
         </Row>

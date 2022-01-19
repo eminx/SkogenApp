@@ -228,11 +228,11 @@
 .rbc-toolbar .rbc-btn-group button.rbc-active:focus,
 .rbc-toolbar .rbc-btn-group button.rbc-active:active {
   outline: none;
-  background-color: #fbd5d0;
-  color: #921bef;
+  color: #b344fc;
   border: none;
   box-shadow: none;
   border-radius: 0;
+  background-color: rgba(179, 68, 255, 0.1);
 }
 
 .rbc-toolbar .rbc-btn-group button {

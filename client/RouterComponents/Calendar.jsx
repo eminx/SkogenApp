@@ -328,22 +328,6 @@ class Calendar extends PureComponent {
           </Col>
         </Row>
 
-        <Divider />
-
-        <h3 style={{ textAlign: 'center' }}>Resources</h3>
-        <Row justify="center">
-          {placesList.map((resource, index) => (
-            <Card
-              key={resource._id}
-              size="small"
-              title={<h3>{resource.name}</h3>}
-              style={{ width: 300, margin: 12 }}
-            >
-              <p>{resource.description}</p>
-            </Card>
-          ))}
-        </Row>
-
         <Modal
           visible={Boolean(selectedBooking)}
           okText="Edit"

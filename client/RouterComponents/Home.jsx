@@ -211,31 +211,4 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
   );
 }
 
-const covidInfo = [
-  `Skogen hoppas kunna öppna för publik i maj.`,
-  `Skogen aims at opening for audience in may.`,
-];
-
-const innerBoxStyle = {
-  margin: 12,
-  padding: 12,
-  maxWidth: 576,
-  border: '1px solid #921bef',
-};
-
-function CovidInfo() {
-  return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <div style={innerBoxStyle}>
-        <h3 style={{ textAlign: 'center', marginBottom: 12 }}>Notice</h3>
-        {covidInfo.map((p) => (
-          <p style={{ textAlign: 'center' }} key={p}>
-            {p}
-          </p>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export default Home;
