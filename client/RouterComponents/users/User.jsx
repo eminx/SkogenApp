@@ -14,6 +14,7 @@ import {
   Typography,
 } from 'antd';
 import Loader from '../../UIComponents/Loader';
+import { useEffect } from 'react';
 
 const { Text, Title, Paragraph } = Typography;
 
@@ -27,15 +28,29 @@ const getFullName = (user) => {
 };
 
 function User({ user }) {
-  // const [affixContainer, setAffixContainer] = useState(null);
+  const [noUser, setNoUser] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      if (!user) {
+        setNoUser(true);
+      }
+    }, 3000);
+  }, []);
+
+  if (noUser) {
+    return (
+      <div>
+        <Alert
+          message="There's no user associated with this handle, or the user chose not to publish their profile"
+          type="error"
+          style={{ margin: 24, textAlign: 'center' }}
+        />
+      </div>
+    );
+  }
 
   if (!user) {
-    return (
-      <Alert
-        message="There's no user associated with this handle, or the user chose not to publish their profile"
-        type="error"
-      />
-    );
+    return <Loader spinning />;
   }
 
   return (
