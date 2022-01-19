@@ -195,10 +195,19 @@ function Community(props) {
                           flexDirection: 'column',
                           alignItems: 'center',
                           padding: 12,
+                          maxWidth: 140,
                         }}
                       >
-                        <Avatar shape="square" size={80} src={p.avatar.src} />
-                        <Title level={5}>{p.username}</Title>
+                        <Avatar
+                          shape="square"
+                          size={120}
+                          src={p.avatar.src}
+                          style={{ border: '1px solid #921bef' }}
+                        />
+                        <Title className="avatar-ellipsis" level={5}>
+                          {/* {p.username.substring(0, 12)} */}
+                          andreas.engman@agitera.com
+                        </Title>
                       </div>
                     </Link>
                   )

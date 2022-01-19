@@ -212,3 +212,10 @@ body .ant-input,
   display: flex;
   justify-content: center;
 }
+
+.avatar-ellipsis {
+  width: 110px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
