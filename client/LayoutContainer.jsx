@@ -22,6 +22,7 @@ moment.locale('en-gb'); // important!
 
 const { Content } = Layout;
 import BellOutlined from '@ant-design/icons/lib/icons/BellOutlined';
+import QMarkPop from './UIComponents/QMarkPop';
 
 const menu = [
   {
@@ -271,11 +272,15 @@ const FancyFooter = () => {
   );
 };
 
+const signupHelperText =
+  'Sign up here and you get weekly updates on what is going on at Skogen.';
+
 const EmailSignupForm = () => (
   <Fragment>
     <FormItem>
       <h4 style={{ ...boldBabe, marginBottom: 0, lineHeight: '20px' }}>
         Sign up to Our Newsletter
+        <QMarkPop>{signupHelperText}</QMarkPop>
       </h4>
     </FormItem>
     <form method="POST" action="https://gansub.com/s/RKNO/">

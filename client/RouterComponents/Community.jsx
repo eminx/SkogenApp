@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Avatar,
-  Button,
   Cascader,
   Divider,
   Row,
@@ -13,10 +12,14 @@ import {
 import renderHTML from 'react-render-html';
 
 import Loader from '../UIComponents/Loader';
+import QMarkPop from '../UIComponents/QMarkPop';
 import { call } from '../functions';
 
 const { Paragraph, Text, Title } = Typography;
 const { TabPane } = Tabs;
+
+const helperText =
+  'Here you find people connected to Skogen. You can discover what they are interested in. If you want to connect to Skogen make your profile page by logging in and choosing to make your profile public.';
 
 function Community(props) {
   const [keywords, setKeywords] = useState([]);
@@ -176,6 +179,9 @@ function Community(props) {
   return (
     <div className="community-page" style={{ minHeight: '200vh' }}>
       <Loader isContainer spinning={!cascaderOptions}>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <QMarkPop>{helperText}</QMarkPop>
+        </div>
         <Tabs centered onTabClick={handleTabSelect}>
           <TabPane tab="See People" key="1">
             <Row justify="center">

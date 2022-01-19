@@ -18,9 +18,18 @@ import {
 import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
 import NiceList from '../UIComponents/NiceList';
+import QMarkPop from '../UIComponents/QMarkPop';
 import colors from '../constants/colors';
 
 const yesterday = moment(new Date()).add(-1, 'days');
+
+const popoverStyle = { maxWidth: 280, fontSize: 14, lineHeight: 1.3 };
+
+const helperText =
+  'This is where you can find Skogens use of spaces and planned events and activities. It is bookable by Skogen artists and study groups.';
+
+const manualsHelperText =
+  'Here you find information that you might need as you work or make things happen at Skogen.';
 
 class Calendar extends PureComponent {
   state = {
@@ -207,6 +216,7 @@ class Calendar extends PureComponent {
                 New Booking
               </Button>
             </Link>
+            <QMarkPop>{helperText}</QMarkPop>
           </Row>
         )}
 
@@ -239,13 +249,7 @@ class Calendar extends PureComponent {
                 {placesList.map((room, i) => (
                   <Popover
                     key={room.name}
-                    content={
-                      <div
-                        style={{ maxWidth: 280, fontSize: 14, lineHeight: 1.3 }}
-                      >
-                        {room.description}
-                      </div>
-                    }
+                    content={<div style={popoverStyle}>{room.description}</div>}
                   >
                     <Tag
                       color={colors[i]}
@@ -271,7 +275,9 @@ class Calendar extends PureComponent {
 
         <Divider />
 
-        <h3 style={{ textAlign: 'center' }}>Skogen Manuals</h3>
+        <h3 style={{ textAlign: 'center' }}>
+          Skogen Manuals <QMarkPop>{manualsHelperText}</QMarkPop>
+        </h3>
         <Row justify="center">
           <Col md={8}>
             {isSuperAdmin && (

@@ -6,6 +6,7 @@ import { Button, Col, Row, message } from 'antd';
 import WorkThumb from '../../UIComponents/WorkThumb';
 import Loader from '../../UIComponents/Loader';
 import { call } from '../../functions';
+import QMarkPop from '../../UIComponents/QMarkPop';
 
 const compareByDate = (a, b) => {
   const dateA = new Date(a.creationDate);
@@ -16,6 +17,9 @@ const compareByDate = (a, b) => {
 function getHSL(length, index, opacity = 1) {
   return `hsla(${(360 / (length + 1)) * (index + 1)}, 62%, 56%, ${opacity})`;
 }
+
+const helperText =
+  'This is where we try to see what it means to connect to other places and having the circles of where we think and care expanded. Not as a service but by means of relationship.';
 
 function Places({ history, currentUser }) {
   const [works, setWorks] = useState([]);
@@ -56,6 +60,7 @@ function Places({ history, currentUser }) {
               New Place
             </Button>
           </Link>
+          <QMarkPop>{helperText}</QMarkPop>
         </div>
       )}
 

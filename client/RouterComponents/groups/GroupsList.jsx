@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import Loader from '../../UIComponents/Loader';
 import SexyThumb from '../../UIComponents/SexyThumb';
+import QMarkPop from '../../UIComponents/QMarkPop';
 import { call, compareForSort } from '../../functions';
 
 const RadioGroup = Radio.Group;
@@ -73,6 +74,9 @@ const groupFilterOptions = [
     value: 'archived',
   },
 ];
+
+const helperText =
+  'Here you can join a group of interest and check out their dates of getting together sign up to a group to receive updates and information. You can suggest a new group yourself by mailing us.';
 
 class GroupsList extends PureComponent {
   state = {
@@ -149,6 +153,8 @@ class GroupsList extends PureComponent {
                   New Group
                 </Button>
               </Link>
+
+              <QMarkPop>{helperText}</QMarkPop>
             </div>
           )}
 

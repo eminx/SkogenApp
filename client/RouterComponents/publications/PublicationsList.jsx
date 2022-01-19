@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Button, Col, Radio, Row } from 'antd';
@@ -7,6 +7,7 @@ const RadioGroup = Radio.Group;
 
 import Loader from '../../UIComponents/Loader';
 import SexyThumb from '../../UIComponents/SexyThumb';
+import QMarkPop from '../../UIComponents/QMarkPop';
 
 const compareByPublishDate = (a, b) => {
   const dateA = new Date(a.publishDate);
@@ -14,7 +15,10 @@ const compareByPublishDate = (a, b) => {
   return dateB - dateA;
 };
 
-class PublicationsList extends React.PureComponent {
+const helperText =
+  'Here you find all publications being published by or in collaboration with Skogen. You can buy the books at our venue. You can learn more about printing by joining the Community Press group.';
+
+class PublicationsList extends PureComponent {
   state = {
     filterType: 'All',
   };
@@ -83,6 +87,7 @@ class PublicationsList extends React.PureComponent {
                   New Publication
                 </Button>
               </Link>
+              <QMarkPop>{helperText}</QMarkPop>
             </div>
           )}
 
