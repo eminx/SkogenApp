@@ -204,9 +204,12 @@ function Community(props) {
                           src={p.avatar.src}
                           style={{ border: '1px solid #921bef' }}
                         />
-                        <Title className="avatar-ellipsis" level={5}>
-                          {/* {p.username.substring(0, 12)} */}
-                          andreas.engman@agitera.com
+                        <Title
+                          className="avatar-ellipsis"
+                          level={5}
+                          style={{ textAlign: 'center' }}
+                        >
+                          {p.username}
                         </Title>
                       </div>
                     </Link>
