@@ -85,8 +85,7 @@ class Group extends Component {
       return false;
     }
 
-    const isAdmin =
-      currentUser.isSuperAdmin || (group && group.adminId === currentUser._id);
+    const isAdmin = group && group.adminId === currentUser._id;
 
     return Boolean(isAdmin);
   };
