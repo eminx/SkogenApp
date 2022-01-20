@@ -25,7 +25,7 @@ import NewPageContainer from './pages/NewPageContainer';
 import EditPageContainer from './pages/EditPageContainer';
 
 import Profile from './profile/Profile';
-import UserContainer from './users/UserContainer';
+import User from './users/User';
 
 import UsersContainer from './admin/UsersContainer';
 import Resources from './admin/Resources';
@@ -91,7 +91,7 @@ export const renderRoutes = () => (
           <Route path="/admin/resources" component={Resources} />
           <Route path="/admin/categories" component={Categories} />
 
-          <Route exact path="/@:username" component={UserContainer} />
+          <Route exact path="/@:username" component={User} />
 
           <Route path="/places" component={Places} />
           <Route exact path="/place/:id" component={Place} />

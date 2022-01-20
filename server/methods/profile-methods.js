@@ -6,17 +6,24 @@ Meteor.methods({
       username: username
     })
 
+    if (!p) {
+      throw new Meteor.Error('No user found');
+    }
+
     if (!p.isPublic) {
       throw new Meteor.Error('Profile is not public');
     }
 
     return {
-      username: p.username,
-      firstName: p.firstName,
-      lastName: p.lastName,
-      contactInfo: p.contactInfo,
-      forCommunity: p.forCommunity,
       avatar: p.avatar,
+      contactInfo: p.contactInfo,
+      firstName: p.firstName,
+      forCommunity: p.forCommunity,
+      lastName: p.lastName,
+      username: p.username,
+      images: p.images,
+      skogenAndMe: p.skogenAndMe,
+      interestedIn: p.interestedIn,
     }
   },
 

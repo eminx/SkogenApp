@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import renderHTML from 'react-render-html';
 import MediaQuery from 'react-responsive';
 
@@ -12,9 +12,11 @@ import {
   Space,
   Row,
   Typography,
+  message,
 } from 'antd';
+
 import Loader from '../../UIComponents/Loader';
-import { useEffect } from 'react';
+import { call } from '../../functions';
 
 const { Text, Title, Paragraph } = Typography;
 
@@ -27,15 +29,28 @@ const getFullName = (user) => {
   }
 };
 
-function User({ user }) {
+function User({ match }) {
+  const [user, setUser] = useState(null);
   const [noUser, setNoUser] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    setTimeout(() => {
-      if (!user) {
-        setNoUser(true);
-      }
-    }, 3000);
+    getUser();
   }, []);
+
+  const getUser = async () => {
+    const { username } = match.params;
+
+    try {
+      const response = await call('getPublicProfile', username);
+      setUser(response);
+    } catch (error) {
+      setNoUser(true);
+      message.error(error.error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (noUser) {
     return (
@@ -43,7 +58,7 @@ function User({ user }) {
         <Alert
           message="There's no user associated with this handle, or the user chose not to publish their profile"
           type="error"
-          style={{ margin: 24, textAlign: 'center' }}
+          style={{ margin: 24, textAlign: 'center ' }}
         />
       </div>
     );
@@ -55,13 +70,13 @@ function User({ user }) {
 
   return (
     <div style={{ padding: 24 }}>
-      <Loader isContainer spinning={!user}>
+      <Loader isContainer spinning={loading}>
         <Row gutter={24}>
           <Col md={8}>
             <Space align="center">
               <Avatar
                 shape="square"
-                size={80}
+                size={120}
                 src={user.avatar && user.avatar.src}
               >
                 {user.username[0].toLowerCase()}
