@@ -19,7 +19,7 @@ const { Paragraph, Text, Title } = Typography;
 const { TabPane } = Tabs;
 
 const helperText =
-  'Here you find people connected to Skogen. You can discover what they are interested in. If you want to connect to Skogen make your profile page by logging in and choosing to make your profile public.';
+  'Here you find people connected to Skogen and discover what they are interested in. If you want to connect to Skogen, make your profile page by logging in and choosing to make your profile public.';
 
 function Community(props) {
   const [keywords, setKeywords] = useState([]);

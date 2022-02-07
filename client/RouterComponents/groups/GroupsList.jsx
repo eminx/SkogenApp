@@ -76,7 +76,7 @@ const groupFilterOptions = [
 ];
 
 const helperText =
-  'Here you can join a group of interest and check out their dates of getting together sign up to a group to receive updates and information. You can suggest a new group yourself by mailing us.';
+  'Here you can join a group of interest and check out their dates of getting together. Sign up to a group to receive updates and information. You can suggest a new group yourself by mailing us.';
 
 class GroupsList extends PureComponent {
   state = {
