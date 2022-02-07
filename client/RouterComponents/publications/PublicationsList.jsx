@@ -80,16 +80,16 @@ class PublicationsList extends PureComponent {
     return (
       <div>
         <Loader isContainer spinning={isLoading}>
-          {currentUser && currentUser.isRegisteredMember && (
-            <div style={centerStyle}>
+          <div style={centerStyle}>
+            {currentUser && currentUser.isRegisteredMember && (
               <Link to="/new-publication">
                 <Button type="primary" component="span">
                   New Publication
                 </Button>
               </Link>
-              <QMarkPop>{helperText}</QMarkPop>
-            </div>
-          )}
+            )}
+            <QMarkPop>{helperText}</QMarkPop>
+          </div>
 
           <div style={centerStyle}>
             <RadioGroup

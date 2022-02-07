@@ -53,16 +53,16 @@ function Places({ history, currentUser }) {
 
   return (
     <Loader isContainer spinning={loading || !works}>
-      {currentUser && currentUser.isSuperAdmin && (
-        <div style={{ display: 'flex', justifyContent: 'center', padding: 12 }}>
+      <div style={{ display: 'flex', justifyContent: 'center', padding: 12 }}>
+        {currentUser && currentUser.isSuperAdmin && (
           <Link to="/new-place">
             <Button type="primary" component="span">
               New Place
             </Button>
           </Link>
-          <QMarkPop>{helperText}</QMarkPop>
-        </div>
-      )}
+        )}
+        <QMarkPop>{helperText}</QMarkPop>
+      </div>
 
       <Row style={{ marginRight: 24, marginBottom: 24 }}>
         {filteredWorks.map((work) => (

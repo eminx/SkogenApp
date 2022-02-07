@@ -209,16 +209,16 @@ class Calendar extends PureComponent {
 
     return (
       <div style={{ padding: 12 }}>
-        {currentUser && currentUser.isRegisteredMember && (
-          <Row justify="center" style={{ paddingBottom: 12 }}>
+        <Row justify="center" style={{ paddingBottom: 12 }}>
+          {currentUser && currentUser.isRegisteredMember && (
             <Link to="/new-booking">
               <Button type="primary" component="span">
                 New Booking
               </Button>
             </Link>
-            <QMarkPop>{helperText}</QMarkPop>
-          </Row>
-        )}
+          )}
+          <QMarkPop>{helperText}</QMarkPop>
+        </Row>
 
         <Row gutter={24} justify="center">
           <Spin

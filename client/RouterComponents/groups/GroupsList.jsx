@@ -146,17 +146,16 @@ class GroupsList extends PureComponent {
     return (
       <div>
         <Loader isContainer spinning={loading}>
-          {currentUser && currentUser.isRegisteredMember && (
-            <div style={centerStyle}>
+          <div style={centerStyle}>
+            {currentUser && currentUser.isRegisteredMember && (
               <Link to="/new-group">
                 <Button type="primary" component="span">
                   New Group
                 </Button>
               </Link>
-
-              <QMarkPop>{helperText}</QMarkPop>
-            </div>
-          )}
+            )}
+            <QMarkPop>{helperText}</QMarkPop>
+          </div>
 
           <div style={centerStyle}>
             <RadioGroup
