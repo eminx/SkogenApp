@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import arrayMove from 'array-move';
 import { Alert, Button, Col, Modal, message, Row } from 'antd';
 
+import Loader from '../../UIComponents/Loader';
 import WorkForm from '../../UIComponents/WorkForm';
 import { call, resizeImage, uploadImage } from '../../functions';
 
@@ -23,6 +24,8 @@ class EditPlace extends PureComponent {
     isSuccess: false,
     isError: false,
     isDeleteModalOn: false,
+    uploadableImages: [],
+    uploadableImagesLocal: [],
   };
 
   componentDidMount() {
@@ -256,6 +259,10 @@ class EditPlace extends PureComponent {
       isDeleteModalOn,
     } = this.state;
 
+    if (!formValues || !formValues.title || formValues.title.length < 3) {
+      return <Loader />;
+    }
+
     if (isSuccess) {
       return <Redirect to={`/place/${id}`} />;
     }
@@ -270,16 +277,16 @@ class EditPlace extends PureComponent {
         <Col lg={12}>
           <h3 style={{ marginBottom: 24 }}>Update </h3>
           <WorkForm
-            formValues={formValues}
-            categories={categories}
-            images={images.map((image) => image.src)}
             buttonLabel={buttonLabel}
+            categories={categories}
+            formValues={formValues}
+            images={images.map((image) => image.src)}
             isButtonDisabled={isCreating}
             isFormValid={isFormValid}
-            setUploadableImages={this.setUploadableImages}
-            registerWorkLocally={this.registerPlaceLocally}
-            onSortImages={this.handleSortImages}
             onRemoveImage={this.handleRemoveImage}
+            onSortImages={this.handleSortImages}
+            registerWorkLocally={this.registerPlaceLocally}
+            setUploadableImages={this.setUploadableImages}
           />
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Button onClick={() => this.showDeleteModal()}>Delete</Button>

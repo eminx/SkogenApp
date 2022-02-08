@@ -39,18 +39,6 @@ class NewPlace extends PureComponent {
     });
   };
 
-  handleQuillChange = (description) => {
-    const { formValues } = this.state;
-    const newValues = {
-      ...formValues,
-      description,
-    };
-
-    this.setState({
-      formValues: newValues,
-    });
-  };
-
   handleRemoveImage = (imageIndex) => {
     this.setState(({ uploadableImages, uploadableImagesLocal }) => ({
       uploadableImages: uploadableImages.filter(
@@ -198,15 +186,15 @@ class NewPlace extends PureComponent {
         <Col lg={12}>
           <h3 style={{ marginBottom: 24 }}>New Place</h3>
           <WorkForm
-            formValues={formValues}
-            categories={categories}
-            setUploadableImages={this.setUploadableImages}
-            images={uploadableImagesLocal}
             buttonLabel={buttonLabel}
+            categories={categories}
+            formValues={formValues}
+            images={uploadableImagesLocal}
             isButtonDisabled={isCreating}
-            onSortImages={this.handleSortImages}
             onRemoveImage={this.handleRemoveImage}
+            onSortImages={this.handleSortImages}
             registerWorkLocally={this.registerPlaceLocally}
+            setUploadableImages={this.setUploadableImages}
           />
         </Col>
       </Row>
