@@ -383,6 +383,7 @@ class Profile extends PureComponent {
               </FormItem>
 
               <FormItem
+                initialValue={currentUser.contactInfo || ''}
                 label={
                   <Title style={noBottomMargin} level={4}>
                     Contact info
@@ -394,7 +395,6 @@ class Profile extends PureComponent {
                     required: false,
                   },
                 ]}
-                initialValue={currentUser.contactInfo || ''}
               >
                 <ReactQuill modules={editorModules} formats={editorFormats} />
               </FormItem>

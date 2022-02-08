@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
+import renderHTML from 'react-render-html';
 import {
   Button,
   Card,
@@ -13,6 +14,7 @@ import {
   Spin,
   Tag,
   Tooltip,
+  Typography,
   message,
 } from 'antd';
 import Loader from '../UIComponents/Loader';
@@ -20,6 +22,8 @@ import CalendarView from '../UIComponents/CalendarView';
 import NiceList from '../UIComponents/NiceList';
 import QMarkPop from '../UIComponents/QMarkPop';
 import colors from '../constants/colors';
+
+const { Text } = Typography;
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
@@ -207,6 +211,8 @@ class Calendar extends PureComponent {
       ],
     }));
 
+    console.log(selectedBooking);
+
     return (
       <div style={{ padding: 12 }}>
         <Row justify="center" style={{ paddingBottom: 12 }}>
@@ -365,22 +371,29 @@ class Calendar extends PureComponent {
               <b>{selectedBooking && selectedBooking.room}</b>
             </Col>
           </Row>
-          <Row style={{ paddingTop: 12 }}>
-            <Row span={24}>
-              {selectedBooking && selectedBooking.isPublicActivity && (
-                <Link
-                  to={
-                    (selectedBooking.isGroup ? '/group/' : '/event/') +
-                    selectedBooking._id
-                  }
-                >
-                  {' '}
-                  {!selectedBooking.isPrivateGroup &&
-                    `go to the ${selectedBooking.isGroup ? 'group ' : 'event '}
+          <Row style={{ paddingTop: 12 }} span={24}>
+            <Text>
+              {selectedBooking &&
+                selectedBooking.longDescription &&
+                (selectedBooking.isPrivateProcess
+                  ? ''
+                  : renderHTML(
+                      selectedBooking.longDescription.slice(0, 120) + '...'
+                    ))}
+            </Text>
+            {selectedBooking && selectedBooking.isPublicActivity && (
+              <Link
+                to={
+                  (selectedBooking.isGroup ? '/group/' : '/event/') +
+                  selectedBooking._id
+                }
+              >
+                {' '}
+                {!selectedBooking.isPrivateGroup &&
+                  `go to the ${selectedBooking.isGroup ? 'group ' : 'event '}
                     page`}
-                </Link>
-              )}
-            </Row>
+              </Link>
+            )}
           </Row>
         </Modal>
       </div>

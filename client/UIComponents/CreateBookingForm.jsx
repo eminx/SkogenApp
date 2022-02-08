@@ -298,13 +298,13 @@ class CreateBookingForm extends Component {
           )}
 
           <FormItem
+            initialValue={bookingData ? bookingData.longDescription : ''}
             name="longDescription"
             rules={[
               {
                 message: 'Please enter a detailed description (optional)',
               },
             ]}
-            initialValue={bookingData ? bookingData.longDescription : ''}
           >
             <ReactQuill modules={editorModules} formats={editorFormats} />
           </FormItem>

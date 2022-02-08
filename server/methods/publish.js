@@ -10,14 +10,16 @@ Meteor.publish('attendingEvents', function () {
 
 Meteor.publish('gatherings', function (onlyPublic = false) {
   const fields = {
-    title: 1,
-    datesAndTimes: 1,
-    roomIndex: 1,
-    room: 1,
-    place: 1,
-    isPublicActivity: 1,
     authorName: 1,
+    datesAndTimes: 1,
+    isPublicActivity: 1,
+    longDescription: 1,
+    place: 1,
+    room: 1,
+    roomIndex: 1,
+    title: 1,
   };
+
   const publicFields = {
     title: 1,
     subTitle: 1,
