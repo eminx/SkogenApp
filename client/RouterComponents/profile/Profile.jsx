@@ -560,7 +560,7 @@ class Profile extends PureComponent {
                 </div>
               </div>
             </Row>
-            <Row justify="center">
+            <Row justify="center" style={{ marginTop: 24 }}>
               <Button disabled={!isImagesEdited} onClick={this.uploadImages}>
                 Save
               </Button>
