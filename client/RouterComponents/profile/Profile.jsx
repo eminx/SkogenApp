@@ -457,7 +457,10 @@ class Profile extends PureComponent {
             <Title style={noBottomMargin} level={4}>
               Keywords
             </Title>
-            <Text>People can use keywords to filter and find profiles</Text>
+            <Text>
+              Write some keywords for people to find your skills, interests and
+              competences. Please add one keyword at a time.
+            </Text>
             <AutoComplete
               options={keywordsWithoutMine}
               filterOption={(inputValue, option) =>
