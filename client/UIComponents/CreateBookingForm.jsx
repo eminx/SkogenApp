@@ -91,10 +91,6 @@ class CreateBookingForm extends Component {
       ];
       return {
         ...recurrence,
-        // startDateMoment: moment(recurrence.startDate, 'YYYY-MM-DD'),
-        // startTimeMoment: moment(recurrence.startTime, 'HH:mm'),
-        // endDateMoment: moment(recurrence.endDate, 'YYYY-MM-DD'),
-        // endTimeMoment: moment(recurrence.endTime, 'HH:mm'),
         rangeInMoment,
         attendees: recurrence.attendees || [],
       };
@@ -174,18 +170,6 @@ class CreateBookingForm extends Component {
             removeRecurrence={() => this.removeRecurrence(index)}
             isNotDeletable={index === 0}
             isPublicActivity={isPublicActivity}
-            // handleStartDateChange={(date, dateString) =>
-            //   this.handleDateAndTimeChange(date, dateString, index, 'startDate')
-            // }
-            // handleStartTimeChange={(time, timeString) =>
-            //   this.handleDateAndTimeChange(time, timeString, index, 'startTime')
-            // }
-            // handleFinishDateChange={(date, dateString) =>
-            //   this.handleDateAndTimeChange(date, dateString, index, 'endDate')
-            // }
-            // handleFinishTimeChange={(time, timeString) =>
-            //   this.handleDateAndTimeChange(time, timeString, index, 'endTime')
-            // }
             handleRangeChange={(range, rangeString) =>
               this.handleRangeChange(range, rangeString, index)
             }
@@ -203,20 +187,6 @@ class CreateBookingForm extends Component {
       </div>
     );
   };
-
-  // handleDateAndTimeChange = (date, dateString, index, entity) => {
-  //   const { datesAndTimes } = this.state;
-  //   const newDatesAndTimes = datesAndTimes.map((item, i) => {
-  //     if (index === i) {
-  //       item[entity + 'Moment'] = date;
-  //       item[entity] = dateString;
-  //     }
-  //     return item;
-  //   });
-  //   this.setState({
-  //     datesAndTimes: newDatesAndTimes,
-  //   });
-  // };
 
   handleRangeChange = (range, rangeString, index) => {
     const { datesAndTimes } = this.state;
@@ -458,10 +428,6 @@ class DatesAndTimes extends Component {
   render() {
     const {
       recurrence,
-      // handleStartDateChange,
-      // handleStartTimeChange,
-      // handleFinishDateChange,
-      // handleFinishTimeChange,
       handleRangeChange,
       handleCapacityChange,
       removeRecurrence,
@@ -497,38 +463,6 @@ class DatesAndTimes extends Component {
           />
         </div>
 
-        {/* <FormItem style={{ marginBottom: 6 }}>
-          <DatePicker
-            onChange={handleStartDateChange}
-            value={recurrence.startDateMoment}
-            placeholder="Start date"
-          />
-        </FormItem>
-        <FormItem style={{ marginBottom: 12 }}>
-          <TimePicker
-            onChange={handleStartTimeChange}
-            value={recurrence.startTimeMoment}
-            format="HH:mm"
-            minuteStep={5}
-            placeholder="Start time"
-          />
-        </FormItem>
-        <FormItem style={{ marginBottom: 6 }}>
-          <DatePicker
-            placeholder="Finish date"
-            onChange={handleFinishDateChange}
-            value={recurrence.endDateMoment}
-          />
-        </FormItem>
-        <FormItem style={{ marginBottom: 12 }}>
-          <TimePicker
-            onChange={handleFinishTimeChange}
-            value={recurrence.endTimeMoment}
-            format="HH:mm"
-            minuteStep={5}
-            placeholder="Finish time"
-          />
-        </FormItem> */}
         {isPublicActivity && (
           <FormItem style={{ marginBottom: 12 }}>
             <InputNumber

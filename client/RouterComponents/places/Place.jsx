@@ -106,10 +106,6 @@ function Place({ history, match }) {
             {place.longDescription && renderHTML(place.longDescription)}{' '}
           </div>
         </div>
-
-        <div style={{ display: 'flex', justifyContent: 'center', margin: 12 }}>
-          {isSuperAdmin && <Link to={`/edit-place/${place._id}`}>Edit</Link>}
-        </div>
       </Col>
 
       <Col md={24} lg={6}>
@@ -121,18 +117,29 @@ function Place({ history, match }) {
               padding: 12,
             }}
           >
-            <h4 style={{ flexGrow: 1, marginLeft: 12, marginTop: 24 }}>
+            <h3 style={{ flexGrow: 1, marginLeft: 12, marginTop: 24 }}>
               {place.additionalInfo}
-            </h4>
+            </h3>
           </div>
         </MediaQuery>
 
         <MediaQuery query="(max-width: 991px)">
-          <h4 style={{ textAlign: 'center', marginBottom: 24 }}>
+          <h3 style={{ textAlign: 'center', margin: 12, marginBottom: 24 }}>
             {place.additionalInfo}
-          </h4>
+          </h3>
         </MediaQuery>
       </Col>
+
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          margin: 12,
+        }}
+      >
+        {isSuperAdmin && <Link to={`/edit-place/${place._id}`}>Edit</Link>}
+      </div>
     </Row>
   );
 }
