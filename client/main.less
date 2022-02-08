@@ -71,3 +71,26 @@ p {
   border: 1px solid @primary-color;
   padding-bottom: 4px;
 }
+
+.sortable-thumb {
+  position: relative;
+  width: 120px;
+  height: 90px;
+  margin: 8px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #1c1c1c;
+
+  &:hover {
+    cursor: grab;
+  }
+
+  &-icon {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: 99;
+  }
+}

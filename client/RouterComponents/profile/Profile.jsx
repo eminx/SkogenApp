@@ -23,6 +23,7 @@ import {
   Typography,
   message,
 } from 'antd/lib';
+import { CloseOutlined } from '@ant-design/icons';
 
 import { editorFormats, editorModules } from '../../themes/skogen';
 import UploadAvatar from '../../UIComponents/UploadAvatar';
@@ -58,7 +59,6 @@ class Profile extends PureComponent {
       this.props.currentUser &&
       this.props.currentUser.images
     ) {
-      console.log(this.props.currentUser);
       this.parseImages();
     }
   }
@@ -253,6 +253,13 @@ class Profile extends PureComponent {
       console.log(error);
       message.error(error.error);
     }
+  };
+
+  handleRemoveImage = (index) => {
+    this.setState(({ images }) => ({
+      images: images.filter((image, i) => i !== index),
+      isImagesEdited: true,
+    }));
   };
 
   render() {
@@ -536,7 +543,7 @@ class Profile extends PureComponent {
                           key={image.src}
                           index={index}
                           image={image.src}
-                          onRemoveImage={() => this.onRemoveImage(index)}
+                          onRemoveImage={() => this.handleRemoveImage(index)}
                         />
                       ))}
 
@@ -591,39 +598,17 @@ class Profile extends PureComponent {
 }
 
 const thumbStyle = (backgroundImage) => ({
-  flexBasis: 120,
-  height: 80,
-  margin: 8,
   backgroundImage: backgroundImage && `url('${backgroundImage}')`,
-  backgroundPosition: 'center',
-  backgroundSize: 'cover',
-  borderRadius: 4,
-  border: '1px solid #fff',
 });
 
-const thumbIconStyle = {
-  float: 'right',
-  margin: 2,
-  padding: 4,
-  borderRadius: 4,
-  backgroundColor: 'rgba(255, 255, 255, .8)',
-  cursor: 'pointer',
-};
-
 const SortableItem = sortableElement(({ image, onRemoveImage, index }) => {
-  const onRemoveClick = (event) => {
-    event.stopPropagation();
-    event.preventDefault();
-    onRemoveImage();
-  };
-
   return (
     <div key={image} className="sortable-thumb" style={thumbStyle(image)}>
-      <div
-        color="dark-1"
-        size="small"
-        style={thumbIconStyle}
-        onClick={onRemoveClick}
+      <Button
+        className="sortable-thumb-icon"
+        shape="circle"
+        icon={<CloseOutlined />}
+        onClick={onRemoveImage}
       />
     </div>
   );

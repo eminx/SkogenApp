@@ -178,7 +178,10 @@ function Community(props) {
 
   return (
     <div className="community-page" style={{ minHeight: '200vh' }}>
-      <Loader isContainer spinning={!cascaderOptions}>
+      <Loader
+        isContainer
+        spinning={!publicProfiles || publicProfiles.length < 1}
+      >
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <QMarkPop>{helperText}</QMarkPop>
         </div>
