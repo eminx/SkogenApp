@@ -372,15 +372,18 @@ class Calendar extends PureComponent {
             </Col>
           </Row>
           <Row style={{ paddingTop: 12 }} span={24}>
-            <Text>
-              {selectedBooking &&
-                selectedBooking.longDescription &&
-                (selectedBooking.isPrivateProcess
-                  ? ''
-                  : renderHTML(
-                      selectedBooking.longDescription.slice(0, 120) + '...'
-                    ))}
-            </Text>
+            <div>
+              <Text>
+                {selectedBooking &&
+                  selectedBooking.longDescription &&
+                  (selectedBooking.isPrivateGroup
+                    ? ''
+                    : renderHTML(
+                        selectedBooking.longDescription.slice(0, 120) + '...'
+                      ))}
+              </Text>
+            </div>
+            <br />
             {selectedBooking && selectedBooking.isPublicActivity && (
               <Link
                 to={

@@ -45,6 +45,7 @@ Meteor.publish('groups', function () {
 
   const fields = {
     title: 1,
+    description: 1,
     readingMaterial: 1,
     imageUrl: 1,
     meetings: 1,
