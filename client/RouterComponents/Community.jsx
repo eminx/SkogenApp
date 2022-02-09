@@ -34,6 +34,12 @@ function Community({ history }) {
     getPublicProfiles();
   }, []);
 
+  const screenWidth =
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth;
+  const isMobile = screenWidth < 911;
+
   const getKeywords = async () => {
     try {
       const allKeywords = await call('getKeywords');
@@ -103,18 +109,19 @@ function Community({ history }) {
       >
         <div>{menus}</div>
         <Divider type="vertical" />
-        {selectedProfile ? (
+        {selectedProfile && !isMobile && (
           <div
             style={{
               maxWidth: 380,
               maxHeight: 480,
               overflow: 'scroll',
               padding: 12,
+              paddingTop: 0,
             }}
           >
             <ProfileView profile={selectedProfile} />
           </div>
-        ) : null}
+        )}
       </div>
     );
   };
@@ -137,12 +144,6 @@ function Community({ history }) {
   const closeModal = () => {
     setSelectedProfile(null);
   };
-
-  const screenWidth =
-    window.innerWidth ||
-    document.documentElement.clientWidth ||
-    document.body.clientWidth;
-  const isMobile = screenWidth < 911;
 
   return (
     <div className="community-page" style={{ minHeight: '200vh' }}>
@@ -231,14 +232,7 @@ function Community({ history }) {
 
 function ProfileView({ profile }) {
   return (
-    <div
-      style={{
-        maxWidth: 380,
-        maxHeight: 480,
-        overflow: 'scroll',
-        padding: 12,
-      }}
-    >
+    <div>
       <div
         style={{
           display: 'flex',

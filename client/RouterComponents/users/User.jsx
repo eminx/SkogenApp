@@ -120,9 +120,7 @@ function User({ match }) {
 
           <Col md={16}>
             <MediaQuery query="(min-width: 768px)">
-              {/* <Affix offsetTop={50} target={() => affixContainer}> */}
               <ImageSlider user={user} height={500} />
-              {/* </Affix> */}
             </MediaQuery>
           </Col>
         </Row>
