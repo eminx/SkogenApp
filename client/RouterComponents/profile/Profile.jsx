@@ -276,6 +276,12 @@ class Profile extends PureComponent {
               <Blaze template="loginButtons" />
             </Col>
           </Row>
+          <div style={{ margin: '24px 0' }}>
+            <p>
+              By using this app with an account, you agree with{' '}
+              <Link to="/terms">our terms and conditions</Link>.
+            </p>
+          </div>
         </div>
       );
     }
@@ -567,6 +573,15 @@ class Profile extends PureComponent {
             </Row>
           </Col>
         </Row>
+
+        <Divider />
+
+        <div style={{ margin: '24px 0' }}>
+          <p style={{ textAlign: 'center' }}>
+            By using this app with an account, you agree with{' '}
+            <Link to="/terms">our terms and conditions</Link>.
+          </p>
+        </div>
 
         <Divider />
 
