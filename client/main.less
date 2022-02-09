@@ -17,6 +17,7 @@
 @box-shadow-base: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
   0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05); // major shadow for layers
 @typography-title-font-weight: 700;
+@zindex-modal: 10000;
 
 .main-viewport {
   background-image: url('images/skogen-new-background-2.svg');
@@ -92,5 +93,14 @@ p {
     right: 4px;
     background-color: rgba(255, 255, 255, 0.3);
     z-index: 99;
+  }
+}
+@media (max-width: 910px) {
+  .cascader-container.cascader-container--collapsed.ant-cascader-dropdown {
+    .ant-cascader-menus {
+      ul.ant-cascader-menu {
+        width: 45%;
+      }
+    }
   }
 }

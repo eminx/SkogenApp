@@ -4,6 +4,7 @@ import {
   Avatar,
   Cascader,
   Divider,
+  Modal,
   Row,
   Tabs,
   Typography,
@@ -21,7 +22,8 @@ const { TabPane } = Tabs;
 const helperText =
   'Here you find people connected to Skogen and discover what they are interested in. If you want to connect to Skogen, make your profile page by logging in and choosing to make your profile public.';
 
-function Community(props) {
+function Community({ history }) {
+  const [cascaderColumns, setCascaderColumns] = useState(0);
   const [keywords, setKeywords] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [publicProfiles, setPublicProfiles] = useState([]);
@@ -69,7 +71,7 @@ function Community(props) {
   };
 
   const handleCascaderSelect = (value, selectedOptions) => {
-    console.log(value);
+    setCascaderColumns(value.length);
     const username = value[1];
     if (username) {
       getProfile(username);
@@ -110,51 +112,7 @@ function Community(props) {
               padding: 12,
             }}
           >
-            <div
-              style={{
-                display: 'flex',
-                marginBottom: 24,
-              }}
-            >
-              {selectedProfile.avatar && (
-                <Link to={`/@${selectedProfile.username}`}>
-                  <Avatar
-                    shape="square"
-                    size={80}
-                    src={
-                      selectedProfile.avatar ? selectedProfile.avatar.src : null
-                    }
-                    style={{ marginRight: 24 }}
-                  />
-                </Link>
-              )}
-              <div>
-                <Link to={`/@${selectedProfile.username}`}>
-                  <Title level={3}>{selectedProfile.username}</Title>
-                </Link>
-                {selectedProfile.firstName && selectedProfile.lastName && (
-                  <Text strong style={{ marginBottom: 24 }}>
-                    {selectedProfile.firstName + ' ' + selectedProfile.lastName}
-                  </Text>
-                )}
-              </div>
-            </div>
-            {selectedProfile.forCommunity && (
-              <Paragraph italic>
-                {renderHTML(selectedProfile.forCommunity)}
-              </Paragraph>
-            )}
-            <div style={{ marginBottom: 24 }}>
-              For more info, go to the{' '}
-              <Link to={`/@${selectedProfile.username}`}>profile page</Link>.
-            </div>
-
-            {selectedProfile.contactInfo && (
-              <div>
-                <Title level={5}>Contact Info</Title>
-                <Paragraph>{renderHTML(selectedProfile.contactInfo)}</Paragraph>
-              </div>
-            )}
+            <ProfileView profile={selectedProfile} />
           </div>
         ) : null}
       </div>
@@ -175,6 +133,16 @@ function Community(props) {
     setSelectedProfile(null);
     setActiveTab(key);
   };
+
+  const closeModal = () => {
+    setSelectedProfile(null);
+  };
+
+  const screenWidth =
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    document.body.clientWidth;
+  const isMobile = screenWidth < 911;
 
   return (
     <div className="community-page" style={{ minHeight: '200vh' }}>
@@ -224,7 +192,10 @@ function Community(props) {
             {activeTab === '2' && (
               <Row justify="space-between">
                 <Cascader
-                  // autoFocus
+                  changeOnSelect
+                  dropdownClassName={`cascader-container cascader-container-${
+                    cascaderColumns > 0 ? '-collapsed' : '-open'
+                  }`}
                   dropdownRender={dropdownRender}
                   open={activeTab === '2'}
                   options={cascaderOptions}
@@ -241,7 +212,74 @@ function Community(props) {
             )}
           </TabPane>
         </Tabs>
+
+        {isMobile && (
+          <Modal
+            okText="See Full Profile"
+            style={{ top: 0, bottom: 0 }}
+            visible={Boolean(selectedProfile)}
+            onOk={() => history.push(`/@${selectedProfile.username}`)}
+            onCancel={() => closeModal()}
+          >
+            <ProfileView profile={selectedProfile} />
+          </Modal>
+        )}
       </Loader>
+    </div>
+  );
+}
+
+function ProfileView({ profile }) {
+  return (
+    <div
+      style={{
+        maxWidth: 380,
+        maxHeight: 480,
+        overflow: 'scroll',
+        padding: 12,
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          marginBottom: 24,
+        }}
+      >
+        {profile.avatar && (
+          <Link to={`/@${profile.username}`}>
+            <Avatar
+              shape="square"
+              size={80}
+              src={profile.avatar ? profile.avatar.src : null}
+              style={{ marginRight: 24 }}
+            />
+          </Link>
+        )}
+        <div>
+          <Link to={`/@${profile.username}`}>
+            <Title level={3}>{profile.username}</Title>
+          </Link>
+          {profile.firstName && profile.lastName && (
+            <Text strong style={{ marginBottom: 24 }}>
+              {profile.firstName + ' ' + profile.lastName}
+            </Text>
+          )}
+        </div>
+      </div>
+      {profile.forCommunity && (
+        <Paragraph italic>{renderHTML(profile.forCommunity)}</Paragraph>
+      )}
+      <div style={{ marginBottom: 24 }}>
+        For more info, go to the{' '}
+        <Link to={`/@${profile.username}`}>profile page</Link>.
+      </div>
+
+      {profile.contactInfo && (
+        <div>
+          <Title level={5}>Contact Info</Title>
+          <Paragraph>{renderHTML(profile.contactInfo)}</Paragraph>
+        </div>
+      )}
     </div>
   );
 }
