@@ -125,9 +125,6 @@ class Group extends Component {
 
   getChatMessages = () => {
     const { chatData, currentUser } = this.props;
-    if (!currentUser) {
-      return [];
-    }
     let messages = [];
 
     if (chatData) {
@@ -672,7 +669,7 @@ class Group extends Component {
           </div>
         )}
 
-        {currentUser && group && group.members && (
+        {group && group.members && (
           <Fragment>
             <div style={{ paddingTop: 24, paddingLeft: 12 }}>
               <h3>Members</h3>
