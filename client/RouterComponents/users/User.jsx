@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
 import MediaQuery from 'react-responsive';
 
 import {
-  Affix,
   Alert,
   Avatar,
+  Button,
   Carousel,
   Col,
   Divider,
@@ -14,6 +15,7 @@ import {
   Typography,
   message,
 } from 'antd';
+import LeftOutlined from '@ant-design/icons/lib/icons/LeftOutlined';
 
 import Loader from '../../UIComponents/Loader';
 import { call } from '../../functions';
@@ -70,6 +72,11 @@ function User({ match }) {
 
   return (
     <div style={{ padding: 24 }}>
+      <div style={{ paddingBottom: 24 }}>
+        <Link to="/community">
+          <Button icon={<LeftOutlined />}>Community</Button>
+        </Link>
+      </div>
       <Loader isContainer spinning={loading}>
         <Row gutter={24}>
           <Col md={8}>
