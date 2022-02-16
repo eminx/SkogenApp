@@ -255,7 +255,11 @@ class Calendar extends PureComponent {
                 {placesList.map((room, i) => (
                   <Popover
                     key={room.name}
-                    content={<div style={popoverStyle}>{room.description}</div>}
+                    content={
+                      <div style={popoverStyle}>
+                        {renderHTML(room.description)}
+                      </div>
+                    }
                   >
                     <Tag
                       color={colors[i]}
