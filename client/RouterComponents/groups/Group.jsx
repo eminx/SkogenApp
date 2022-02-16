@@ -979,6 +979,16 @@ class Group extends Component {
           </div>
         </MediaQuery>
 
+        {group && isAdmin && (
+          <Row justify="center">
+            <Divider />
+            <Link to={`/edit-group/${group._id}`}>
+              <Button>Edit</Button>
+            </Link>
+            <Divider />
+          </Row>
+        )}
+
         <Modal
           title={`Confirm ${
             isMember ? 'leaving' : 'participation to'

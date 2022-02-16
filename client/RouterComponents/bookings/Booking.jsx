@@ -466,23 +466,6 @@ class Booking extends React.Component {
     const messages = this.getChatMessages();
     const isRegisteredMember = this.isRegisteredMember();
 
-    const EditButton =
-      currentUser &&
-      bookingData &&
-      (currentUser._id === bookingData.authorId || currentUser.isSuperAdmin) ? (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            position: 'absolute',
-            top: -36,
-            right: 12,
-          }}
-        >
-          <Link to={`/edit-booking/${bookingData._id}`}>Edit</Link>
-        </div>
-      ) : null;
-
     return (
       <div style={{ padding: 24 }}>
         <div style={{ paddingBottom: 24 }}>
@@ -512,8 +495,8 @@ class Booking extends React.Component {
                 isLoading={isLoading}
                 currentUser={currentUser}
               />
-              {EditButton}
             </Col>
+
             <Col
               xs={24}
               sm={24}
@@ -536,6 +519,17 @@ class Booking extends React.Component {
           <Loader />
         )}
 
+        <Row justify="center">
+          <Divider />
+          {currentUser &&
+            bookingData &&
+            (currentUser._id === bookingData.authorId ||
+              currentUser.isSuperAdmin) && (
+              <Link to={`/edit-booking/${bookingData._id}`}>
+                <Button>Edit</Button>
+              </Link>
+            )}
+        </Row>
         <Divider />
 
         {bookingData &&

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Button, Tabs } from 'antd';
+import { Row, Col, Button, Divider, Tabs } from 'antd';
 import renderHTML from 'react-render-html';
 
 import PagesList from '../../UIComponents/PagesList';
@@ -69,15 +69,17 @@ class Page extends PureComponent {
                   ))}
               </div>
             </Col>
-            <Col md={4}>
-              {page && currentUser && currentUser.isSuperAdmin && (
-                <Link to={`/edit-page/${parseTitle(page.title)}`}>
-                  {' '}
-                  <Button>Edit</Button>
-                </Link>
-              )}
-            </Col>
           </Row>
+          {page && currentUser && currentUser.isSuperAdmin && (
+            <Row justify="center">
+              <Divider />
+              <Link to={`/edit-page/${parseTitle(page.title)}`}>
+                {' '}
+                <Button>Edit</Button>
+              </Link>
+              <Divider />
+            </Row>
+          )}
         </Loader>
       </div>
     );
