@@ -211,8 +211,6 @@ class Calendar extends PureComponent {
       ],
     }));
 
-    console.log(selectedBooking);
-
     return (
       <div style={{ padding: 12 }}>
         <Row justify="center" style={{ paddingBottom: 12 }}>

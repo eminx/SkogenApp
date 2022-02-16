@@ -23,12 +23,15 @@ const { Paragraph, Text, Title } = Typography;
 const helperText =
   'Here you find people connected to Skogen and discover what they are interested in. If you want to connect to Skogen, make your profile page by logging in and choosing to make your profile public.';
 
+function shuffleArray(arr) {
+  return arr.sort(() => Math.random() - 0.5);
+}
+
 function Community({ history }) {
   const [cascaderColumns, setCascaderColumns] = useState(0);
   const [keywords, setKeywords] = useState([]);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [publicProfiles, setPublicProfiles] = useState([]);
-  const [activeTab, setActiveTab] = useState('1');
   const {
     location: { search },
   } = history;
@@ -61,7 +64,7 @@ function Community({ history }) {
   const getPublicProfiles = async () => {
     try {
       const profiles = await call('getPublicProfiles');
-      setPublicProfiles(profiles);
+      setPublicProfiles(shuffleArray(profiles));
     } catch (error) {
       message.error(error.error);
     }
@@ -190,38 +193,44 @@ function Community({ history }) {
             />
           </Row>
         ) : (
-          <Row justify="center">
-            {publicProfiles.map(
-              (p) =>
-                p.avatar && (
-                  <Link key={p.username} to={`/@${p.username}`}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        padding: 12,
-                        maxWidth: 140,
-                      }}
-                    >
-                      <Avatar
-                        shape="square"
-                        size={120}
-                        src={p.avatar.src}
-                        style={{ border: '1px solid #921bef' }}
-                      />
-                      <Title
-                        className="avatar-ellipsis"
-                        level={5}
-                        style={{ textAlign: 'center' }}
-                      >
-                        {p.username}
-                      </Title>
-                    </div>
-                  </Link>
-                )
-            )}
-          </Row>
+          <div>
+            <Row justify="center" style={{ marginTop: 24 }}>
+              <Text italic>Sorted randomly</Text>
+            </Row>
+            <Row justify="center">
+              {publicProfiles &&
+                publicProfiles.map(
+                  (p) =>
+                    p.avatar && (
+                      <Link key={p.username} to={`/@${p.username}`}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            padding: 12,
+                            maxWidth: 140,
+                          }}
+                        >
+                          <Avatar
+                            shape="square"
+                            size={120}
+                            src={p.avatar.src}
+                            style={{ border: '1px solid #921bef' }}
+                          />
+                          <Title
+                            className="avatar-ellipsis"
+                            level={5}
+                            style={{ textAlign: 'center' }}
+                          >
+                            {p.username}
+                          </Title>
+                        </div>
+                      </Link>
+                    )
+                )}
+            </Row>
+          </div>
         )}
 
         {isMobile && (
