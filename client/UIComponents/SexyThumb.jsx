@@ -127,18 +127,6 @@ function SexyThumb({ item, isHome, isPub, showPast }) {
               bottom: 12,
             }}
           >
-            {!isHome && (isGroup || item.isGroup) && (
-              <Fragment>
-                <Avatar
-                  size={48}
-                  style={{ color: '#921bef', backgroundColor: '#fbd5d0' }}
-                >
-                  {item.adminUsername[0]}
-                </Avatar>
-                <span style={{ color: '#fff' }}>{item.adminUsername}</span>
-              </Fragment>
-            )}
-
             {isPub && <em style={{ color: '#fff' }}>{item.format}</em>}
           </div>
         </div>
