@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { parse, stringify } from 'query-string';
 import {
   Avatar,
   Cascader,
   Divider,
   Modal,
+  Radio,
   Row,
-  Tabs,
   Typography,
   message,
 } from 'antd/lib';
@@ -16,8 +17,8 @@ import Loader from '../UIComponents/Loader';
 import QMarkPop from '../UIComponents/QMarkPop';
 import { call } from '../functions';
 
+const RadioGroup = Radio.Group;
 const { Paragraph, Text, Title } = Typography;
-const { TabPane } = Tabs;
 
 const helperText =
   'Here you find people connected to Skogen and discover what they are interested in. If you want to connect to Skogen, make your profile page by logging in and choosing to make your profile public.';
@@ -28,6 +29,10 @@ function Community({ history }) {
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [publicProfiles, setPublicProfiles] = useState([]);
   const [activeTab, setActiveTab] = useState('1');
+  const {
+    location: { search },
+  } = history;
+  const { showFind } = parse(search, { parseBooleans: true });
 
   useEffect(() => {
     getKeywords();
@@ -96,9 +101,6 @@ function Community({ history }) {
   }));
 
   const dropdownRender = (menus) => {
-    if (activeTab !== '2') {
-      return;
-    }
     return (
       <div
         style={{
@@ -133,12 +135,14 @@ function Community({ history }) {
     );
   };
 
-  const handleTabSelect = (key, event) => {
-    if (key === activeTab) {
+  const handleTabSelect = ({ target: { value } }) => {
+    const showFind = value === 'Find People';
+    history.push({ search: stringify({ showFind }) });
+
+    if (value === showFind) {
       return;
     }
     setSelectedProfile(null);
-    setActiveTab(key);
   };
 
   const closeModal = () => {
@@ -151,68 +155,74 @@ function Community({ history }) {
         isContainer
         spinning={!publicProfiles || publicProfiles.length < 1}
       >
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <Row justify="center">
           <QMarkPop>{helperText}</QMarkPop>
-        </div>
-        <Tabs centered onTabClick={handleTabSelect}>
-          <TabPane tab="See People" key="1">
-            <Row justify="center">
-              {publicProfiles.map(
-                (p) =>
-                  p.avatar && (
-                    <Link key={p.username} to={`/@${p.username}`}>
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          padding: 12,
-                          maxWidth: 140,
-                        }}
+        </Row>
+
+        <Row justify="center" style={{ margin: 12 }}>
+          <RadioGroup
+            value={showFind ? 'Find People' : 'See People'}
+            options={['See People', 'Find People']}
+            onChange={handleTabSelect}
+            optionType="button"
+            buttonStyle="solid"
+          />
+        </Row>
+
+        {showFind ? (
+          <Row justify="space-between">
+            <Cascader
+              changeOnSelect
+              dropdownClassName={`cascader-container cascader-container-${
+                cascaderColumns > 0 ? '-collapsed' : '-open'
+              }`}
+              dropdownRender={dropdownRender}
+              open
+              options={cascaderOptions}
+              placeholder="Type/Select Keywords..."
+              showSearch={{ filter }}
+              size="large"
+              style={{
+                backgroundColor: '#401159',
+                width: 280,
+              }}
+              onChange={handleCascaderSelect}
+            />
+          </Row>
+        ) : (
+          <Row justify="center">
+            {publicProfiles.map(
+              (p) =>
+                p.avatar && (
+                  <Link key={p.username} to={`/@${p.username}`}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        padding: 12,
+                        maxWidth: 140,
+                      }}
+                    >
+                      <Avatar
+                        shape="square"
+                        size={120}
+                        src={p.avatar.src}
+                        style={{ border: '1px solid #921bef' }}
+                      />
+                      <Title
+                        className="avatar-ellipsis"
+                        level={5}
+                        style={{ textAlign: 'center' }}
                       >
-                        <Avatar
-                          shape="square"
-                          size={120}
-                          src={p.avatar.src}
-                          style={{ border: '1px solid #921bef' }}
-                        />
-                        <Title
-                          className="avatar-ellipsis"
-                          level={5}
-                          style={{ textAlign: 'center' }}
-                        >
-                          {p.username}
-                        </Title>
-                      </div>
-                    </Link>
-                  )
-              )}
-            </Row>
-          </TabPane>
-          <TabPane tab="Find People" key="2">
-            {activeTab === '2' && (
-              <Row justify="space-between">
-                <Cascader
-                  changeOnSelect
-                  dropdownClassName={`cascader-container cascader-container-${
-                    cascaderColumns > 0 ? '-collapsed' : '-open'
-                  }`}
-                  dropdownRender={dropdownRender}
-                  open={activeTab === '2'}
-                  options={cascaderOptions}
-                  placeholder="Type/Select Keywords..."
-                  showSearch={{ filter }}
-                  size="large"
-                  style={{
-                    backgroundColor: '#401159',
-                    width: 280,
-                  }}
-                  onChange={handleCascaderSelect}
-                />
-              </Row>
+                        {p.username}
+                      </Title>
+                    </div>
+                  </Link>
+                )
             )}
-          </TabPane>
-        </Tabs>
+          </Row>
+        )}
 
         {isMobile && (
           <Modal
