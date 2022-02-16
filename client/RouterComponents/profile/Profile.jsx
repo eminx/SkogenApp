@@ -23,7 +23,7 @@ import {
   Typography,
   message,
 } from 'antd/lib';
-import { CloseOutlined } from '@ant-design/icons';
+import CloseOutlined from '@ant-design/icons/lib/icons/CloseOutlined';
 
 import { editorFormats, editorModules } from '../../themes/skogen';
 import UploadAvatar from '../../UIComponents/UploadAvatar';
