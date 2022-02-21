@@ -86,13 +86,10 @@ function User({ match }) {
                 size={120}
                 src={user.avatar && user.avatar.src}
               >
-                {user.username[0].toLowerCase()}
+                {user.username[0]}
               </Avatar>
               <div style={{ paddingLeft: 12 }}>
-                <Title
-                  level={4}
-                  style={{ textTransform: 'lowercase', marginTop: 24 }}
-                >
+                <Title level={4} style={{ marginTop: 24 }}>
                   {user.username}
                 </Title>
                 <Text strong>{getFullName(user)}</Text>
