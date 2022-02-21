@@ -9,6 +9,8 @@ Accounts.onCreateUser((options, user) => {
   user.attending = [];
   user.groups = [];
   user.notifications = [];
+  user.keywords = [];
+  user.images = [];
   Meteor.call(
     'sendEmail',
     user.emails[0].address,

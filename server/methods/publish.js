@@ -10,14 +10,16 @@ Meteor.publish('attendingEvents', function () {
 
 Meteor.publish('gatherings', function (onlyPublic = false) {
   const fields = {
-    title: 1,
-    datesAndTimes: 1,
-    roomIndex: 1,
-    room: 1,
-    place: 1,
-    isPublicActivity: 1,
     authorName: 1,
+    datesAndTimes: 1,
+    isPublicActivity: 1,
+    longDescription: 1,
+    place: 1,
+    room: 1,
+    roomIndex: 1,
+    title: 1,
   };
+
   const publicFields = {
     title: 1,
     subTitle: 1,
@@ -43,6 +45,7 @@ Meteor.publish('groups', function () {
 
   const fields = {
     title: 1,
+    description: 1,
     readingMaterial: 1,
     imageUrl: 1,
     meetings: 1,
@@ -169,7 +172,21 @@ Meteor.publish('users', function () {
   if (!user || !user.isSuperAdmin) {
     return null;
   }
-  return Meteor.users.find();
+  return Meteor.users.find({}, {
+    fields: {
+      avatar: 1,
+      contactInfo: 1,
+      createdAt: 1,
+      emails: 1,
+      firstName: 1,
+      forCommunity: 1,
+      interestedIn: 1,
+      isRegisteredMember: 1,
+      lastName: 1,
+      meAndSkogen: 1,
+      username: 1,
+    },
+  });
 });
 
 Meteor.publish('me', function () {
@@ -180,18 +197,22 @@ Meteor.publish('me', function () {
 });
 
 Meteor.publish('user', function (username) {
-  return Meteor.users.find(
-    { username },
-    {
-      fields: {
-        username: 1,
-        firstName: 1,
-        lastName: 1,
-        bio: 1,
-        avatar: 1,
-      },
-    }
-  );
+  return Meteor.users.find({
+    username, 
+    isPublic: true 
+  }, {
+    fields: {
+      avatar: 1,
+      contactInfo: 1,
+      firstName: 1,
+      forCommunity: 1,
+      images: 1,
+      interestedIn: 1,
+      lastName: 1,
+      skogenAndMe: 1,
+      username: 1,
+    },
+  });
 });
 
 Meteor.publish('userWorks', function (username) {

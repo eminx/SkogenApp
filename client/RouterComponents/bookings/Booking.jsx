@@ -300,10 +300,11 @@ class Booking extends React.Component {
     const isRegisteredMember = this.isRegisteredMember();
 
     const customPanelStyle = {
-      marginBottom: 24,
+      width: '100%',
+      marginBottom: 12,
       borderRadius: 4,
-      border: 0,
-      background: '#f7f7f7',
+      border: '1px solid #921bef',
+      background: '#fff',
       overflow: 'hidden',
     };
 
@@ -409,7 +410,7 @@ class Booking extends React.Component {
           <Panel
             key={occurence.startDate + occurence.startTime}
             header={<FancyDate occurence={occurence} />}
-            style={{ ...customPanelStyle, paddingRight: 12 }}
+            style={{ ...customPanelStyle }}
           >
             {conditionalRender(occurence, occurenceIndex)}
           </Panel>
@@ -465,25 +466,6 @@ class Booking extends React.Component {
     const messages = this.getChatMessages();
     const isRegisteredMember = this.isRegisteredMember();
 
-    const EditButton =
-      currentUser &&
-      bookingData &&
-      (currentUser._id === bookingData.authorId || currentUser.isSuperAdmin) ? (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            position: 'absolute',
-            top: -36,
-            right: 12,
-          }}
-        >
-          <Link to={`/edit-booking/${bookingData._id}`}>Edit</Link>
-        </div>
-      ) : null;
-
-    // const messages = this.getChatMessages();
-
     return (
       <div style={{ padding: 24 }}>
         <div style={{ paddingBottom: 24 }}>
@@ -513,8 +495,8 @@ class Booking extends React.Component {
                 isLoading={isLoading}
                 currentUser={currentUser}
               />
-              {EditButton}
             </Col>
+
             <Col
               xs={24}
               sm={24}
@@ -537,6 +519,17 @@ class Booking extends React.Component {
           <Loader />
         )}
 
+        <Row justify="center">
+          <Divider />
+          {currentUser &&
+            bookingData &&
+            (currentUser._id === bookingData.authorId ||
+              currentUser.isSuperAdmin) && (
+              <Link to={`/edit-booking/${bookingData._id}`}>
+                <Button>Edit</Button>
+              </Link>
+            )}
+        </Row>
         <Divider />
 
         {bookingData &&
@@ -589,7 +582,7 @@ const RsvpForm = (props) => {
   const { isUpdateMode, handleSubmit, handleDelete } = props;
 
   const layout = {
-    wrapperCol: { span: 4 },
+    wrapperCol: { span: 24 },
   };
   return (
     <Form {...layout} onFinish={handleSubmit} style={{ paddingLeft: 12 }}>

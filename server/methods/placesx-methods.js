@@ -1,32 +1,30 @@
 import { Meteor } from 'meteor/meteor';
 
 Meteor.methods({
-  getAllWorks() {
+  getAllPlaces() {
     try {
-      const works = Works.find().fetch();
+      const places = PlacesX.find().fetch();
 
-      const worksWithAvatars = works.map(work => {
-        const user = Meteor.users.findOne(work.authorId);
+      const placesWithAvatars = places.map(place => {
+        const user = Meteor.users.findOne(place.authorId);
         return {
-          ...work,
+          ...place,
           authorAvatar: user.avatar
         };
       });
-      return worksWithAvatars;
+      return placesWithAvatars;
     } catch (error) {
       throw new Meteor.Error(error);
     }
   },
 
-  getWork(workId, username) {
+  getPlace(placeId) {
     try {
-      const work = Works.findOne(workId);
-      if (work.authorUsername !== username) {
-        throw new Meteor.Error('Not allowed!');
-      }
-      const author = Meteor.users.findOne(work.authorId);
+      const place = PlacesX.findOne(placeId);
+
+      const author = Meteor.users.findOne(place.authorId);
       return {
-        ...work,
+        ...place,
         authorAvatar: author.avatar
       };
     } catch (error) {
@@ -34,14 +32,14 @@ Meteor.methods({
     }
   },
 
-  createWork(values, images) {
+  createPlace(values, images) {
     const user = Meteor.user();
-    if (!user || !user.isRegisteredMember) {
+    if (!user || !user.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed!');
     }
 
     try {
-      const newWorkId = Works.insert({
+      const newPlaceId = PlacesX.insert({
         ...values,
         images,
         authorId: user._id,
@@ -50,21 +48,21 @@ Meteor.methods({
         authorLastName: user.lastName || '',
         creationDate: new Date()
       });
-      return newWorkId;
+      return newPlaceId;
     } catch (error) {
       console.log(error);
       throw new Meteor.Error(error);
     }
   },
 
-  updateWork(workId, values, images) {
+  updatePlace(placeId, values, images) {
     const user = Meteor.user();
-    if (!user) {
+    if (!user || !user.isSuperAdmin) {
       throw new Meteor.Error('Not allowed!');
     }
 
     try {
-      Works.update(workId, {
+      PlacesX.update(placeId, {
         $set: {
           ...values,
           images,
@@ -77,20 +75,20 @@ Meteor.methods({
     }
   },
 
-  deleteWork(workId) {
-    const userId = Meteor.userId();
+  deletePlace(placeId) {
+    const user = Meteor.user();
 
-    if (!userId) {
+    if (!user || !user.isSuperAdmin) {
       throw new Meteor.Error('You are not allowed!');
     }
 
-    const work = Works.findOne(workId);
-    if (work.authorId !== userId) {
+    const place = PlacesX.findOne(placeId);
+    if (place.authorId !== user._id) {
       throw new Meteor.Error('You are not allowed!');
     }
 
     try {
-      Works.remove(workId);
+      PlacesX.remove(placeId);
     } catch (error) {
       throw new Meteor.Error(error, "Couldn't remove from collection");
     }

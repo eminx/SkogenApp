@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { parse, stringify } from 'query-string';
 import moment from 'moment';
-import { Row, Radio } from 'antd';
+import { Row, Col, Radio } from 'antd';
 import Loader from '../UIComponents/Loader';
 import SexyThumb from '../UIComponents/SexyThumb';
 
@@ -14,7 +14,7 @@ const centerStyle = {
   width: '100%',
   display: 'flex',
   justifyContent: 'center',
-  padding: 6,
+  padding: 12,
 };
 
 const getFirstFutureOccurence = (occurence) =>
@@ -177,68 +177,35 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
   }
 
   return (
-    <div style={{ marginBottom: 48 }}>
-      <Row gutter={24}>
-        <div style={{ width: '100%' }}>
-          <Loader isContainer spinning={!thumbs || thumbs.length === 0}>
-            <div>
-              {/* <CovidInfo /> */}
-              <div style={centerStyle}>
-                <RadioGroup
-                  value={showPast ? 'Past' : 'Upcoming'}
-                  options={['Past', 'Upcoming']}
-                  onChange={handlePastChange}
-                  optionType="button"
-                  buttonStyle="solid"
-                />
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  justifyContent: 'center',
-                }}
-              >
-                {thumbs &&
-                  thumbs.map((activity) => (
-                    <SexyThumb
-                      key={activity._id}
-                      item={activity}
-                      isHome
-                      showPast={showPast}
-                    />
-                  ))}
-              </div>
-            </div>
-          </Loader>
-        </div>
-      </Row>
-    </div>
-  );
-}
-
-const covidInfo = [
-  `Skogen hoppas kunna öppna för publik i maj.`,
-  `Skogen aims at opening for audience in may.`,
-];
-
-const innerBoxStyle = {
-  margin: 12,
-  padding: 12,
-  maxWidth: 576,
-  border: '1px solid #ea3924',
-};
-
-function CovidInfo() {
-  return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
-      <div style={innerBoxStyle}>
-        <h3 style={{ textAlign: 'center', marginBottom: 12 }}>Notice</h3>
-        {covidInfo.map((p) => (
-          <p style={{ textAlign: 'center' }} key={p}>
-            {p}
-          </p>
-        ))}
+    <div>
+      <div style={{ width: '100%' }}>
+        <Loader isContainer spinning={!thumbs || thumbs.length === 0}>
+          <div style={centerStyle}>
+            <RadioGroup
+              value={showPast ? 'Past' : 'Upcoming'}
+              options={['Past', 'Upcoming']}
+              onChange={handlePastChange}
+              optionType="button"
+              buttonStyle="solid"
+            />
+          </div>
+          <Row style={{ marginRight: 24, paddingBottom: 12 }}>
+            {thumbs &&
+              thumbs.map((activity) => (
+                <Col
+                  key={activity._id}
+                  xs={24}
+                  sm={12}
+                  md={8}
+                  lg={8}
+                  xl={6}
+                  style={{ overflow: 'hidden', padding: '12px 24px' }}
+                >
+                  <SexyThumb item={activity} isHome showPast={showPast} />
+                </Col>
+              ))}
+          </Row>
+        </Loader>
       </div>
     </div>
   );

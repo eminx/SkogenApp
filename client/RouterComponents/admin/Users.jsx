@@ -154,10 +154,10 @@ class Users extends React.PureComponent {
 
           <Col md={8} style={{ padding: 24 }}>
             <h2 style={{ textAlign: 'center' }}>
-              {filter} Users ({usersSorted.length}){' '}
+              {filter} users ({usersSorted.length}){' '}
             </h2>
 
-            <div style={{ background: '#f8f8f8', padding: 12 }}>
+            <div style={{ padding: 12 }}>
               <span style={{ marginRight: 12 }}>filtered by </span>
               <RadioGroup
                 options={filterOptions}

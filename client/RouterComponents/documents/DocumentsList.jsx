@@ -67,7 +67,7 @@ class DocumentsList extends React.PureComponent {
                     width: '100%',
                     display: 'flex',
                     justifyContent: 'space-between',
-                    border: '1px solid #030303',
+                    border: '1px solid #401159',
                     padding: 12,
                   }}
                 >

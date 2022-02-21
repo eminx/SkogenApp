@@ -68,7 +68,7 @@ function Work({ history, match }) {
                 value={work.category.label}
                 color={work.category.color}
               >
-                <b>{work.category.label.toUpperCase()}</b>
+                <b>{work.category.label}</b>
               </Tag>
             )}
             <p style={{ ...noCapitalsHeader }}>{work.shortDescription}</p>
@@ -117,7 +117,7 @@ function Work({ history, match }) {
           >
             {isOwner && (
               <Link to={`/${currentUser.username}/edit-work/${work._id}`}>
-                Edit this Work
+                Edit
               </Link>
             )}
           </div>
@@ -155,7 +155,7 @@ function Work({ history, match }) {
               }}
             >
               <Link to={`/${currentUser.username}/edit-work/${work._id}`}>
-                Edit this Work
+                Edit
               </Link>
             </div>
           )}
@@ -188,7 +188,7 @@ function AvatarHolder({ work }) {
       <Avatar
         size={60}
         src={work.authorAvatar && work.authorAvatar.src}
-        style={{ backgroundColor: '#ea3924' }}
+        style={{ backgroundColor: '#921bef' }}
       >
         {initials}
       </Avatar>

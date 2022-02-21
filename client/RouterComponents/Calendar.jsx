@@ -1,26 +1,41 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import moment from 'moment';
 import ReactDropzone from 'react-dropzone';
+import renderHTML from 'react-render-html';
 import {
-  Row,
-  Col,
-  Card,
-  Divider,
-  Tag,
   Button,
+  Card,
+  Col,
+  Divider,
   Modal,
+  Popover,
+  Row,
   Spin,
+  Tag,
+  Tooltip,
+  Typography,
   message,
 } from 'antd';
 import Loader from '../UIComponents/Loader';
 import CalendarView from '../UIComponents/CalendarView';
 import NiceList from '../UIComponents/NiceList';
+import QMarkPop from '../UIComponents/QMarkPop';
 import colors from '../constants/colors';
+
+const { Text } = Typography;
 
 const yesterday = moment(new Date()).add(-1, 'days');
 
-class Calendar extends React.PureComponent {
+const popoverStyle = { maxWidth: 280, fontSize: 14, lineHeight: 1.3 };
+
+const helperText =
+  'This is where you can find Skogens use of spaces and planned events and activities. It is bookable by Skogen artists and study groups.';
+
+const manualsHelperText =
+  'Here you find information that you might need as you work or make things happen at Skogen.';
+
+class Calendar extends PureComponent {
   state = {
     mode: 'list',
     editBooking: null,
@@ -159,19 +174,10 @@ class Calendar extends React.PureComponent {
   };
 
   render() {
-    const {
-      isLoading,
-      currentUser,
-      placesList,
-      allActivities,
-      manuals,
-    } = this.props;
-    const {
-      editBooking,
-      calendarFilter,
-      selectedBooking,
-      isUploading,
-    } = this.state;
+    const { isLoading, currentUser, placesList, allActivities, manuals } =
+      this.props;
+    const { editBooking, calendarFilter, selectedBooking, isUploading } =
+      this.state;
 
     const futureBookings = [];
 
@@ -207,13 +213,16 @@ class Calendar extends React.PureComponent {
 
     return (
       <div style={{ padding: 12 }}>
-        {currentUser && currentUser.isRegisteredMember && (
-          <Row justify="center" style={{ paddingBottom: 12 }}>
+        <Row justify="center" style={{ paddingBottom: 12 }}>
+          {currentUser && currentUser.isRegisteredMember && (
             <Link to="/new-booking">
-              <Button>New Booking</Button>
+              <Button type="primary" component="span">
+                New Booking
+              </Button>
             </Link>
-          </Row>
-        )}
+          )}
+          <QMarkPop>{helperText}</QMarkPop>
+        </Row>
 
         <Row gutter={24} justify="center">
           <Spin
@@ -230,22 +239,37 @@ class Calendar extends React.PureComponent {
                   flexWrap: 'wrap',
                 }}
               >
-                <Tag.CheckableTag
-                  checked={calendarFilter === 'All rooms'}
-                  onChange={() => this.handleCalendarFilterChange('All rooms')}
-                  key={'All rooms'}
-                >
-                  {'All rooms'}
-                </Tag.CheckableTag>
-                {placesList.map((room, i) => (
-                  <Tag
-                    color={colors[i]}
-                    className={calendarFilter === room.name ? 'checked' : null}
-                    onClick={() => this.handleCalendarFilterChange(room.name)}
-                    key={room.name}
+                <Tooltip title="Show all">
+                  <Tag.CheckableTag
+                    checked={calendarFilter === 'All rooms'}
+                    onChange={() =>
+                      this.handleCalendarFilterChange('All rooms')
+                    }
+                    key={'All rooms'}
                   >
-                    {room.name}
-                  </Tag>
+                    {'All'}
+                  </Tag.CheckableTag>
+                </Tooltip>
+                {placesList.map((room, i) => (
+                  <Popover
+                    key={room.name}
+                    content={
+                      <div style={popoverStyle}>
+                        {renderHTML(room.description)}
+                      </div>
+                    }
+                  >
+                    <Tag
+                      color={colors[i]}
+                      className={
+                        calendarFilter === room.name ? 'checked' : null
+                      }
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => this.handleCalendarFilterChange(room.name)}
+                    >
+                      {room.name}
+                    </Tag>
+                  </Popover>
                 ))}
               </div>
 
@@ -259,7 +283,9 @@ class Calendar extends React.PureComponent {
 
         <Divider />
 
-        <h3 style={{ textAlign: 'center' }}>Skogen Manuals</h3>
+        <h3 style={{ textAlign: 'center' }}>
+          Skogen Manuals <QMarkPop>{manualsHelperText}</QMarkPop>
+        </h3>
         <Row justify="center">
           <Col md={8}>
             {isSuperAdmin && (
@@ -270,9 +296,9 @@ class Calendar extends React.PureComponent {
                     style={{
                       width: '100%',
                       height: 200,
-                      background: isDragActive ? '#ea3924' : '#fff5f4cc',
+                      background: isDragActive ? '#921bef' : '#fff5f4cc',
                       padding: 24,
-                      border: '1px dashed #ea3924',
+                      border: '1px dashed #921bef',
                       textAlign: 'center',
                     }}
                   >
@@ -296,39 +322,24 @@ class Calendar extends React.PureComponent {
             {manuals && manuals.length > 0 && (
               <NiceList list={manualsList} actionsDisabled={!isSuperAdmin}>
                 {(manual) => (
-                  <Card
+                  <div
                     key={manual.documentLabel}
-                    title={
-                      <h4>
-                        <a href={manual.documentUrl} target="_blank">
-                          {manual.documentLabel}
-                        </a>
-                      </h4>
-                    }
-                    bordered={false}
-                    style={{ width: '100%', marginBottom: 0 }}
-                    className="empty-card-body"
-                  />
+                    style={{
+                      width: '100%',
+                      marginBottom: 0,
+                      padding: '0 12px',
+                    }}
+                  >
+                    <h3>
+                      <a href={manual.documentUrl} target="_blank">
+                        {manual.documentLabel}
+                      </a>
+                    </h3>
+                  </div>
                 )}
               </NiceList>
             )}
           </Col>
-        </Row>
-
-        <Divider />
-
-        <h3 style={{ textAlign: 'center' }}>Resources</h3>
-        <Row justify="center">
-          {placesList.map((resource, index) => (
-            <Card
-              key={resource._id}
-              size="small"
-              title={<h3>{resource.name.toUpperCase()}</h3>}
-              style={{ width: 300, margin: 12 }}
-            >
-              <p>{resource.description}</p>
-            </Card>
-          ))}
         </Row>
 
         <Modal
@@ -362,22 +373,32 @@ class Calendar extends React.PureComponent {
               <b>{selectedBooking && selectedBooking.room}</b>
             </Col>
           </Row>
-          <Row style={{ paddingTop: 12 }}>
-            <Row span={24}>
-              {selectedBooking && selectedBooking.isPublicActivity && (
-                <Link
-                  to={
-                    (selectedBooking.isGroup ? '/group/' : '/event/') +
-                    selectedBooking._id
-                  }
-                >
-                  {' '}
-                  {!selectedBooking.isPrivateGroup &&
-                    `go to the ${selectedBooking.isGroup ? 'group ' : 'event '}
+          <Row style={{ paddingTop: 12 }} span={24}>
+            <div>
+              <Text>
+                {selectedBooking &&
+                  selectedBooking.longDescription &&
+                  (selectedBooking.isPrivateGroup
+                    ? ''
+                    : renderHTML(
+                        selectedBooking.longDescription.slice(0, 120) + '...'
+                      ))}
+              </Text>
+            </div>
+            <br />
+            {selectedBooking && selectedBooking.isPublicActivity && (
+              <Link
+                to={
+                  (selectedBooking.isGroup ? '/group/' : '/event/') +
+                  selectedBooking._id
+                }
+              >
+                {' '}
+                {!selectedBooking.isPrivateGroup &&
+                  `go to the ${selectedBooking.isGroup ? 'group ' : 'event '}
                     page`}
-                </Link>
-              )}
-            </Row>
+              </Link>
+            )}
           </Row>
         </Modal>
       </div>

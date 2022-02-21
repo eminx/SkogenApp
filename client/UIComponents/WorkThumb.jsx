@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Tag } from 'antd';
+import { Tag } from 'antd';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const commonStyle = {
@@ -8,9 +8,7 @@ const commonStyle = {
   lineHeight: 1,
 };
 const imageStyle = {
-  width: 320,
-  height: 320,
-  objectFit: 'cover',
+  height: 360,
 };
 
 const ellipsisStyle = {
@@ -21,7 +19,7 @@ const ellipsisStyle = {
 
 function WorkThumb({ work, history }) {
   return (
-    <div className="thumb-cover-container work-thumb">
+    <div className="thumb-cover-container">
       <div className="thumb-cover">
         <LazyLoadImage
           alt={work.title}
@@ -39,7 +37,7 @@ function WorkThumb({ work, history }) {
           padding: 16,
         }}
       >
-        {work.category ? (
+        {work.category && work.category.label !== 'uncategorised' ? (
           <Tag
             color={work.category.color}
             style={{ zIndex: 2, borderRadius: 0 }}
@@ -49,13 +47,13 @@ function WorkThumb({ work, history }) {
         ) : (
           <div />
         )}
-        <Avatar
+        {/* <Avatar
           src={work.authorAvatar && work.authorAvatar.src}
-          style={{ backgroundColor: '#ea3924' }}
+          style={{ backgroundColor: '#921bef' }}
           size="large"
         >
           {work.authorUsername.substring(0, 1).toUpperCase()}
-        </Avatar>
+        </Avatar> */}
       </div>
 
       <div
@@ -69,13 +67,14 @@ function WorkThumb({ work, history }) {
         <h4
           style={{
             ...commonStyle,
-            fontSize: 18,
+            fontSize: 20,
             marginBottom: 6,
             lineHeight: '24px',
             overflowWrap: 'anywhere',
+            fontWeight: 'bold',
           }}
         >
-          <b>{work.title}</b>
+          {work.title}
         </h4>
         <p
           style={{

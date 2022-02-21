@@ -59,6 +59,12 @@ function WorkForm({
       <FormItem
         {...formItemLayout}
         name="category"
+        rules={[
+          {
+            required: true,
+            message: 'Please select a category',
+          },
+        ]}
         initialValue={<span style={{ color: '#aaa' }}>Category</span>}
       >
         <Select placeholder="Category">
@@ -88,6 +94,12 @@ function WorkForm({
       <FormItem
         {...formItemLayout}
         name="longDescription"
+        rules={[
+          {
+            required: true,
+            message: 'Please enter a detailed description (optional)',
+          },
+        ]}
         initialValue={formValues ? formValues.longDescription : null}
       >
         <ReactQuill
@@ -99,6 +111,12 @@ function WorkForm({
       <FormItem
         {...formItemLayout}
         name="additionalInfo"
+        rules={[
+          {
+            required: true,
+            message: 'Please enter additional info (optional)',
+          },
+        ]}
         initialValue={formValues ? formValues.additionalInfo : null}
       >
         <Input placeholder="Additional Info" />

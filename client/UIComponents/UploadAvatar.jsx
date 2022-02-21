@@ -90,8 +90,9 @@ class UploadAvatar extends PureComponent {
   }
 }
 
-const marginStyle = {
-  marginBottom: 24,
+const avatarHolderStyle = {
+  width: 120,
+  height: 120,
 };
 
 function AvatarUI({
@@ -110,36 +111,38 @@ function AvatarUI({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        ...marginStyle,
+        marginBottom: 12,
       }}
     >
-      <div style={marginStyle}>
+      <div style={avatarHolderStyle}>
         <FileDropper
-          setUploadableImage={setUploadableAvatar}
+          imageUrl={avatarImageIfAny}
           label="Click/Drag your favourite image to upload avatar"
+          setUploadableImage={setUploadableAvatar}
         />
       </div>
       {(uploadableAvatarLocal || avatar) && (
         <Fragment>
-          <Avatar src={avatarImageIfAny} size={120} style={marginStyle} />
           <Button
+            danger
+            disabled={!uploadableAvatarLocal}
+            style={{ marginBottom: 12 }}
+            type="text"
             onClick={() => removeLocalAvatar()}
-            color="status-critical"
-            style={marginStyle}
           >
             Remove
           </Button>
 
           <Button
+            disabled={isUploading || !uploadableAvatarLocal}
+            loading={isUploading}
+            style={{ marginBottom: 24 }}
             onClick={() => uploadAvatar()}
-            disabled={isUploading}
-            style={marginStyle}
           >
-            Confirm & Upload
+            {isUploading ? 'Uploading...' : 'Confirm & Upload'}
           </Button>
         </Fragment>
       )}
-      {isUploading && <Loader />}
     </div>
   );
 }

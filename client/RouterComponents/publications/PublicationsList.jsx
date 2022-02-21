@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
-import { List, Card, Radio, Button } from 'antd';
+import { Button, Col, Radio, Row } from 'antd';
 
-const ListItem = List.Item;
 const RadioGroup = Radio.Group;
 
 import Loader from '../../UIComponents/Loader';
 import SexyThumb from '../../UIComponents/SexyThumb';
+import QMarkPop from '../../UIComponents/QMarkPop';
 
 const compareByPublishDate = (a, b) => {
   const dateA = new Date(a.publishDate);
@@ -15,7 +15,10 @@ const compareByPublishDate = (a, b) => {
   return dateB - dateA;
 };
 
-class PublicationsList extends React.PureComponent {
+const helperText =
+  'Here you find all publications being published by or in collaboration with Skogen. You can buy the books at our venue. You can learn more about printing by joining the Community Press group.';
+
+class PublicationsList extends PureComponent {
   state = {
     filterType: 'All',
   };
@@ -63,7 +66,7 @@ class PublicationsList extends React.PureComponent {
       width: '100%',
       display: 'flex',
       justifyContent: 'center',
-      padding: 6,
+      padding: 12,
     };
 
     const publicationTypesRepeated = publicationsData.map((pub) => pub.format);
@@ -77,14 +80,16 @@ class PublicationsList extends React.PureComponent {
     return (
       <div>
         <Loader isContainer spinning={isLoading}>
-          <h2 style={{ textAlign: 'center', marginTop: 12 }}>Publications</h2>
-          {currentUser && currentUser.isRegisteredMember && (
-            <div style={centerStyle}>
+          <div style={centerStyle}>
+            {currentUser && currentUser.isRegisteredMember && (
               <Link to="/new-publication">
-                <Button component="span">New Publication</Button>
+                <Button type="primary" component="span">
+                  New Publication
+                </Button>
               </Link>
-            </div>
-          )}
+            )}
+            <QMarkPop>{helperText}</QMarkPop>
+          </div>
 
           <div style={centerStyle}>
             <RadioGroup
@@ -97,19 +102,21 @@ class PublicationsList extends React.PureComponent {
             />
           </div>
 
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              justifyContent: 'center',
-            }}
-          >
+          <Row style={{ marginRight: 24, marginBottom: 12 }}>
             {publicationsFiltered &&
               publicationsFiltered.length > 0 &&
               publicationsFiltered.map((pub) => (
-                <SexyThumb key={pub._id} item={pub} isPub />
+                <Col
+                  key={pub._id}
+                  xs={24}
+                  sm={12}
+                  lg={8}
+                  style={{ overflow: 'hidden', padding: '12px 24px' }}
+                >
+                  <SexyThumb item={pub} isPub />
+                </Col>
               ))}
-          </div>
+          </Row>
         </Loader>
       </div>
     );

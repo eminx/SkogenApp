@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 const fancyDateStyle = {
-  color: '#030303',
+  color: '#401159',
   fontWeight: 700,
   lineHeight: 1,
 };
@@ -14,7 +14,7 @@ const DateJust = ({ children, ...otherProps }) => {
         {moment(children).format('DD')}
       </div>
       <div style={{ ...fancyDateStyle, fontSize: 15 }}>
-        {moment(children).format('MMM').toUpperCase()}
+        {moment(children).format('MMM')}
       </div>
     </div>
   );
@@ -22,7 +22,11 @@ const DateJust = ({ children, ...otherProps }) => {
 
 const FancyDate = ({ occurence, places, ...otherProps }) => (
   <div
-    style={{ display: 'flex', justifyContent: 'space-between' }}
+    style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      width: '100%',
+    }}
     {...otherProps}
   >
     <div style={{ flexGrow: 1 }}>

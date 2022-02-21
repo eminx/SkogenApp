@@ -42,11 +42,11 @@ import EllipsisMenu from '../../UIComponents/EllipsisMenu';
 const defaultMeetingRoom = 'Office';
 
 const customPanelStyle = {
-  background: '#f7f7f7',
+  background: '#fff',
   borderRadius: 4,
   marginBottom: 12,
   paddingRight: 12,
-  border: 0,
+  border: '1px solid #921bef',
   overflow: 'hidden',
 };
 
@@ -85,8 +85,7 @@ class Group extends Component {
       return false;
     }
 
-    const isAdmin =
-      currentUser.isSuperAdmin || (group && group.adminId === currentUser._id);
+    const isAdmin = group && group.adminId === currentUser._id;
 
     return Boolean(isAdmin);
   };
@@ -126,9 +125,6 @@ class Group extends Component {
 
   getChatMessages = () => {
     const { chatData, currentUser } = this.props;
-    if (!currentUser) {
-      return [];
-    }
     let messages = [];
 
     if (chatData) {
@@ -424,7 +420,7 @@ class Group extends Component {
         <Panel
           key={`${meeting.startTime} ${meeting.endTime} ${meetingIndex}`}
           header={
-            <div>
+            <div style={{ width: '100%' }}>
               <FancyDate occurence={meeting} places={places} />
               {/* <div style={{ marginTop: 12, textAlign: 'center' }}>
                 <span>{meeting.attendees && meeting.attendees.length}</span>
@@ -673,7 +669,7 @@ class Group extends Component {
           </div>
         )}
 
-        {currentUser && group && group.members && (
+        {group && group.members && (
           <Fragment>
             <div style={{ paddingTop: 24, paddingLeft: 12 }}>
               <h3>Members</h3>
@@ -721,12 +717,13 @@ class Group extends Component {
               <div
                 {...getRootProps()}
                 style={{
-                  width: '100%',
+                  background: isDragActive ? '#921bef' : '#fff5f4cc',
+                  border: '1px dashed #921bef',
                   height: 200,
-                  background: isDragActive ? '#ea3924' : '#fff5f4cc',
+                  margin: 12,
                   padding: 24,
-                  border: '1px dashed #ea3924',
                   textAlign: 'center',
+                  width: 'calc(100% - 24px)',
                 }}
               >
                 {isUploading ? (
@@ -788,7 +785,11 @@ class Group extends Component {
               title={null}
               bordered={false}
               // extra={this.getExtra(group, isAdmin)}
-              style={{ width: '100%', marginBottom: 24 }}
+              style={{
+                width: '100%',
+                marginBottom: 24,
+                background: 'transparent',
+              }}
               bodyStyle={{ padding: 12 }}
               cover={
                 group.imageUrl ? (
@@ -811,15 +812,8 @@ class Group extends Component {
     const messages = this.getChatMessages();
     const isMember = this.isMember();
 
-    const titleStyle = {
-      marginLeft: 24,
-      fontWeigth: 300,
-      color: '#0g0g0g',
-    };
-
     return (
       <div>
-        <h3 style={titleStyle}>Discussion</h3>
         <Chattery
           messages={messages}
           onNewMessage={this.addNewChatMessage}
@@ -878,9 +872,9 @@ class Group extends Component {
 
     const collapseStyle = {
       marginBottom: 24,
-      backgroundColor: '#fff',
       borderRadius: 0,
-      borderColor: '#030303',
+      borderColor: '#401159',
+      paddingLeft: 12,
     };
 
     if (group && group.isPrivate && this.isNoAccess()) {
@@ -889,7 +883,7 @@ class Group extends Component {
 
     return (
       <div>
-        <div style={{ padding: 12 }}>
+        <div style={{ paddingLeft: 24, paddingBottom: 12 }}>
           <Link to="/groups">
             <Button icon={<LeftOutlined />}>Groups</Button>
           </Link>
@@ -947,7 +941,7 @@ class Group extends Component {
               )}
 
               {isAdmin && (
-                <div>
+                <div style={{ paddingLeft: 12 }}>
                   <CreateMeetingForm
                     handleDateChange={(date, dateString) =>
                       this.handleDateAndTimeChange(
@@ -984,6 +978,16 @@ class Group extends Component {
             {this.renderMembersAndDocuments()}
           </div>
         </MediaQuery>
+
+        {group && isAdmin && (
+          <Row justify="center">
+            <Divider />
+            <Link to={`/edit-group/${group._id}`}>
+              <Button>Edit</Button>
+            </Link>
+            <Divider />
+          </Row>
+        )}
 
         <Modal
           title={`Confirm ${
@@ -1036,6 +1040,7 @@ const MeetingInfo = ({ meeting, isAttending, places }) => {
   const style = {
     flexBasis: 180,
     flexShrink: 0,
+    width: '100%',
   };
 
   return (
@@ -1074,7 +1079,8 @@ class CreateMeetingForm extends PureComponent {
       <div
         style={{
           padding: 12,
-          backgroundColor: '#f8f8f8',
+          backgroundColor: '#fff',
+          border: '1px solid #921bef',
           marginBottom: 12,
         }}
       >

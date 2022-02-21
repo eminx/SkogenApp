@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { Avatar, Image } from 'antd';
+import { Avatar } from 'antd';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
 const yesterday = moment(new Date()).add(-1, 'days');
@@ -14,15 +14,9 @@ const dateStyle = {
   lineHeight: 1,
 };
 
-const commonStyle = {
-  color: '#fff',
-  fontWeight: 300,
-  lineHeight: 1,
-};
-
 const imageStyle = {
   width: '100%',
-  height: 300,
+  height: 280,
   objectFit: 'cover',
 };
 
@@ -47,8 +41,8 @@ function ThumbDate({ date }) {
       <div style={{ ...dateStyle, fontSize: 24 }}>
         {moment(date.startDate).format('DD')}
       </div>
-      <div style={{ ...dateStyle, fontSize: 15 }}>
-        {moment(date.startDate).format('MMM').toUpperCase()}
+      <div style={{ ...dateStyle, fontSize: 17 }}>
+        {moment(date.startDate).format('MMM')}
       </div>
     </div>
   );
@@ -115,18 +109,8 @@ function SexyThumb({ item, isHome, isPub, showPast }) {
                   ))}
             </div>
           )}
-          <h3
-            style={{
-              ...commonStyle,
-              fontSize: 24,
-              marginBottom: 6,
-              lineHeight: '32px',
-              overflowWrap: 'anywhere',
-            }}
-          >
-            {item.title}
-          </h3>
-          <h4 style={{ ...commonStyle, fontSize: 16, lineHeight: '21px' }}>
+          <h3 className="thumb-title">{item.title}</h3>
+          <h4 className="thumb-subtitle">
             {isGroup
               ? item.readingMaterial
               : isPub
@@ -143,21 +127,7 @@ function SexyThumb({ item, isHome, isPub, showPast }) {
               bottom: 12,
             }}
           >
-            {!isHome && (isGroup || item.isGroup) && (
-              <Fragment>
-                <Avatar
-                  size={48}
-                  style={{ color: '#ea3924', backgroundColor: '#fbd5d0' }}
-                >
-                  {item.adminUsername[0].toUpperCase()}
-                </Avatar>
-                <span style={{ color: '#fff' }}>{item.adminUsername}</span>
-              </Fragment>
-            )}
-
-            {isPub && (
-              <em style={{ color: '#fff' }}>{item.format.toUpperCase()}</em>
-            )}
+            {isPub && <em style={{ color: '#fff' }}>{item.format}</em>}
           </div>
         </div>
       </Link>

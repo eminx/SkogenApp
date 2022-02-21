@@ -6,12 +6,7 @@ const { Option } = Select;
 import { parseTitle } from '../functions';
 import MediaQuery from 'react-responsive';
 
-const activeStyle = {
-  fontWeight: 700,
-};
-
 const linkStyle = {
-  textTransform: 'uppercase',
   padding: '6px 0',
 };
 
@@ -32,16 +27,18 @@ function PagesList({ pageTitles, activePageTitle, history }) {
     >
       <MediaQuery query="(min-width: 768px)">
         {pageTitles.map((title, index) => (
-          <div
+          <Link
             key={title + index}
-            style={
+            className={
               parseTitle(activePageTitle) === parseTitle(title)
-                ? { ...activeStyle, ...linkStyle }
-                : linkStyle
+                ? 'menu-item active-menu-item'
+                : 'menu-item'
             }
+            style={linkStyle}
+            to={`/page/${parseTitle(title)}`}
           >
-            <Link to={`/page/${parseTitle(title)}`}>{title}</Link>
-          </div>
+            <b>{title}</b>
+          </Link>
         ))}
       </MediaQuery>
       <MediaQuery query="(max-width: 767px)">

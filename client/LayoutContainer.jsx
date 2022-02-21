@@ -1,5 +1,5 @@
 import { withTracker } from 'meteor/react-meteor-data';
-import React, { Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -22,6 +22,7 @@ moment.locale('en-gb'); // important!
 
 const { Content } = Layout;
 import BellOutlined from '@ant-design/icons/lib/icons/BellOutlined';
+import QMarkPop from './UIComponents/QMarkPop';
 
 const menu = [
   {
@@ -37,8 +38,16 @@ const menu = [
     route: '/groups',
   },
   {
-    label: 'Community Press',
+    label: 'Publications',
     route: '/publications',
+  },
+  {
+    label: 'Community',
+    route: '/community',
+  },
+  {
+    label: 'Places',
+    route: '/places',
   },
   {
     label: 'Info',
@@ -55,7 +64,7 @@ const adminMenu = [
 
 const FormItem = Form.Item;
 
-class LayoutPage extends React.Component {
+class LayoutPage extends PureComponent {
   state = {
     menuOpen: false,
     me: false,
@@ -115,7 +124,7 @@ class LayoutPage extends React.Component {
 
   render() {
     const { isNotificationPopoverOpen } = this.state;
-    const { children, currentUser } = this.props;
+    const { currentUser, location, children } = this.props;
 
     const notifications = currentUser && currentUser.notifications;
     let notificationsCounter = 0;
@@ -125,6 +134,8 @@ class LayoutPage extends React.Component {
       });
     }
 
+    const { pathname } = location;
+
     return (
       <div className="main-viewport">
         <div className="header-container">
@@ -133,13 +144,12 @@ class LayoutPage extends React.Component {
               <span
                 style={{
                   padding: '6px 12px',
-                  textTransform: 'uppercase',
                   fontWeight: 700,
-                  backgroundColor: 'rgba(255, 255, 255, .7)',
+                  backgroundColor: '#435CBD',
                 }}
               >
-                <Link to="/my-profile" style={{ color: '#030303' }}>
-                  {currentUser ? currentUser.username : 'LOGIN'}
+                <Link to="/my-profile" style={{ color: '#fff' }}>
+                  {currentUser ? currentUser.username : 'Login'}
                 </Link>
               </span>
             </Col>
@@ -172,22 +182,30 @@ class LayoutPage extends React.Component {
           </Row>
         </div>
 
-        <div className="skogen-menu-layout">
-          {menu.map((item) => (
-            <Link to={item.route} key={item.label}>
-              <b>{item.label}</b>
-            </Link>
-          ))}
-          {currentUser &&
-            currentUser.isSuperAdmin &&
-            adminMenu.map((item) => (
-              <Link to={item.route} key={item.label}>
-                <b>{item.label}</b>
-              </Link>
-            ))}
-        </div>
         <Layout className="layout">
           <ConfigProvider locale={en_GB}>
+            <div className="skogen-menu-layout">
+              {menu.map((item) => (
+                <Link
+                  to={item.route}
+                  key={item.label}
+                  className={getMenuItemClass(item.route, pathname)}
+                >
+                  <b>{item.label}</b>
+                </Link>
+              ))}
+              {currentUser &&
+                currentUser.isSuperAdmin &&
+                adminMenu.map((item) => (
+                  <Link
+                    to={item.route}
+                    key={item.label}
+                    className={getMenuItemClass(item.route, pathname)}
+                  >
+                    <b>{item.label}</b>
+                  </Link>
+                ))}
+            </div>
             <Content>{children}</Content>
           </ConfigProvider>
         </Layout>
@@ -197,14 +215,17 @@ class LayoutPage extends React.Component {
   }
 }
 
-const widgetBgrstyle = {
-  textAlign: 'center',
-  backgroundColor: 'rgba(255, 245, 244, .8)',
-  padding: 24,
-  margin: 12,
-  marginTop: 32,
-  maxWidth: 320,
-};
+function getMenuItemClass(route, pathname) {
+  let className = 'menu-item ';
+  if (
+    pathname === route ||
+    pathname.substring(0, 5) === route.substring(0, 5)
+  ) {
+    className += 'active-menu-item';
+  }
+
+  return className;
+}
 
 const boldBabe = {
   textTransform: 'uppercase',
@@ -220,19 +241,19 @@ const FancyFooter = () => {
         flexWrap: 'wrap',
       }}
     >
-      <div style={widgetBgrstyle}>
+      <div className="footer-widget">
         <EmailSignupForm />
 
-        <Divider style={{ background: '#030303' }} />
+        <Divider style={{ background: '#921bef' }} />
 
         <SkogenInfo />
 
-        <Divider style={{ background: '#030303' }} />
+        <Divider style={{ background: '#921bef' }} />
 
         <h4>Swish for donations:</h4>
-        <h3 style={{ ...boldBabe }}>123 388 4772</h3>
+        <h4 style={{ ...boldBabe }}>123 388 4772</h4>
 
-        <Divider style={{ background: '#030303' }} />
+        <Divider style={{ background: '#921bef' }} />
 
         <p style={{ marginTop: 24 }}>
           Crafted with ∞♥︎ at{' '}
@@ -251,11 +272,15 @@ const FancyFooter = () => {
   );
 };
 
+const signupHelperText =
+  'Sign up here and you get weekly updates on what is going on at Skogen.';
+
 const EmailSignupForm = () => (
   <Fragment>
     <FormItem>
-      <h4 style={{ ...boldBabe, marginBottom: 0, lineHeight: '10px' }}>
+      <h4 style={{ ...boldBabe, marginBottom: 0, lineHeight: '20px' }}>
         Sign up to Our Newsletter
+        <QMarkPop>{signupHelperText}</QMarkPop>
       </h4>
     </FormItem>
     <form method="POST" action="https://gansub.com/s/RKNO/">

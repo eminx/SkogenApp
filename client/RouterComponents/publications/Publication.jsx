@@ -33,29 +33,6 @@ class Publication extends React.PureComponent {
     );
   };
 
-  getExtra = (publication, isAdmin) => {
-    if (isAdmin) {
-      return (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <b>{publication.format}</b>
-          <Divider type="vertical" />
-          <Link
-            to={`/edit-publication/${publication._id}`}
-            style={{ position: 'absolute', top: 24, right: 24 }}
-          >
-            Edit
-          </Link>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <b>{publication.format}</b>
-        </div>
-      );
-    }
-  };
-
   render() {
     if (this.state.redirectToLogin) {
       return <Redirect to="/my-profile" />;
@@ -89,7 +66,8 @@ class Publication extends React.PureComponent {
             </Col>
             <Col sm={24} md={12} style={{ position: 'relative', padding: 24 }}>
               {this.getTitle(publication)}
-              {this.getExtra(publication, isAdmin)}
+              <b>{publication.format}</b>
+
               <br />
               <div style={{ whiteSpace: 'pre-line' }}>
                 <p>
@@ -104,6 +82,14 @@ class Publication extends React.PureComponent {
           </Row>
         ) : (
           <Loader />
+        )}
+        <Divider />
+        {publication && isAdmin && (
+          <Row justify="center">
+            <Link to={`/edit-publication/${publication._id}`}>
+              <Button>Edit</Button>
+            </Link>
+          </Row>
         )}
         <Divider />
       </div>

@@ -2,27 +2,26 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
 const linkStyle = {
-  textTransform: 'uppercase',
-  padding: '6px 0'
+  padding: '6px 0',
 };
 
 const activeStyle = {
-  fontWeight: 700
+  fontWeight: 700,
 };
 
 const adminMenu = [
   {
     label: 'Users',
-    value: '/admin/users'
+    value: '/admin/users',
   },
   {
     label: 'Resources',
-    value: '/admin/resources'
+    value: '/admin/resources',
   },
   {
     label: 'Categories',
-    value: '/admin/categories'
-  }
+    value: '/admin/categories',
+  },
 ];
 
 const AdminMenu = ({ currentPath }) => {

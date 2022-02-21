@@ -91,7 +91,7 @@ const Resources = ({ history }) => {
 
   return (
     <div>
-      <Loader isContainer spinning={!resources || resources.length === 0}>
+      <Loader isContainer spinning={!resources}>
         <Row gutter={24}>
           <Col md={8}>
             <AdminMenu currentPath={currentPath} />
