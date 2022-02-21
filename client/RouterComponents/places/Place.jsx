@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
 import { Carousel, Col, Divider, Button, Image, Row, Tag, message } from 'antd';
 import MediaQuery from 'react-responsive';
+import LeftOutlined from '@ant-design/icons/lib/icons/LeftOutlined';
 
 import Loader from '../../UIComponents/Loader';
 import { call } from '../../functions';
@@ -48,15 +49,15 @@ function Place({ history, match }) {
     return <Loader />;
   }
 
-  const author =
-    place.authorFirstName && place.authorLastName
-      ? place.authorFirstName + ' ' + place.authorLastName
-      : place.authorUsername;
-
   const isSuperAdmin = currentUser && currentUser.isSuperAdmin;
 
   return (
     <div>
+      <div style={{ paddingLeft: 12, paddingBottom: 12 }}>
+        <Link to="/places">
+          <Button icon={<LeftOutlined />}>Places</Button>
+        </Link>
+      </div>
       <Row gutter={12}>
         <Col md={24} lg={6}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
