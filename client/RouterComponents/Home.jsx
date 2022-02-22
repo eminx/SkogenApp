@@ -63,14 +63,6 @@ const parseOnlyAllowedGroups = (futureGroups, currentUser) => {
       return true;
     } else {
       const currentUserId = currentUser._id;
-      console.log(
-        group,
-        group.adminId === currentUserId,
-        group.members.some((member) => member.memberId === currentUserId),
-        group.peopleInvited.some(
-          (person) => person.email === currentUser.emails[0].address
-        )
-      );
       return (
         group.adminId === currentUserId ||
         group.members.some((member) => member.memberId === currentUserId) ||
