@@ -100,8 +100,10 @@ class Booking extends React.Component {
     const occurence = bookingData.datesAndTimes[occurenceIndex];
     occurence.attendees.forEach((attendee, attendeeIndex) => {
       if (
-        attendee.lastName === values.lastName &&
-        attendee.email === values.email
+        attendee.lastName.trim().toLowerCase() ===
+          values.lastName.trim().toLowerCase() &&
+        attendee.email.trim().toLowerCase() ===
+          values.email.trim().toLowerCase()
       ) {
         registrationAlreadyMade();
         isAlreadyRegistered = true;
@@ -126,10 +128,17 @@ class Booking extends React.Component {
       return;
     }
 
+    const parsedValues = {
+      firstName: values.firstName.trim(),
+      lastName: values.lastName.trim(),
+      email: values.email.trim(),
+      numberOfPeople: values.numberOfPeople,
+    };
+
     Meteor.call(
       'registerAttendance',
       bookingData._id,
-      values,
+      parsedValues,
       occurenceIndex,
       (error, respond) => {
         if (error) {
@@ -151,7 +160,9 @@ class Booking extends React.Component {
         occurenceIndex,
         email: currentUser ? currentUser.emails[0].address : '',
         lastName:
-          currentUser && currentUser.lastName ? currentUser.lastName : '',
+          currentUser && currentUser.lastName
+            ? currentUser.lastName.trim()
+            : '',
       },
     });
   };
@@ -163,8 +174,10 @@ class Booking extends React.Component {
       bookingData.datesAndTimes[rsvpCancelModalInfo.occurenceIndex];
 
     const attendeeFinder = (attendee) =>
-      attendee.lastName === rsvpCancelModalInfo.lastName &&
-      attendee.email === rsvpCancelModalInfo.email;
+      attendee.lastName.trim().toLowerCase() ===
+        rsvpCancelModalInfo.lastName.trim().toLowerCase() &&
+      attendee.email.trim().toLowerCase() ===
+        rsvpCancelModalInfo.email.trim().toLowerCase();
 
     const foundAttendee = theOccurence.attendees.find(attendeeFinder);
     const foundAttendeeIndex = theOccurence.attendees.findIndex(attendeeFinder);
@@ -239,14 +252,21 @@ class Booking extends React.Component {
     }
   };
 
-  handleChangeRSVPSubmit = (fieldsValue) => {
+  handleChangeRSVPSubmit = (values) => {
     const { rsvpCancelModalInfo } = this.state;
     const { bookingData } = this.props;
+
+    const parsedValues = {
+      firstName: values.firstName.trim(),
+      lastName: values.lastName.trim(),
+      email: values.email.trim(),
+      numberOfPeople: values.numberOfPeople,
+    };
 
     Meteor.call(
       'updateAttendance',
       bookingData._id,
-      fieldsValue,
+      parsedValues,
       rsvpCancelModalInfo.occurenceIndex,
       rsvpCancelModalInfo.attendeeIndex,
       (error, respond) => {
@@ -640,7 +660,11 @@ const RsvpForm = (props) => {
           {isUpdateMode ? 'Update' : 'Register'}
         </Button>
 
-        {isUpdateMode && <a onClick={handleDelete}>Remove your registration</a>}
+        {isUpdateMode && (
+          <a style={{ color: 'red' }} onClick={handleDelete}>
+            Remove your registration
+          </a>
+        )}
       </div>
     </Form>
   );
