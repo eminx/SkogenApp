@@ -14,11 +14,7 @@ const getRegistrationText = (
 };
 
 const getRemovalText = (firstName, occurence, bookingId) => {
-  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully removed your registration from this event.\nYou have previously registered to attend the event on ${
-    occurence.startDate
-  } at ${
-    occurence.startTime
-  }, which you just signed out of. \nIf you want to RSVP again, you can do so here at the event page: ${siteUrl}event/${bookingId}.\n\nKind regards,\nSkogen Team`;
+  return `Hi ${firstName},\n\nThis is a confirmation email to inform you that you have successfully removed your registration from this event.\nYou have previously registered to attend the event on ${occurence.startDate} at ${occurence.startTime}, which you just signed out of. \nIf you want to RSVP again, you can do so here at the event page: ${siteUrl}event/${bookingId}.\n\nKind regards,\nSkogen Team`;
 };
 
 Meteor.methods({
@@ -33,7 +29,7 @@ Meteor.methods({
     }
 
     check(formValues.title, String);
-    formValues.datesAndTimes.forEach(recurrence => {
+    formValues.datesAndTimes.forEach((recurrence) => {
       check(recurrence.startDate, String);
       check(recurrence.endDate, String);
       check(recurrence.startTime, String);
@@ -64,7 +60,7 @@ Meteor.methods({
           isPublicActivity: formValues.isPublicActivity,
           isBookingsDisabled: formValues.isBookingsDisabled,
           isPublished: true,
-          creationDate: new Date()
+          creationDate: new Date(),
         },
         () => {
           if (!formValues.isPublicActivity) {
@@ -90,7 +86,7 @@ Meteor.methods({
     }
 
     check(formValues.title, String);
-    formValues.datesAndTimes.forEach(recurrence => {
+    formValues.datesAndTimes.forEach((recurrence) => {
       check(recurrence.startDate, String);
       check(recurrence.endDate, String);
       check(recurrence.startTime, String);
@@ -119,8 +115,8 @@ Meteor.methods({
           isPublicActivity: formValues.isPublicActivity,
           isBookingsDisabled: formValues.isBookingsDisabled,
           imageUrl,
-          latestUpdate: new Date()
-        }
+          latestUpdate: new Date(),
+        },
       });
       return bookingId;
     } catch (error) {
@@ -158,8 +154,8 @@ Meteor.methods({
     try {
       Gatherings.update(bookingId, {
         $set: {
-          datesAndTimes: occurences
-        }
+          datesAndTimes: occurences,
+        },
       });
       Meteor.call(
         'sendEmail',
@@ -193,8 +189,8 @@ Meteor.methods({
     try {
       Gatherings.update(bookingId, {
         $set: {
-          datesAndTimes: occurences
-        }
+          datesAndTimes: occurences,
+        },
       });
       Meteor.call(
         'sendEmail',
@@ -229,8 +225,8 @@ Meteor.methods({
     try {
       Gatherings.update(bookingId, {
         $set: {
-          datesAndTimes: occurences
-        }
+          datesAndTimes: occurences,
+        },
       });
       Meteor.call(
         'sendEmail',
@@ -242,5 +238,5 @@ Meteor.methods({
       console.log(error);
       throw new Meteor.Error(error, "Couldn't update document");
     }
-  }
+  },
 });
