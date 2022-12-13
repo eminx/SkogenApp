@@ -174,7 +174,7 @@ Meteor.methods({
     }
   },
 
-  updateAttendance(bookingId, values, occurenceIndex, attendeeIndex) {
+  updateAttendance(bookingId, values, occurenceIndex) {
     check(bookingId, String);
     check(occurenceIndex, Number);
     check(values.firstName, String);
@@ -183,13 +183,22 @@ Meteor.methods({
     check(values.numberOfPeople, Number);
 
     const theActivity = Gatherings.findOne(bookingId);
-    const occurences = [...theActivity.datesAndTimes];
-    occurences[occurenceIndex].attendees[attendeeIndex] = values;
+    const newOccurences = [...theActivity.datesAndTimes];
+    const theOccurence = newOccurences[occurenceIndex];
+
+    newOccurences[occurenceIndex].attendees = theOccurence.attendees.map(
+      (a) => {
+        if (a.email === values.email) {
+          return values;
+        }
+        return a;
+      }
+    );
 
     try {
       Gatherings.update(bookingId, {
         $set: {
-          datesAndTimes: occurences,
+          datesAndTimes: newOccurences,
         },
       });
       Meteor.call(
@@ -199,7 +208,7 @@ Meteor.methods({
         getRegistrationText(
           values.firstName,
           values.numberOfPeople,
-          occurences[occurenceIndex],
+          newOccurences[occurenceIndex],
           bookingId
         )
       );
@@ -209,23 +218,26 @@ Meteor.methods({
     }
   },
 
-  removeAttendance(bookingId, occurenceIndex, attendeeIndex, email) {
+  removeAttendance(bookingId, occurenceIndex, email) {
     check(bookingId, String);
     check(occurenceIndex, Number);
-    check(attendeeIndex, Number);
     check(email, String);
 
     const theActivity = Gatherings.findOne(bookingId);
-    const occurences = [...theActivity.datesAndTimes];
-    const theOccurence = occurences[occurenceIndex];
-    const theNonAttendee = theOccurence.attendees[attendeeIndex];
+    const newOccurences = [...theActivity.datesAndTimes];
+    const theOccurence = newOccurences[occurenceIndex];
+    const theNonAttendee = theOccurence.attendees.find(
+      (a) => a.email === email
+    );
 
-    occurences[occurenceIndex].attendees.splice(attendeeIndex, 1);
+    newOccurences[occurenceIndex].attendees = theOccurence.attendees.filter(
+      (a) => a.email !== email
+    );
 
     try {
       Gatherings.update(bookingId, {
         $set: {
-          datesAndTimes: occurences,
+          datesAndTimes: newOccurences,
         },
       });
       Meteor.call(

@@ -268,7 +268,6 @@ class Booking extends React.Component {
       bookingData._id,
       parsedValues,
       rsvpCancelModalInfo.occurenceIndex,
-      rsvpCancelModalInfo.attendeeIndex,
       (error, respond) => {
         if (error) {
           console.log(error);
@@ -292,7 +291,6 @@ class Booking extends React.Component {
       'removeAttendance',
       bookingData._id,
       rsvpCancelModalInfo.occurenceIndex,
-      rsvpCancelModalInfo.attendeeIndex,
       rsvpCancelModalInfo.email,
       (error, respond) => {
         if (error) {
