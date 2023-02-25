@@ -28,7 +28,7 @@ function ThumbDate({ date }) {
     return null;
   }
 
-  const isPastEvent = !moment(date.startDate).isAfter(yesterday);
+  const isPastEvent = !moment(date?.startDate).isAfter(yesterday);
 
   if (isPastEvent) {
     dateStyle.color = '#aaa';
@@ -39,10 +39,10 @@ function ThumbDate({ date }) {
   return (
     <div style={{ marginRight: 16, marginBottom: 16 }}>
       <div style={{ ...dateStyle, fontSize: 24 }}>
-        {moment(date.startDate).format('DD')}
+        {moment(date?.startDate).format('DD')}
       </div>
       <div style={{ ...dateStyle, fontSize: 17 }}>
-        {moment(date.startDate).format('MMM')}
+        {moment(date?.startDate).format('MMM')}
       </div>
     </div>
   );
@@ -52,12 +52,12 @@ function SexyThumb({ item, isHome, isPub, showPast }) {
   const datesAndTimes = item.datesAndTimes || item.meetings;
   const futureDates =
     datesAndTimes &&
-    datesAndTimes.filter((date) => moment(date.startDate).isAfter(yesterday));
+    datesAndTimes.filter((date) => moment(date?.startDate).isAfter(yesterday));
   const remaining = futureDates && futureDates.length - 3;
 
   const pastDates =
     datesAndTimes &&
-    datesAndTimes.filter((date) => moment(date.startDate).isBefore(today));
+    datesAndTimes.filter((date) => moment(date?.startDate).isBefore(today));
 
   const isGroup = !isPub && Boolean(item.meetings);
   const clickLink = isGroup
@@ -91,7 +91,10 @@ function SexyThumb({ item, isHome, isPub, showPast }) {
               }}
             >
               {futureDates.slice(0, 3).map((date) => (
-                <ThumbDate key={date.startDate + date.startTime} date={date} />
+                <ThumbDate
+                  key={date?.startDate + date?.startTime}
+                  date={date}
+                />
               ))}
               {remaining > 0 && (
                 <div style={{ ...dateStyle, fontSize: 20, marginBottom: 16 }}>
@@ -103,7 +106,7 @@ function SexyThumb({ item, isHome, isPub, showPast }) {
                   .slice(0, 3)
                   .map((date) => (
                     <ThumbDate
-                      key={date.startDate + date.startTime}
+                      key={date?.startDate + date?.startTime}
                       date={date}
                     />
                   ))}
