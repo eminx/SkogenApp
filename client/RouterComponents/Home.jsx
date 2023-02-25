@@ -27,10 +27,10 @@ const compareForSort = (a, b) => {
   const firstOccurenceA = a.datesAndTimes.find(getFirstFutureOccurence);
   const firstOccurenceB = b.datesAndTimes.find(getFirstFutureOccurence);
   const dateA = new Date(
-    firstOccurenceA.startDate + 'T' + firstOccurenceA.startTime + ':00Z'
+    firstOccurenceA?.startDate + 'T' + firstOccurenceA.startTime + ':00Z'
   );
   const dateB = new Date(
-    firstOccurenceB.startDate + 'T' + firstOccurenceB.startTime + ':00Z'
+    firstOccurenceB?.startDate + 'T' + firstOccurenceB.startTime + ':00Z'
   );
   return dateA - dateB;
 };
@@ -39,10 +39,10 @@ const compareForSortReverse = (a, b) => {
   const firstOccurenceA = a.datesAndTimes.find(getFirstPastOccurence);
   const firstOccurenceB = b.datesAndTimes.find(getFirstPastOccurence);
   const dateA = new Date(
-    firstOccurenceA.startDate + 'T' + firstOccurenceA.startTime + ':00Z'
+    firstOccurenceA?.startDate + 'T' + firstOccurenceA.startTime + ':00Z'
   );
   const dateB = new Date(
-    firstOccurenceB.startDate + 'T' + firstOccurenceB.startTime + ':00Z'
+    firstOccurenceB?.startDate + 'T' + firstOccurenceB.startTime + ':00Z'
   );
   return dateB - dateA;
 };
@@ -81,7 +81,7 @@ const getGroupMeetings = (groupsList, currentUser) => {
 
   const futureGroups = groupsList.filter((group) =>
     group.meetings.some((meeting) =>
-      moment(meeting.startDate).isAfter(yesterday)
+      moment(meeting?.startDate).isAfter(yesterday)
     )
   );
 
@@ -124,7 +124,7 @@ const getPastPublicActivities = (bookingsList) => {
 
   return publicActivities.filter((activity) =>
     activity.datesAndTimes.some((date) =>
-      moment(date.startDate).isBefore(today)
+      moment(date?.startDate).isBefore(today)
     )
   );
 };
