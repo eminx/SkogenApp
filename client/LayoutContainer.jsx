@@ -182,6 +182,25 @@ class LayoutPage extends PureComponent {
           </Row>
         </div>
 
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div
+            style={{
+              width: 480,
+              backgroundColor: '#fff',
+              padding: 12,
+              paddingTop: 24,
+              marginBottom: 24,
+            }}
+          >
+            <p style={{ textAlign: 'center' }}>
+              This website/webapp represents the previous version of Skogen's
+              online look and usage, and is not updated anymore. Please visit{' '}
+              <a href="https://www.skogen.pm">www.skogen.pm</a> for the new
+              website/webapp.
+            </p>
+          </div>
+        </div>
+
         <Layout className="layout">
           <ConfigProvider locale={en_GB}>
             <div className="skogen-menu-layout">
