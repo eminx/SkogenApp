@@ -193,10 +193,9 @@ class LayoutPage extends PureComponent {
             }}
           >
             <p style={{ textAlign: 'center' }}>
-              This website/webapp represents the previous version of Skogen's
-              online look and usage, and is not updated anymore. Please visit{' '}
-              <a href="https://www.skogen.pm">www.skogen.pm</a> for the new
-              website/webapp.
+              This is the previous Skogen website, and is not updated anymore.
+              Please visit <a href="https://www.skogen.pm">www.skogen.pm</a> for
+              the new one, as part of the Samarbetet project.
             </p>
           </div>
         </div>

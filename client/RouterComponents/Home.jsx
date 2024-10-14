@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { parse, stringify } from 'query-string';
 import moment from 'moment';
 import { Row, Col, Radio } from 'antd';
-import Loader from '../UIComponents/Loader';
 import SexyThumb from '../UIComponents/SexyThumb';
 
 const yesterday = moment().add(-1, 'days');
@@ -171,33 +170,31 @@ function Home({ history, bookingsList, groupsList, currentUser, isLoading }) {
   return (
     <div>
       <div style={{ width: '100%' }}>
-        <Loader isContainer spinning={!thumbs || thumbs.length === 0}>
-          <div style={centerStyle}>
-            <RadioGroup
-              value={showPast ? 'Past' : 'Upcoming'}
-              options={['Past', 'Upcoming']}
-              onChange={handlePastChange}
-              optionType="button"
-              buttonStyle="solid"
-            />
-          </div>
-          <Row style={{ marginRight: 24, paddingBottom: 12 }}>
-            {thumbs &&
-              thumbs.map((activity) => (
-                <Col
-                  key={activity._id}
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={8}
-                  xl={6}
-                  style={{ overflow: 'hidden', padding: '12px 24px' }}
-                >
-                  <SexyThumb item={activity} isHome showPast={showPast} />
-                </Col>
-              ))}
-          </Row>
-        </Loader>
+        <div style={centerStyle}>
+          <RadioGroup
+            value={showPast ? 'Past' : 'Upcoming'}
+            options={['Past', 'Upcoming']}
+            onChange={handlePastChange}
+            optionType="button"
+            buttonStyle="solid"
+          />
+        </div>
+        <Row style={{ marginRight: 24, paddingBottom: 12 }}>
+          {thumbs &&
+            thumbs.map((activity) => (
+              <Col
+                key={activity._id}
+                xs={24}
+                sm={12}
+                md={8}
+                lg={8}
+                xl={6}
+                style={{ overflow: 'hidden', padding: '12px 24px' }}
+              >
+                <SexyThumb item={activity} isHome showPast={showPast} />
+              </Col>
+            ))}
+        </Row>
       </div>
     </div>
   );
